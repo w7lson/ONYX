@@ -9,14 +9,17 @@ datasource db {
 }
 
 model UserProfile {
-  id            String   @id @default(uuid())
-  clerkId       String   @unique
-  email         String   @unique
-  quizResults   Json?
-  learningStyle String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  plans         LearningPlan[]
+  id               String            @id @default(uuid())
+  clerkId          String            @unique
+  email            String            @unique
+  quizResults      Json?
+  learningStyle    String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  plans            LearningPlan[]
+  decks            Deck[]
+  pomodoroSessions PomodoroSession[]
+  tests            Test[]
 }
 
 model LearningPlan {
@@ -24,30 +27,110 @@ model LearningPlan {
   userId      String
   title       String
   description String?
-  status      String   @default("active") // active, completed, archived
+  status      String   @default("active")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  
-  user        UserProfile @relation(fields: [userId], references: [clerkId])
-  modules     Module[]
+
+  user    UserProfile @relation(fields: [userId], references: [clerkId])
+  modules Module[]
 }
 
 model Module {
-  id               String   @id @default(uuid())
+  id               String @id @default(uuid())
   planId           String
   title            String
   estimatedMinutes Int
   order            Int
-  
-  plan             LearningPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
-  tasks            Task[]
+
+  plan  LearningPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  tasks Task[]
 }
 
 model Task {
-  id          String   @id @default(uuid())
+  id          String  @id @default(uuid())
   moduleId    String
   content     String
-  isCompleted Boolean  @default(false)
-  
-  module      Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  isCompleted Boolean @default(false)
+
+  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+}
+
+// ===== FLASHCARDS / SPACED REPETITION =====
+
+model Deck {
+  id          String   @id @default(uuid())
+  userId      String
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user  UserProfile @relation(fields: [userId], references: [clerkId])
+  cards Flashcard[]
+}
+
+model Flashcard {
+  id             String    @id @default(uuid())
+  deckId         String
+  front          String
+  back           String
+  easeFactor     Float     @default(2.5)
+  interval       Int       @default(0)
+  repetitions    Int       @default(0)
+  nextReviewAt   DateTime  @default(now())
+  lastReviewedAt DateTime?
+  createdAt      DateTime  @default(now())
+
+  deck    Deck              @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  reviews FlashcardReview[]
+}
+
+model FlashcardReview {
+  id         String   @id @default(uuid())
+  cardId     String
+  quality    Int
+  reviewedAt DateTime @default(now())
+
+  card Flashcard @relation(fields: [cardId], references: [id], onDelete: Cascade)
+}
+
+// ===== POMODORO =====
+
+model PomodoroSession {
+  id           String   @id @default(uuid())
+  userId       String
+  durationMin  Int
+  completedAt  DateTime @default(now())
+  wasCompleted Boolean  @default(true)
+  label        String?
+
+  user UserProfile @relation(fields: [userId], references: [clerkId])
+}
+
+// ===== AI TESTS =====
+
+model Test {
+  id          String    @id @default(uuid())
+  userId      String
+  topic       String
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+  score       Float?
+
+  user      UserProfile    @relation(fields: [userId], references: [clerkId])
+  questions TestQuestion[]
+}
+
+model TestQuestion {
+  id            String   @id @default(uuid())
+  testId        String
+  type          String
+  questionText  String
+  options       Json?
+  correctAnswer String
+  userAnswer    String?
+  isCorrect     Boolean?
+  aiFeedback    String?
+
+  test Test @relation(fields: [testId], references: [id], onDelete: Cascade)
 }

@@ -9,6 +9,10 @@ import Progress from "./pages/Progress";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
 import Settings from "./pages/Settings";
+import Learning from "./pages/Learning";
+import Flashcards from "./pages/Flashcards";
+import Pomodoro from "./pages/Pomodoro";
+import Tests from "./pages/Tests";
 import './App.css';
 
 function App() {
@@ -60,6 +64,10 @@ function App() {
         >
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/plans" element={<Plans />} />
+          <Route path="/learning" element={<Learning />} />
+          <Route path="/flashcards" element={<Flashcards />} />
+          <Route path="/pomodoro" element={<Pomodoro />} />
+          <Route path="/tests" element={<Tests />} />
           <Route path="/progress" element={<Progress />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/notifications" element={<Notifications />} />
