@@ -1,0 +1,258 @@
+{
+  "brand": "ONYX Study",
+  "nav": {
+    "dashboard": "Startseite",
+    "plans": "Pläne",
+    "techniques": "Techniken",
+    "flashcards": "Karteikarten",
+    "pomodoro": "Pomodoro",
+    "tests": "AI Tests",
+    "progress": "Fortschritt",
+    "profile": "Profil",
+    "notifications": "Benachrichtigungen",
+    "settings": "Einstellungen"
+  },
+  "sections": {
+    "learn": "Lernen",
+    "practice": "Üben",
+    "track": "Verfolgen"
+  },
+  "landing": {
+    "title": "Strukturiere dein Lernen mit AI",
+    "subtitle": "Erstelle personalisierte Lernpläne in Sekunden.",
+    "cta": "Loslegen"
+  },
+  "dashboard": {
+    "welcome": "Willkommen, {{name}}!",
+    "subtitle": "Dein Lern-Hub",
+    "quickAccess": "Schnellzugriff",
+    "loading": "Pläne werden geladen...",
+    "noPlans": "Noch keine Lernpläne. Schließe das Onboarding-Quiz ab, um deinen ersten Plan zu erstellen!",
+    "startOnboarding": "Onboarding starten",
+    "active": "aktiv",
+    "min": "{{count}} Min",
+    "cards": {
+      "plans": "Lernpläne anzeigen und verwalten",
+      "flashcards": "Karteikarten mit verteiltem Wiederholen üben",
+      "pomodoro": "Fokussiert lernen mit Timer-Sitzungen",
+      "tests": "AI-gestützte Tests erstellen und absolvieren",
+      "techniques": "Wissenschaftlich fundierte Lernmethoden entdecken",
+      "progress": "Gesamten Lernfortschritt verfolgen"
+    }
+  },
+  "onboarding": {
+    "title": "Passe dein Lernerlebnis an",
+    "subtitle": "Beantworte ein paar Fragen, damit unsere AI den perfekten Plan für dich erstellt."
+  },
+  "quiz": {
+    "q1": "Wie viel Zeit kannst du täglich investieren?",
+    "q1_a1": "15-30 Minuten",
+    "q1_a2": "1 Stunde",
+    "q1_a3": "2+ Stunden",
+    "q2": "Welche Materialkomplexität bevorzugst du?",
+    "q2_a1": "Anfänger / Einfach",
+    "q2_a2": "Mittelstufe",
+    "q2_a3": "Fortgeschritten / Technisch",
+    "q3": "Was ist deine höchste Priorität?",
+    "q3_a1": "Behalten (Langzeitgedächtnis)",
+    "q3_a2": "Geschwindigkeit (Pauken)",
+    "q3_a3": "Konzepte verstehen",
+    "next": "Weiter",
+    "finish": "Fertig",
+    "error": "Plan konnte nicht erstellt werden. Bitte versuche es erneut."
+  },
+  "plans": {
+    "title": "Meine Pläne",
+    "subtitle": "Hier werden deine Lernpläne verwaltet.",
+    "loading": "Pläne werden geladen...",
+    "noPlans": "Noch keine Lernpläne. Schließe das Onboarding-Quiz ab, um deinen ersten Plan zu erstellen!",
+    "startOnboarding": "Onboarding starten",
+    "min": "{{count}} Min"
+  },
+  "learning": {
+    "title": "Lerntechniken",
+    "subtitle": "Wissenschaftlich fundierte Lernmethoden in einfacher Sprache erklärt. Klicke auf eine Technik, um zu erfahren, wie sie funktioniert.",
+    "howItWorks": "So funktioniert es",
+    "tryIt": "Ausprobieren",
+    "spacedRepetition": {
+      "title": "Verteiltes Wiederholen",
+      "description": "Wiederhole Lernstoff in zunehmenden Abständen, um ihn ins Langzeitgedächtnis zu übertragen.",
+      "steps": [
+        "Lerne etwas Neues (eine Tatsache, ein Konzept oder ein Wort).",
+        "Wiederhole es nach einer kurzen Pause — zum Beispiel 1 Tag.",
+        "Wenn du es dir gemerkt hast, warte länger bis zur nächsten Wiederholung (3 Tage, dann 7, dann 14...).",
+        "Wenn du es vergessen hast, setze den Abstand zurück und wiederhole es bald erneut."
+      ],
+      "cta": "Karteikarten ausprobieren"
+    },
+    "pomodoro": {
+      "title": "Pomodoro-Technik",
+      "description": "Arbeite in konzentrierten Phasen mit regelmäßigen Pausen, um die Konzentration aufrechtzuerhalten.",
+      "steps": [
+        "Wähle eine Aufgabe, auf die du dich konzentrieren möchtest.",
+        "Stelle einen Timer auf 25 Minuten (ein \"Pomodoro\") und arbeite ohne Ablenkung.",
+        "Wenn der Timer klingelt, mache eine 5-minütige Pause.",
+        "Nach 4 Pomodoros mache eine längere Pause von 15-30 Minuten."
+      ],
+      "cta": "Pomodoro starten"
+    },
+    "memoryPalace": {
+      "title": "Gedächtnispalast",
+      "description": "Verknüpfe Informationen mit vertrauten Orten in deinem Kopf, um sie leicht zu merken.",
+      "steps": [
+        "Denke an einen Ort, den du gut kennst (dein Haus, dein Schulweg).",
+        "Wähle bestimmte Stellen entlang der Route (Haustür, Küchentisch, Sofa).",
+        "Platziere gedanklich jede Sache, die du dir merken musst, an einem dieser Orte.",
+        "Um dich zu erinnern, gehe den Weg gedanklich ab und \"sieh\" jeden Gegenstand dort, wo du ihn abgelegt hast."
+      ]
+    },
+    "activeRecall": {
+      "title": "Aktives Erinnern",
+      "description": "Teste dich selbst, anstatt erneut zu lesen — das stärkt das Gedächtnis viel mehr.",
+      "steps": [
+        "Schließe nach dem Lesen oder Ansehen einer Lektion das Material.",
+        "Versuche aufzuschreiben oder laut zu sagen, woran du dich erinnerst.",
+        "Überprüfe, was richtig war und was du verpasst hast.",
+        "Konzentriere die nächste Lerneinheit auf die Lücken."
+      ],
+      "cta": "Mit Karteikarten üben"
+    },
+    "feynman": {
+      "title": "Feynman-Technik",
+      "description": "Erkläre ein Thema in einfachen Worten — wenn du es nicht kannst, verstehst du es nicht wirklich.",
+      "steps": [
+        "Wähle ein Konzept, das du verstehen möchtest.",
+        "Erkläre es in einfacher Sprache, als würdest du einem 12-Jährigen etwas beibringen.",
+        "Identifiziere Stellen, an denen deine Erklärung unklar oder vage wird.",
+        "Gehe zurück zum Quellmaterial, fülle die Lücken und vereinfache deine Erklärung erneut."
+      ]
+    },
+    "testing": {
+      "title": "Testen nach dem Lernen",
+      "description": "Mache direkt nach dem Lernen einen Test, um das Gelernte zu festigen.",
+      "steps": [
+        "Lerne ein Thema für eine bestimmte Zeit.",
+        "Mache sofort einen Übungstest oder ein Quiz zu diesem Thema.",
+        "Überprüfe deine falschen Antworten und verstehe, warum du sie falsch hattest.",
+        "Teste dich innerhalb von ein bis zwei Tagen erneut in deinen schwachen Bereichen."
+      ],
+      "cta": "AI-Test machen"
+    }
+  },
+  "flashcards": {
+    "title": "Karteikarten",
+    "subtitle": "Erstelle und überprüfe Karteikarten mit verteiltem Wiederholen.",
+    "createDeck": "Stapel erstellen",
+    "deckTitle": "Stapelname",
+    "deckDescription": "Beschreibung (optional)",
+    "create": "Erstellen",
+    "cancel": "Abbrechen",
+    "noDecks": "Noch keine Stapel. Erstelle deinen ersten Stapel, um loszulegen!",
+    "cards": "{{count}} Karten",
+    "dueCards": "{{count}} fällig",
+    "review": "Wiederholen",
+    "addCard": "Karte hinzufügen",
+    "front": "Vorderseite (Frage)",
+    "back": "Rückseite (Antwort)",
+    "add": "Hinzufügen",
+    "generateAI": "Mit AI generieren",
+    "topic": "Thema oder Fach",
+    "numberOfCards": "Anzahl der Karten",
+    "generate": "Generieren",
+    "generating": "Wird generiert...",
+    "noCards": "Noch keine Karten in diesem Stapel.",
+    "reviewComplete": "Wiederholung abgeschlossen!",
+    "cardsReviewed": "Du hast {{count}} Karten wiederholt",
+    "backToDecks": "Zurück zu Stapeln",
+    "again": "Nochmal",
+    "hard": "Schwer",
+    "good": "Gut",
+    "easy": "Leicht",
+    "cardOf": "Karte {{current}} von {{total}}",
+    "tapToFlip": "Tippe, um die Antwort zu sehen",
+    "delete": "Löschen",
+    "confirmDelete": "Bist du sicher?"
+  },
+  "pomodoroPage": {
+    "title": "Pomodoro-Timer",
+    "subtitle": "Konzentriere deine Lernsitzungen mit der Pomodoro-Technik.",
+    "focus": "Fokus",
+    "shortBreak": "Kurze Pause",
+    "longBreak": "Lange Pause",
+    "start": "Start",
+    "pause": "Pause",
+    "reset": "Zurücksetzen",
+    "pomodorosCompleted": "{{count}} Pomodoros abgeschlossen",
+    "sessionLabel": "Woran arbeitest du?",
+    "timerDesign": "Timer-Design",
+    "circular": "Kreisförmig",
+    "digital": "Digital",
+    "minimal": "Minimal",
+    "settings": "Timer-Einstellungen",
+    "focusDuration": "Fokus (Min)",
+    "shortBreakDuration": "Kurze Pause (Min)",
+    "longBreakDuration": "Lange Pause (Min)",
+    "sessionHistory": "Sitzungsverlauf",
+    "noSessions": "Noch keine Sitzungen. Starte deinen ersten Pomodoro!",
+    "completed": "Abgeschlossen",
+    "abandoned": "Abgebrochen",
+    "today": "Heute",
+    "sessionComplete": "Pomodoro abgeschlossen! Zeit für eine Pause."
+  },
+  "tests": {
+    "title": "AI Tests",
+    "subtitle": "Erstelle und absolviere AI-gestützte Tests zu jedem Thema.",
+    "createTest": "Neuen Test erstellen",
+    "topic": "Thema zum Testen",
+    "topicPlaceholder": "z.B. React Hooks, Zweiter Weltkrieg, Photosynthese...",
+    "pasteContent": "Oder füge dein Lernmaterial ein",
+    "contentPlaceholder": "Füge Text/Notizen hier ein und AI generiert Fragen daraus...",
+    "questionCount": "Anzahl der Fragen",
+    "questionTypes": "Fragetypen",
+    "multipleChoice": "Multiple Choice",
+    "written": "Schriftliche Antwort",
+    "generate": "Test generieren",
+    "generating": "AI generiert deinen Test...",
+    "noTests": "Noch keine Tests. Generiere deinen ersten AI-Test!",
+    "score": "Punktzahl",
+    "notCompleted": "Nicht abgeschlossen",
+    "continue": "Fortfahren",
+    "viewResults": "Ergebnisse anzeigen",
+    "questionOf": "Frage {{current}} von {{total}}",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "submitTest": "Test abgeben",
+    "confirmSubmit": "Bist du sicher? Du kannst deine Antworten nach der Abgabe nicht mehr ändern.",
+    "submit": "Abgeben",
+    "cancel": "Abbrechen",
+    "results": "Testergebnisse",
+    "yourAnswer": "Deine Antwort",
+    "correctAnswer": "Richtige Antwort",
+    "aiFeedback": "AI-Feedback",
+    "correct": "Richtig",
+    "incorrect": "Falsch",
+    "backToTests": "Zurück zu Tests",
+    "selectAnswer": "Wähle eine Antwort",
+    "writeAnswer": "Schreibe deine Antwort..."
+  },
+  "progress": {
+    "title": "Fortschritt",
+    "subtitle": "Verfolge hier deinen Lernfortschritt und deine Statistiken."
+  },
+  "profile": {
+    "title": "Profil",
+    "subtitle": "Passe hier dein Profil und deine Lernpräferenzen an."
+  },
+  "notifications": {
+    "title": "Benachrichtigungen",
+    "subtitle": "Deine Benachrichtigungen und Erinnerungen erscheinen hier."
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "subtitle": "Verwalte hier deine Kontoeinstellungen.",
+    "language": "Sprache",
+    "theme": "Design",
+    "lightMode": "Hell",
+    "darkMode": "Dunkel"
+  }
+}

@@ -1,0 +1,258 @@
+{
+  "brand": "ONYX Study",
+  "nav": {
+    "dashboard": "Dashboard",
+    "plans": "Plans",
+    "techniques": "Techniques",
+    "flashcards": "Flashcards",
+    "pomodoro": "Pomodoro",
+    "tests": "AI Tests",
+    "progress": "Progress",
+    "profile": "Profile",
+    "notifications": "Notifications",
+    "settings": "Settings"
+  },
+  "sections": {
+    "learn": "Learn",
+    "practice": "Practice",
+    "track": "Track"
+  },
+  "landing": {
+    "title": "Structure Your Learning with AI",
+    "subtitle": "Create personalized learning plans in seconds.",
+    "cta": "Get Started"
+  },
+  "dashboard": {
+    "welcome": "Welcome, {{name}}!",
+    "subtitle": "Your learning hub",
+    "quickAccess": "Quick access",
+    "loading": "Loading your plans...",
+    "noPlans": "No learning plans yet. Complete the onboarding quiz to create your first plan!",
+    "startOnboarding": "Start Onboarding",
+    "active": "active",
+    "min": "{{count}} min",
+    "cards": {
+      "plans": "View and manage your learning plans",
+      "flashcards": "Review flashcards with spaced repetition",
+      "pomodoro": "Focus with timed study sessions",
+      "tests": "Generate and take AI-powered tests",
+      "techniques": "Explore science-backed study methods",
+      "progress": "Track your overall learning progress"
+    }
+  },
+  "onboarding": {
+    "title": "Tailor Your Learning Experience",
+    "subtitle": "Answer a few questions to help our AI design the perfect plan for you."
+  },
+  "quiz": {
+    "q1": "How much time can you dedicate daily?",
+    "q1_a1": "15-30 mins",
+    "q1_a2": "1 hour",
+    "q1_a3": "2+ hours",
+    "q2": "What is your preferred material complexity?",
+    "q2_a1": "Beginner / Simple",
+    "q2_a2": "Intermediate",
+    "q2_a3": "Advanced / Technical",
+    "q3": "What is your top priority?",
+    "q3_a1": "Retention (Long term memory)",
+    "q3_a2": "Speed (Cramming)",
+    "q3_a3": "Understanding Concepts",
+    "next": "Next",
+    "finish": "Finish",
+    "error": "Failed to generate plan. Please try again."
+  },
+  "plans": {
+    "title": "My Plans",
+    "subtitle": "Your learning plans will be managed here.",
+    "loading": "Loading your plans...",
+    "noPlans": "No learning plans yet. Complete the onboarding quiz to create your first plan!",
+    "startOnboarding": "Start Onboarding",
+    "min": "{{count}} min"
+  },
+  "learning": {
+    "title": "Learning Techniques",
+    "subtitle": "Science-backed study methods explained in plain language. Click any technique to learn how it works.",
+    "howItWorks": "How it works",
+    "tryIt": "Try it",
+    "spacedRepetition": {
+      "title": "Spaced Repetition",
+      "description": "Review material at increasing intervals to move it into long-term memory.",
+      "steps": [
+        "Learn something new (a fact, concept, or vocabulary word).",
+        "Review it after a short gap — say 1 day.",
+        "If you remembered it, wait longer before the next review (3 days, then 7, then 14...).",
+        "If you forgot, reset the interval and review again soon."
+      ],
+      "cta": "Try Flashcards"
+    },
+    "pomodoro": {
+      "title": "Pomodoro Technique",
+      "description": "Work in focused bursts with regular breaks to maintain concentration.",
+      "steps": [
+        "Pick one task to focus on.",
+        "Set a timer for 25 minutes (one \"pomodoro\") and work with zero distractions.",
+        "When the timer rings, take a 5-minute break.",
+        "After 4 pomodoros, take a longer 15-30 minute break."
+      ],
+      "cta": "Start a Pomodoro"
+    },
+    "memoryPalace": {
+      "title": "Memory Palace",
+      "description": "Link information to familiar locations in your mind to remember it easily.",
+      "steps": [
+        "Think of a place you know really well (your house, your walk to school).",
+        "Pick specific spots along the route (front door, kitchen table, couch).",
+        "Mentally place each thing you need to remember at one of those spots.",
+        "To recall, mentally walk through the place and \"see\" each item where you left it."
+      ]
+    },
+    "activeRecall": {
+      "title": "Active Recall",
+      "description": "Test yourself instead of re-reading — it strengthens memory far more.",
+      "steps": [
+        "After reading or watching a lesson, close the material.",
+        "Try to write down or say out loud everything you remember.",
+        "Check what you got right and what you missed.",
+        "Focus your next study session on the gaps."
+      ],
+      "cta": "Practice with Flashcards"
+    },
+    "feynman": {
+      "title": "Feynman Technique",
+      "description": "Explain a topic in simple words — if you can't, you don't truly understand it.",
+      "steps": [
+        "Choose a concept you want to understand.",
+        "Explain it in plain, simple language as if teaching a 12-year-old.",
+        "Identify any parts where your explanation breaks down or gets vague.",
+        "Go back to the source material, fill the gaps, and simplify your explanation again."
+      ]
+    },
+    "testing": {
+      "title": "Testing After Learning",
+      "description": "Take a quiz or test right after studying to lock in what you learned.",
+      "steps": [
+        "Study a topic for a set amount of time.",
+        "Immediately take a practice test or quiz on that topic.",
+        "Review your wrong answers and understand why you got them wrong.",
+        "Re-test on your weak areas within a day or two."
+      ],
+      "cta": "Take an AI Test"
+    }
+  },
+  "flashcards": {
+    "title": "Flashcards",
+    "subtitle": "Create and review flashcards with spaced repetition.",
+    "createDeck": "Create Deck",
+    "deckTitle": "Deck Title",
+    "deckDescription": "Description (optional)",
+    "create": "Create",
+    "cancel": "Cancel",
+    "noDecks": "No decks yet. Create your first deck to get started!",
+    "cards": "{{count}} cards",
+    "dueCards": "{{count}} due",
+    "review": "Review",
+    "addCard": "Add Card",
+    "front": "Front (Question)",
+    "back": "Back (Answer)",
+    "add": "Add",
+    "generateAI": "Generate with AI",
+    "topic": "Topic or subject",
+    "numberOfCards": "Number of cards",
+    "generate": "Generate",
+    "generating": "Generating...",
+    "noCards": "No cards in this deck yet.",
+    "reviewComplete": "Review Complete!",
+    "cardsReviewed": "You reviewed {{count}} cards",
+    "backToDecks": "Back to Decks",
+    "again": "Again",
+    "hard": "Hard",
+    "good": "Good",
+    "easy": "Easy",
+    "cardOf": "Card {{current}} of {{total}}",
+    "tapToFlip": "Tap to reveal answer",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure?"
+  },
+  "pomodoroPage": {
+    "title": "Pomodoro Timer",
+    "subtitle": "Focus your study sessions with the Pomodoro technique.",
+    "focus": "Focus",
+    "shortBreak": "Short Break",
+    "longBreak": "Long Break",
+    "start": "Start",
+    "pause": "Pause",
+    "reset": "Reset",
+    "pomodorosCompleted": "{{count}} pomodoros completed",
+    "sessionLabel": "What are you working on?",
+    "timerDesign": "Timer Design",
+    "circular": "Circular",
+    "digital": "Digital",
+    "minimal": "Minimal",
+    "settings": "Timer Settings",
+    "focusDuration": "Focus (min)",
+    "shortBreakDuration": "Short break (min)",
+    "longBreakDuration": "Long break (min)",
+    "sessionHistory": "Session History",
+    "noSessions": "No sessions yet. Start your first pomodoro!",
+    "completed": "Completed",
+    "abandoned": "Abandoned",
+    "today": "Today",
+    "sessionComplete": "Pomodoro complete! Time for a break."
+  },
+  "tests": {
+    "title": "AI Tests",
+    "subtitle": "Generate and take AI-powered tests on any topic.",
+    "createTest": "Create New Test",
+    "topic": "Topic or subject to test on",
+    "topicPlaceholder": "e.g., React hooks, World War 2, Photosynthesis...",
+    "pasteContent": "Or paste your study material",
+    "contentPlaceholder": "Paste text/notes here and AI will generate questions from it...",
+    "questionCount": "Number of questions",
+    "questionTypes": "Question types",
+    "multipleChoice": "Multiple Choice",
+    "written": "Written Answer",
+    "generate": "Generate Test",
+    "generating": "AI is generating your test...",
+    "noTests": "No tests yet. Generate your first AI test!",
+    "score": "Score",
+    "notCompleted": "Not completed",
+    "continue": "Continue",
+    "viewResults": "View Results",
+    "questionOf": "Question {{current}} of {{total}}",
+    "next": "Next",
+    "previous": "Previous",
+    "submitTest": "Submit Test",
+    "confirmSubmit": "Are you sure you want to submit? You cannot change your answers after submission.",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "results": "Test Results",
+    "yourAnswer": "Your answer",
+    "correctAnswer": "Correct answer",
+    "aiFeedback": "AI Feedback",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "backToTests": "Back to Tests",
+    "selectAnswer": "Select an answer",
+    "writeAnswer": "Write your answer..."
+  },
+  "progress": {
+    "title": "Progress",
+    "subtitle": "Track your learning progress and statistics here."
+  },
+  "profile": {
+    "title": "Profile",
+    "subtitle": "Customize your profile and learning preferences here."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "subtitle": "Your notifications and reminders will appear here."
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account settings and preferences here.",
+    "language": "Language",
+    "theme": "Theme",
+    "lightMode": "Light",
+    "darkMode": "Dark"
+  }
+}

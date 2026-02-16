@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from '../contexts/ThemeContext';
 import {
     LayoutDashboard,
     BookOpen,
@@ -14,47 +16,51 @@ import {
     Settings,
     ChevronLeft,
     ChevronRight,
+    Sun,
+    Moon,
 } from 'lucide-react';
 
 const navSections = [
     {
         items: [
-            { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+            { to: '/dashboard', icon: LayoutDashboard, labelKey: 'nav.dashboard' },
         ],
     },
     {
-        label: 'Learn',
+        labelKey: 'sections.learn',
         items: [
-            { to: '/plans', icon: BookOpen, label: 'Plans' },
-            { to: '/learning', icon: GraduationCap, label: 'Techniques' },
+            { to: '/plans', icon: BookOpen, labelKey: 'nav.plans' },
+            { to: '/learning', icon: GraduationCap, labelKey: 'nav.techniques' },
         ],
     },
     {
-        label: 'Practice',
+        labelKey: 'sections.practice',
         items: [
-            { to: '/flashcards', icon: Layers, label: 'Flashcards' },
-            { to: '/pomodoro', icon: Timer, label: 'Pomodoro' },
-            { to: '/tests', icon: FileQuestion, label: 'AI Tests' },
+            { to: '/flashcards', icon: Layers, labelKey: 'nav.flashcards' },
+            { to: '/pomodoro', icon: Timer, labelKey: 'nav.pomodoro' },
+            { to: '/tests', icon: FileQuestion, labelKey: 'nav.tests' },
         ],
     },
     {
-        label: 'Track',
+        labelKey: 'sections.track',
         items: [
-            { to: '/progress', icon: BarChart3, label: 'Progress' },
+            { to: '/progress', icon: BarChart3, labelKey: 'nav.progress' },
         ],
     },
 ];
 
 const bottomItems = [
-    { to: '/profile', icon: User, label: 'Profile' },
-    { to: '/notifications', icon: Bell, label: 'Notifications' },
-    { to: '/settings', icon: Settings, label: 'Settings' },
+    { to: '/profile', icon: User, labelKey: 'nav.profile' },
+    { to: '/notifications', icon: Bell, labelKey: 'nav.notifications' },
+    { to: '/settings', icon: Settings, labelKey: 'nav.settings' },
 ];
 
 export default function Sidebar() {
     const [collapsed, setCollapsed] = useState(false);
+    const { t } = useTranslation();
+    const { theme, toggleTheme } = useTheme();
 
-    const renderNavLink = ({ to, icon: Icon, label }) => (
+    const renderNavLink = ({ to, icon: Icon, labelKey }) => (
         <NavLink
             key={to}
             to={to}
@@ -73,7 +79,7 @@ export default function Sidebar() {
                     animate={{ opacity: 1 }}
                     className="text-sm font-medium"
                 >
-                    {label}
+                    {t(labelKey)}
                 </motion.span>
             )}
         </NavLink>
@@ -93,7 +99,7 @@ export default function Sidebar() {
                         exit={{ opacity: 0 }}
                         className="text-lg font-bold whitespace-nowrap"
                     >
-                        ONYX Study
+                        {t('brand')}
                     </motion.span>
                 )}
                 <button
@@ -107,12 +113,12 @@ export default function Sidebar() {
             <nav className="flex-1 py-4 flex flex-col gap-1 px-2 overflow-y-auto">
                 {navSections.map((section, idx) => (
                     <div key={idx} className={idx > 0 ? 'mt-4' : ''}>
-                        {section.label && !collapsed && (
+                        {section.labelKey && !collapsed && (
                             <span className="px-3 mb-1 text-xs font-semibold uppercase tracking-wider text-gray-500 block">
-                                {section.label}
+                                {t(section.labelKey)}
                             </span>
                         )}
-                        {section.label && collapsed && (
+                        {section.labelKey && collapsed && (
                             <div className="mx-3 mb-1 border-t border-gray-800" />
                         )}
                         <div className="flex flex-col gap-0.5">
@@ -124,6 +130,26 @@ export default function Sidebar() {
 
             <div className="border-t border-gray-800 py-3 px-2 flex flex-col gap-0.5">
                 {bottomItems.map(renderNavLink)}
+
+                <button
+                    onClick={toggleTheme}
+                    className="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors whitespace-nowrap text-gray-400 hover:bg-gray-800 hover:text-white mt-1"
+                >
+                    {theme === 'dark' ? (
+                        <Sun size={20} className="shrink-0" />
+                    ) : (
+                        <Moon size={20} className="shrink-0" />
+                    )}
+                    {!collapsed && (
+                        <motion.span
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="text-sm font-medium"
+                        >
+                            {theme === 'dark' ? t('settings.lightMode') : t('settings.darkMode')}
+                        </motion.span>
+                    )}
+                </button>
             </div>
         </motion.aside>
     );

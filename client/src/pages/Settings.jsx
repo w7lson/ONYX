@@ -1,8 +1,85 @@
+import { useTranslation } from 'react-i18next';
+import { useTheme } from '../contexts/ThemeContext';
+import { Sun, Moon, Globe } from 'lucide-react';
+
+const languages = [
+    { code: 'en', label: 'English' },
+    { code: 'uk', label: 'Українська' },
+    { code: 'de', label: 'Deutsch' },
+];
+
 export default function Settings() {
+    const { t, i18n } = useTranslation();
+    const { theme, setTheme } = useTheme();
+
+    const changeLanguage = (code) => {
+        i18n.changeLanguage(code);
+        localStorage.setItem('language', code);
+    };
+
     return (
-        <div>
-            <h1 className="text-3xl font-bold mb-4 text-gray-800">Settings</h1>
-            <p className="text-gray-500">Manage your account settings and preferences here.</p>
+        <div className="max-w-2xl">
+            <h1 className="text-3xl font-bold mb-2 text-gray-800 dark:text-gray-100">{t('settings.title')}</h1>
+            <p className="text-gray-500 dark:text-gray-400 mb-8">{t('settings.subtitle')}</p>
+
+            <div className="space-y-6">
+                <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+                    <div className="flex items-center gap-3 mb-4">
+                        <Globe size={20} className="text-gray-600 dark:text-gray-400" />
+                        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{t('settings.language')}</h2>
+                    </div>
+                    <div className="flex gap-3">
+                        {languages.map(({ code, label }) => (
+                            <button
+                                key={code}
+                                onClick={() => changeLanguage(code)}
+                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                    i18n.language === code
+                                        ? 'bg-blue-600 text-white'
+                                        : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                                }`}
+                            >
+                                {label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+                    <div className="flex items-center gap-3 mb-4">
+                        {theme === 'dark' ? (
+                            <Moon size={20} className="text-gray-600 dark:text-gray-400" />
+                        ) : (
+                            <Sun size={20} className="text-gray-600 dark:text-gray-400" />
+                        )}
+                        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{t('settings.theme')}</h2>
+                    </div>
+                    <div className="flex gap-3">
+                        <button
+                            onClick={() => setTheme('light')}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                theme === 'light'
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                            }`}
+                        >
+                            <Sun size={16} />
+                            {t('settings.lightMode')}
+                        </button>
+                        <button
+                            onClick={() => setTheme('dark')}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                                theme === 'dark'
+                                    ? 'bg-blue-600 text-white'
+                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                            }`}
+                        >
+                            <Moon size={16} />
+                            {t('settings.darkMode')}
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
