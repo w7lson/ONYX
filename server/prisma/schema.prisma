@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model UserProfile {
+  id            String   @id @default(uuid())
+  clerkId       String   @unique
+  email         String   @unique
+  quizResults   Json?
+  learningStyle String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  plans         LearningPlan[]
+}
+
+model LearningPlan {
+  id          String   @id @default(uuid())
+  userId      String
+  title       String
+  description String?
+  status      String   @default("active") // active, completed, archived
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        UserProfile @relation(fields: [userId], references: [clerkId])
+  modules     Module[]
+}
+
+model Module {
+  id               String   @id @default(uuid())
+  planId           String
+  title            String
+  estimatedMinutes Int
+  order            Int
+  
+  plan             LearningPlan @relation(fields: [planId], references: [id], onDelete: Cascade)
+  tasks            Task[]
+}
+
+model Task {
+  id          String   @id @default(uuid())
+  moduleId    String
+  content     String
+  isCompleted Boolean  @default(false)
+  
+  module      Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+}
