@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Target, Dumbbell, Rocket, Trophy, Globe, BookOpen, Zap, Pencil, ArrowLeft } from 'lucide-react';
+import GoalSpecify from '../components/Goals/GoalSpecify';
 
 const GOAL_TEMPLATES = [
     { key: 'loseWeight', icon: Dumbbell },
@@ -110,36 +111,10 @@ export default function Goals() {
         );
     }
 
-    // Step: Specify goal (placeholder)
+    // Step: Goal specification
     return (
-        <div className="max-w-5xl mx-auto p-6">
-            <button
-                onClick={() => setStep('templates')}
-                className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 mb-6 transition-colors"
-            >
-                <ArrowLeft size={18} />
-                {t('goals.back')}
-            </button>
-
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-1">
-                {t('goals.specifyTitle')}
-            </h1>
-
-            <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-8 mt-6">
-                <div className="flex flex-col items-center text-center py-8">
-                    <div className="w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-950 flex items-center justify-center mb-4">
-                        <Target size={32} className="text-blue-500" />
-                    </div>
-                    <p className="text-gray-500 dark:text-gray-400 mb-2">
-                        {t('goals.specifyMessage')}
-                    </p>
-                    <p className="text-lg font-semibold text-gray-800 dark:text-gray-100">
-                        {selectedTemplate === 'custom'
-                            ? t('goals.buildOwn')
-                            : t(`goals.templateNames.${selectedTemplate}`)}
-                    </p>
-                </div>
-            </div>
+        <div className="max-w-6xl mx-auto p-6">
+            <GoalSpecify onBack={() => setStep('templates')} />
         </div>
     );
 }
