@@ -1,16 +1,122 @@
-import { useTranslation } from 'react-i18next';
+import { useState, useEffect, useCallback } from 'react';
+import { useAuth } from '@clerk/clerk-react';
+import axios from 'axios';
+import TestList from '../components/Tests/TestList';
+import TestTaking from '../components/Tests/TestTaking';
+import TestResults from '../components/Tests/TestResults';
 
 export default function Tests() {
-    const { t } = useTranslation();
+    const { getToken } = useAuth();
+    const [view, setView] = useState('list'); // 'list' | 'taking' | 'results'
+    const [tests, setTests] = useState([]);
+    const [activeTest, setActiveTest] = useState(null);
+    const [generating, setGenerating] = useState(false);
+
+    const authHeaders = useCallback(async () => {
+        const token = await getToken();
+        return { headers: { Authorization: `Bearer ${token}` } };
+    }, [getToken]);
+
+    const fetchTests = useCallback(async () => {
+        try {
+            const config = await authHeaders();
+            const res = await axios.get('/api/tests', config);
+            setTests(res.data);
+        } catch (error) {
+            console.error('Failed to fetch tests:', error);
+        }
+    }, [authHeaders]);
+
+    useEffect(() => {
+        fetchTests();
+    }, [fetchTests]);
+
+    const handleCreateTest = async ({ topic, content, questionCount }) => {
+        setGenerating(true);
+        try {
+            const config = await authHeaders();
+            const res = await axios.post('/api/tests/generate', {
+                topic, content, questionCount
+            }, config);
+            setActiveTest(res.data);
+            setView('taking');
+            fetchTests();
+        } catch (error) {
+            console.error('Failed to generate test:', error);
+        } finally {
+            setGenerating(false);
+        }
+    };
+
+    const handleSelectTest = async (test) => {
+        try {
+            const config = await authHeaders();
+            const res = await axios.get(`/api/tests/${test.id}`, config);
+            setActiveTest(res.data);
+            if (res.data.completedAt) {
+                setView('results');
+            } else {
+                setView('taking');
+            }
+        } catch (error) {
+            console.error('Failed to fetch test:', error);
+        }
+    };
+
+    const handleSubmit = async (answers) => {
+        if (!activeTest) return;
+        try {
+            const config = await authHeaders();
+            const res = await axios.post(`/api/tests/${activeTest.id}/submit`, { answers }, config);
+            setActiveTest(res.data);
+            setView('results');
+            fetchTests();
+        } catch (error) {
+            console.error('Failed to submit test:', error);
+        }
+    };
+
+    const handleDeleteTest = async (testId) => {
+        try {
+            const config = await authHeaders();
+            await axios.delete(`/api/tests/${testId}`, config);
+            fetchTests();
+        } catch (error) {
+            console.error('Failed to delete test:', error);
+        }
+    };
+
+    const handleBackToList = () => {
+        setView('list');
+        setActiveTest(null);
+        fetchTests();
+    };
+
+    if (view === 'results' && activeTest) {
+        return (
+            <div className="max-w-3xl mx-auto p-6">
+                <TestResults test={activeTest} onBack={handleBackToList} />
+            </div>
+        );
+    }
+
+    if (view === 'taking' && activeTest) {
+        return (
+            <div className="max-w-3xl mx-auto p-6">
+                <TestTaking test={activeTest} onSubmit={handleSubmit} onBack={handleBackToList} />
+            </div>
+        );
+    }
 
     return (
-        <div>
-            <h1 className="text-3xl font-bold mb-4 text-gray-800 dark:text-gray-100">
-                {t('tests.title')}
-            </h1>
-            <p className="text-gray-500 dark:text-gray-400">
-                {t('tests.subtitle')}
-            </p>
+        <div className="max-w-3xl mx-auto p-6">
+            <TestList
+                tests={tests}
+                onCreateTest={handleCreateTest}
+                generating={generating}
+                onSelectTest={handleSelectTest}
+                onDeleteTest={handleDeleteTest}
+            />
         </div>
     );
 }

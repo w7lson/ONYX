@@ -38,7 +38,7 @@ import {
     generateCards, getDueCards, reviewCard
 } from './controllers/flashcardController.js';
 import { saveSession, getSessions } from './controllers/pomodoroController.js';
-import { generateTest, submitTest, getUserTests, getTest } from './controllers/testController.js';
+import { generateTest, submitTest, getUserTests, getTest, deleteTest } from './controllers/testController.js';
 
 // Plan Endpoints
 app.get('/api/plans', requireAuth, getUserPlans);
@@ -64,6 +64,7 @@ app.post('/api/tests/generate', requireAuth, generateTest);
 app.post('/api/tests/:testId/submit', requireAuth, submitTest);
 app.get('/api/tests', requireAuth, getUserTests);
 app.get('/api/tests/:testId', requireAuth, getTest);
+app.delete('/api/tests/:testId', requireAuth, deleteTest);
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

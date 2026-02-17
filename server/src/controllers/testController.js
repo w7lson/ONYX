@@ -9,7 +9,7 @@ const openai = new OpenAI({
 
 export const generateTest = async (req, res) => {
     const { userId } = req.auth;
-    const { topic, content, questionCount = 10, questionTypes = ['mc', 'written'] } = req.body;
+    const { topic, content, questionCount = 10 } = req.body;
 
     if (!topic && !content) {
         return res.status(400).json({ error: "Topic or content is required" });
@@ -26,13 +26,9 @@ export const generateTest = async (req, res) => {
             ? `Based on the following study material:\n\n${content}\n\nGenerate`
             : `Generate`;
 
-        const prompt = `${sourceText} a test on "${topic || 'the provided material'}" with ${questionCount} questions.
-Question types to include: ${questionTypes.join(', ')}.
+        const prompt = `${sourceText} a multiple choice test on "${topic || 'the provided material'}" with ${questionCount} questions.
 
-For "mc" (multiple choice): provide 4 options (a, b, c, d) and indicate the correct answer letter.
-For "written": provide a detailed question that requires a paragraph answer, and provide a model correct answer.
-
-Mix the question types roughly evenly if both are selected.
+Each question must have 4 options (a, b, c, d) and indicate the correct answer letter.
 
 Return valid JSON:
 {
@@ -42,11 +38,6 @@ Return valid JSON:
             "questionText": "...",
             "options": {"a": "...", "b": "...", "c": "...", "d": "..."},
             "correctAnswer": "b"
-        },
-        {
-            "type": "written",
-            "questionText": "...",
-            "correctAnswer": "Model answer text..."
         }
     ]
 }`;
@@ -69,9 +60,9 @@ Return valid JSON:
                 topic: topic || 'Custom material',
                 questions: {
                     create: questions.map(q => ({
-                        type: q.type,
+                        type: 'mc',
                         questionText: q.questionText,
-                        options: q.type === 'mc' ? q.options : undefined,
+                        options: q.options,
                         correctAnswer: q.correctAnswer,
                     }))
                 }
@@ -122,35 +113,7 @@ export const submitTest = async (req, res) => {
             const question = test.questions.find(q => q.id === answer.questionId);
             if (!question) continue;
 
-            let isCorrect = false;
-            let aiFeedback = null;
-
-            if (question.type === 'mc') {
-                isCorrect = answer.userAnswer?.toLowerCase() === question.correctAnswer?.toLowerCase();
-            } else {
-                // AI grading for written answers
-                try {
-                    const gradingCompletion = await openai.chat.completions.create({
-                        model: "llama-3.3-70b-versatile",
-                        messages: [
-                            { role: "system", content: "You are a fair and helpful grader. Grade the student's answer and provide constructive feedback." },
-                            {
-                                role: "user",
-                                content: `Grade this answer.\nQuestion: "${question.questionText}"\nModel answer: "${question.correctAnswer}"\nStudent answer: "${answer.userAnswer}"\n\nReturn valid JSON: { "isCorrect": boolean, "feedback": "explanation string" }`
-                            }
-                        ],
-                        response_format: { type: "json_object" },
-                    });
-
-                    const grading = JSON.parse(gradingCompletion.choices[0].message.content);
-                    isCorrect = grading.isCorrect;
-                    aiFeedback = grading.feedback;
-                } catch (gradingError) {
-                    console.error("AI grading failed for question:", question.id, gradingError);
-                    aiFeedback = "Grading unavailable";
-                }
-            }
-
+            const isCorrect = answer.userAnswer?.toLowerCase() === question.correctAnswer?.toLowerCase();
             if (isCorrect) correctCount++;
 
             await prisma.testQuestion.update({
@@ -158,7 +121,6 @@ export const submitTest = async (req, res) => {
                 data: {
                     userAnswer: answer.userAnswer,
                     isCorrect,
-                    aiFeedback,
                 }
             });
         }
@@ -230,5 +192,29 @@ export const getTest = async (req, res) => {
     } catch (error) {
         console.error("Error fetching test:", error);
         res.status(500).json({ error: "Failed to fetch test" });
+    }
+};
+
+export const deleteTest = async (req, res) => {
+    const { userId } = req.auth;
+    const { testId } = req.params;
+
+    try {
+        const test = await prisma.test.findFirst({
+            where: { id: testId, userId },
+        });
+
+        if (!test) {
+            return res.status(404).json({ error: "Test not found" });
+        }
+
+        await prisma.test.delete({
+            where: { id: testId },
+        });
+
+        res.json({ message: "Test deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting test:", error);
+        res.status(500).json({ error: "Failed to delete test" });
     }
 };
