@@ -6,7 +6,7 @@ export default function FlashcardFlip({ card, flipped, onFlip }) {
 
     return (
         <div
-            className="w-full max-w-lg mx-auto cursor-pointer"
+            className="w-full max-w-xl mx-auto cursor-pointer"
             style={{ perspective: '1000px' }}
             onClick={onFlip}
         >

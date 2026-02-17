@@ -94,7 +94,7 @@ export default function Tests() {
 
     if (view === 'results' && activeTest) {
         return (
-            <div className="max-w-3xl mx-auto p-6">
+            <div className="max-w-5xl mx-auto p-6">
                 <TestResults test={activeTest} onBack={handleBackToList} />
             </div>
         );
@@ -102,14 +102,14 @@ export default function Tests() {
 
     if (view === 'taking' && activeTest) {
         return (
-            <div className="max-w-3xl mx-auto p-6">
+            <div className="max-w-5xl mx-auto p-6">
                 <TestTaking test={activeTest} onSubmit={handleSubmit} onBack={handleBackToList} />
             </div>
         );
     }
 
     return (
-        <div className="max-w-3xl mx-auto p-6">
+        <div className="max-w-5xl mx-auto p-6">
             <TestList
                 tests={tests}
                 onCreateTest={handleCreateTest}

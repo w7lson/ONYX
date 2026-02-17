@@ -10,7 +10,7 @@ import {
     Layers,
     Timer,
     FileQuestion,
-    BarChart3,
+    Target,
     User,
     Bell,
     Settings,
@@ -44,7 +44,7 @@ const navSections = [
     {
         labelKey: 'sections.track',
         items: [
-            { to: '/progress', icon: BarChart3, labelKey: 'nav.progress' },
+            { to: '/goals', icon: Target, labelKey: 'nav.goals' },
         ],
     },
 ];

@@ -24,7 +24,7 @@ export default function Learning() {
     }));
 
     return (
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-5xl mx-auto">
             <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">
                 {t('learning.title')}
             </h1>

@@ -139,7 +139,7 @@ export default function Flashcards() {
 
     if (view === 'review' && dueCards.length > 0) {
         return (
-            <div className="max-w-3xl mx-auto p-6">
+            <div className="max-w-5xl mx-auto p-6">
                 <ReviewMode
                     cards={dueCards}
                     onReview={handleReview}
@@ -151,7 +151,7 @@ export default function Flashcards() {
 
     if (view === 'detail' && selectedDeck) {
         return (
-            <div className="max-w-3xl mx-auto p-6">
+            <div className="max-w-5xl mx-auto p-6">
                 <DeckDetail
                     deck={selectedDeck}
                     cards={cards}
@@ -166,7 +166,7 @@ export default function Flashcards() {
     }
 
     return (
-        <div className="max-w-3xl mx-auto p-6">
+        <div className="max-w-5xl mx-auto p-6">
             <DeckList
                 decks={decks}
                 onCreateDeck={handleCreateDeck}

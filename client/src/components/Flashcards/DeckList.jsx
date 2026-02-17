@@ -77,7 +77,7 @@ export default function DeckList({ decks, onCreateDeck, onDeleteDeck, onSelectDe
                     {decks.map((deck) => (
                         <div
                             key={deck.id}
-                            className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-5 hover:shadow-md transition-all"
+                            className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-5 hover:shadow-md transition-all cursor-pointer"
                         >
                             <div
                                 className="cursor-pointer"

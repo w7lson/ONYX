@@ -18,7 +18,7 @@ export default function Settings() {
     };
 
     return (
-        <div className="max-w-2xl">
+        <div className="max-w-4xl">
             <h1 className="text-3xl font-bold mb-2 text-gray-800 dark:text-gray-100">{t('settings.title')}</h1>
             <p className="text-gray-500 dark:text-gray-400 mb-8">{t('settings.subtitle')}</p>
 

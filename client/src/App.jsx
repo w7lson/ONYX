@@ -5,7 +5,7 @@ import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import Onboarding from "./pages/Onboarding";
 import Plans from "./pages/Plans";
-import Progress from "./pages/Progress";
+import Goals from "./pages/Goals";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
 import Settings from "./pages/Settings";
@@ -68,7 +68,7 @@ function App() {
           <Route path="/flashcards" element={<Flashcards />} />
           <Route path="/pomodoro" element={<Pomodoro />} />
           <Route path="/tests" element={<Tests />} />
-          <Route path="/progress" element={<Progress />} />
+          <Route path="/goals" element={<Goals />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/settings" element={<Settings />} />

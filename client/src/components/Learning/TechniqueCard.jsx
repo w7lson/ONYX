@@ -11,7 +11,7 @@ export default function TechniqueCard({ icon: Icon, title, description, steps, l
         <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
             <button
                 onClick={() => setExpanded(!expanded)}
-                className="w-full flex items-center gap-4 p-5 text-left hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                className="w-full flex items-center gap-4 p-5 text-left hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
             >
                 <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950 flex items-center justify-center shrink-0">
                     <Icon size={24} className="text-blue-600" />

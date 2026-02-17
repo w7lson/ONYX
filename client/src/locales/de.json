@@ -7,7 +7,7 @@
     "flashcards": "Karteikarten",
     "pomodoro": "Pomodoro",
     "tests": "AI Tests",
-    "progress": "Fortschritt",
+    "goals": "Ziele",
     "profile": "Profil",
     "notifications": "Benachrichtigungen",
     "settings": "Einstellungen"
@@ -25,20 +25,8 @@
   "dashboard": {
     "welcome": "Willkommen, {{name}}!",
     "subtitle": "Dein Lern-Hub",
-    "quickAccess": "Schnellzugriff",
-    "loading": "Pläne werden geladen...",
-    "noPlans": "Noch keine Lernpläne. Schließe das Onboarding-Quiz ab, um deinen ersten Plan zu erstellen!",
-    "startOnboarding": "Onboarding starten",
-    "active": "aktiv",
-    "min": "{{count}} Min",
-    "cards": {
-      "plans": "Lernpläne anzeigen und verwalten",
-      "flashcards": "Karteikarten mit verteiltem Wiederholen üben",
-      "pomodoro": "Fokussiert lernen mit Timer-Sitzungen",
-      "tests": "AI-gestützte Tests erstellen und absolvieren",
-      "techniques": "Wissenschaftlich fundierte Lernmethoden entdecken",
-      "progress": "Gesamten Lernfortschritt verfolgen"
-    }
+    "noGoals": "Deine aktiven Ziele und Fortschritte werden hier angezeigt.",
+    "setupGoals": "Setze deine Ziele, um loszulegen"
   },
   "onboarding": {
     "title": "Passe dein Lernerlebnis an",
@@ -233,9 +221,25 @@
     "confirmDeleteTest": "Bist du sicher, dass du diesen Test löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
     "delete": "Löschen"
   },
-  "progress": {
-    "title": "Fortschritt",
-    "subtitle": "Verfolge hier deinen Lernfortschritt und deine Statistiken."
+  "goals": {
+    "title": "Ziele",
+    "subtitle": "Setze Ziele und erstelle Pläne, um sie zu erreichen.",
+    "setFirstGoal": "Erstes Ziel setzen",
+    "emptyMessage": "Du hast noch keine Ziele gesetzt. Beginne mit der Auswahl eines Ziels.",
+    "templates": "Wähle ein Ziel",
+    "buildOwn": "Eigenes Ziel erstellen",
+    "buildOwnDesc": "Erstelle ein individuelles Ziel von Grund auf",
+    "back": "Zurück",
+    "specifyTitle": "Ziel spezifizieren",
+    "specifyMessage": "Zielspezifikation kommt bald. Du hast gewählt:",
+    "templateNames": {
+      "loseWeight": "Abnehmen",
+      "sideHustle": "Nebenprojekt starten",
+      "weightlifting": "Krafttraining verbessern",
+      "learnLanguage": "Neue Sprache lernen",
+      "readMore": "Mehr Bücher lesen",
+      "productivity": "Produktivität steigern"
+    }
   },
   "profile": {
     "title": "Profil",

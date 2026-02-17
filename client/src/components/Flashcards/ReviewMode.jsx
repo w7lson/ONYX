@@ -33,7 +33,7 @@ export default function ReviewMode({ cards, onReview, onBack }) {
 
     if (completed) {
         return (
-            <div className="max-w-lg mx-auto text-center py-12">
+            <div className="max-w-xl mx-auto text-center py-12">
                 <CheckCircle size={64} className="text-green-500 mx-auto mb-4" />
                 <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
                     {t('flashcards.reviewComplete')}

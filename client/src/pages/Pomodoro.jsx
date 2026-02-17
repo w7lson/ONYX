@@ -74,7 +74,7 @@ export default function Pomodoro() {
     };
 
     return (
-        <div className="max-w-2xl mx-auto p-6">
+        <div className="max-w-4xl mx-auto p-6">
             <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-1">
                 {t('pomodoroPage.title')}
             </h1>
@@ -138,7 +138,7 @@ export default function Pomodoro() {
             </p>
 
             {/* Session label */}
-            <div className="max-w-sm mx-auto mb-8">
+            <div className="max-w-md mx-auto mb-8">
                 <input
                     type="text"
                     value={label}

@@ -30,14 +30,14 @@ export default function Plans() {
 
     if (loading) {
         return (
-            <div className="max-w-4xl mx-auto p-6">
+            <div className="max-w-6xl mx-auto p-6">
                 <p className="text-gray-500 dark:text-gray-400">{t('plans.loading')}</p>
             </div>
         );
     }
 
     return (
-        <div className="max-w-4xl mx-auto p-6">
+        <div className="max-w-6xl mx-auto p-6">
             <h1 className="text-3xl font-bold mb-2 text-gray-800 dark:text-gray-100">
                 {t('plans.title')}
             </h1>
@@ -56,7 +56,7 @@ export default function Plans() {
             ) : (
                 <div className="space-y-6">
                     {plans.map((plan) => (
-                        <div key={plan.id} className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 transition-colors">
+                        <div key={plan.id} className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 transition-colors cursor-pointer">
                             <div className="flex justify-between items-start mb-4">
                                 <div>
                                     <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">{plan.title}</h2>
