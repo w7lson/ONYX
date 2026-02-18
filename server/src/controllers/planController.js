@@ -7,6 +7,31 @@ const openai = new OpenAI({
     baseURL: "https://api.groq.com/openai/v1"
 });
 
+export const toggleTask = async (req, res) => {
+    const { userId } = req.auth;
+    const { taskId } = req.params;
+
+    try {
+        const task = await prisma.task.findUnique({
+            where: { id: taskId },
+            include: { module: { include: { plan: true } } },
+        });
+
+        if (!task) return res.status(404).json({ error: 'Task not found' });
+        if (task.module.plan.userId !== userId) return res.status(403).json({ error: 'Unauthorized' });
+
+        const updated = await prisma.task.update({
+            where: { id: taskId },
+            data: { isCompleted: !task.isCompleted },
+        });
+
+        res.json(updated);
+    } catch (error) {
+        console.error('Error toggling task:', error);
+        res.status(500).json({ error: 'Failed to toggle task' });
+    }
+};
+
 export const getUserPlans = async (req, res) => {
     const { userId } = req.auth;
 

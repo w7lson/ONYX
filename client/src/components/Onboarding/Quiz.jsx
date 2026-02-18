@@ -1,128 +1,152 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { useUser, useAuth } from '@clerk/clerk-react';
-import axios from 'axios';
+import { useAuth } from '@clerk/clerk-react';
+import { useTranslation } from 'react-i18next';
 
-const questions = [
+const QUESTIONS = [
     {
-        id: 'time',
-        question: "How much time can you dedicate daily?",
-        options: [
-            { label: "15-30 mins", value: "short" },
-            { label: "1 hour", value: "medium" },
-            { label: "2+ hours", value: "long" }
-        ]
+        id: 'primaryGoal',
+        options: ['career', 'hobby', 'exam', 'personal', 'academic'],
     },
     {
-        id: 'complexity',
-        question: "What is your preferred material complexity?",
-        options: [
-            { label: "Beginner / Simple", value: "beginner" },
-            { label: "Intermediate", value: "intermediate" },
-            { label: "Advanced / Technical", value: "advanced" }
-        ]
+        id: 'currentLevel',
+        options: ['beginner', 'elementary', 'intermediate', 'advanced', 'expert'],
     },
     {
-        id: 'priority',
-        question: "What is your top priority?",
-        options: [
-            { label: "Retention (Long term memory)", value: "retention" },
-            { label: "Speed (Cramming)", value: "speed" },
-            { label: "Understanding Concepts", value: "concepts" }
-        ]
-    }
+        id: 'learningStyle',
+        options: ['visual', 'reading', 'handson'],
+    },
+    {
+        id: 'preferredContent',
+        options: ['videos', 'articles', 'interactive'],
+    },
+    {
+        id: 'pace',
+        options: ['intensive', 'moderate', 'relaxed'],
+    },
+    {
+        id: 'reviewFrequency',
+        options: ['daily', 'weekly', 'monthly'],
+    },
 ];
 
 export default function Quiz() {
+    const { t } = useTranslation();
     const [currentStep, setCurrentStep] = useState(0);
     const [answers, setAnswers] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
-    const { user } = useUser();
     const { getToken } = useAuth();
 
-    const handleOptionSelect = (option) => {
-        setAnswers({ ...answers, [questions[currentStep].id]: option.value });
+    const currentQuestion = QUESTIONS[currentStep];
+
+    const handleOptionSelect = (value) => {
+        setAnswers({ ...answers, [currentQuestion.id]: value });
     };
 
     const handleNext = async () => {
-        if (currentStep < questions.length - 1) {
+        if (currentStep < QUESTIONS.length - 1) {
             setCurrentStep(currentStep + 1);
         } else {
-            // Submit Quiz
             setIsSubmitting(true);
             try {
                 const token = await getToken();
-                console.log("Submitting with token:", token ? "Present" : "Missing");
-                const response = await axios.post('/api/plans/generate', answers, {
+                const res = await fetch('/api/preferences', {
+                    method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json'
-                    }
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(answers),
                 });
-                console.log("Plan generated:", response.data);
+
+                if (!res.ok) throw new Error('Failed to save preferences');
                 navigate('/dashboard');
             } catch (error) {
-                console.error("Failed to submit quiz", error);
-                alert("Failed to generate plan. Please try again.");
+                console.error("Failed to save preferences:", error);
+                alert(t('quiz.error'));
             } finally {
                 setIsSubmitting(false);
             }
         }
     };
 
-    const currentQuestion = questions[currentStep];
+    const handleBack = () => {
+        if (currentStep > 0) setCurrentStep(currentStep - 1);
+    };
 
     return (
         <div className="max-w-4xl mx-auto p-6">
+            {/* Progress bar */}
             <div className="mb-8">
-                <div className="h-2 bg-gray-200 rounded-full">
+                <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full">
                     <motion.div
                         className="h-full bg-blue-600 rounded-full"
                         initial={{ width: 0 }}
-                        animate={{ width: `${((currentStep + 1) / questions.length) * 100}%` }}
+                        animate={{ width: `${((currentStep + 1) / QUESTIONS.length) * 100}%` }}
                         transition={{ duration: 0.5 }}
                     />
                 </div>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 text-right">
+                    {currentStep + 1} / {QUESTIONS.length}
+                </p>
             </div>
 
-            <AnimatePresence mode='wait'>
+            <AnimatePresence mode="wait">
                 <motion.div
                     key={currentStep}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
                     transition={{ duration: 0.3 }}
-                    className="bg-white rounded-2xl shadow-xl p-8"
+                    className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 p-8"
                 >
-                    <h2 className="text-2xl font-bold mb-6 text-gray-800">{currentQuestion.question}</h2>
+                    <h2 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100">
+                        {t(`quiz.${currentQuestion.id}.question`)}
+                    </h2>
 
-                    <div className="space-y-4">
-                        {currentQuestion.options.map((option) => (
+                    <div className="space-y-3">
+                        {currentQuestion.options.map((value) => (
                             <button
-                                key={option.value}
-                                onClick={() => handleOptionSelect(option)}
-                                className={`w-full p-4 text-left rounded-xl border-2 transition-all duration-200 ${answers[currentQuestion.id] === option.value
-                                    ? 'border-blue-500 bg-blue-50 text-blue-700'
-                                    : 'border-gray-100 hover:border-blue-200 hover:bg-gray-50'
-                                    }`}
+                                key={value}
+                                onClick={() => handleOptionSelect(value)}
+                                className={`w-full p-4 text-left rounded-xl border-2 transition-all duration-200 ${
+                                    answers[currentQuestion.id] === value
+                                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
+                                        : 'border-gray-100 dark:border-gray-700 hover:border-blue-200 dark:hover:border-blue-800 hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
+                                }`}
                             >
-                                {option.label}
+                                <span className="font-medium">{t(`quiz.${currentQuestion.id}.${value}`)}</span>
                             </button>
                         ))}
                     </div>
 
-                    <div className="mt-8 flex justify-end">
+                    <div className="mt-8 flex justify-between">
+                        <button
+                            onClick={handleBack}
+                            className={`px-5 py-2 rounded-lg font-medium transition-colors ${
+                                currentStep > 0
+                                    ? 'text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
+                                    : 'invisible'
+                            }`}
+                        >
+                            {t('quiz.back')}
+                        </button>
                         <button
                             onClick={handleNext}
-                            disabled={!answers[currentQuestion.id]}
-                            className={`px-6 py-2 rounded-lg font-semibold transition-colors ${answers[currentQuestion.id]
-                                ? 'bg-blue-600 text-white hover:bg-blue-700'
-                                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                                }`}
+                            disabled={!answers[currentQuestion.id] || isSubmitting}
+                            className={`px-6 py-2 rounded-lg font-semibold transition-colors ${
+                                answers[currentQuestion.id] && !isSubmitting
+                                    ? 'bg-blue-600 text-white hover:bg-blue-700'
+                                    : 'bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed'
+                            }`}
                         >
-                            {currentStep === questions.length - 1 ? 'Finish' : 'Next'}
+                            {isSubmitting
+                                ? t('quiz.saving')
+                                : currentStep === QUESTIONS.length - 1
+                                    ? t('quiz.finish')
+                                    : t('quiz.next')}
                         </button>
                     </div>
                 </motion.div>

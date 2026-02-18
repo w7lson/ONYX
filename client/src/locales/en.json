@@ -25,29 +25,67 @@
   "dashboard": {
     "welcome": "Welcome, {{name}}!",
     "subtitle": "Your learning hub",
+    "loading": "Loading...",
     "noGoals": "Your active goals and progress will appear here.",
-    "setupGoals": "Set up your goals to get started"
+    "setupGoals": "Set up your goals to get started",
+    "noHabitsYet": "No habits yet. Set up goals to generate habits, or create one manually.",
+    "manageHabits": "Manage Habits",
+    "activeGoals": "Active Goals",
+    "dueCards": "Due Cards",
+    "startPomodoro": "Start Pomodoro",
+    "reviewFlashcards": "Review Flashcards",
+    "takeTest": "Take a Test"
   },
   "onboarding": {
     "title": "Tailor Your Learning Experience",
-    "subtitle": "Answer a few questions to help our AI design the perfect plan for you."
+    "subtitle": "Answer a few questions so we can personalize your experience."
   },
   "quiz": {
-    "q1": "How much time can you dedicate daily?",
-    "q1_a1": "15-30 mins",
-    "q1_a2": "1 hour",
-    "q1_a3": "2+ hours",
-    "q2": "What is your preferred material complexity?",
-    "q2_a1": "Beginner / Simple",
-    "q2_a2": "Intermediate",
-    "q2_a3": "Advanced / Technical",
-    "q3": "What is your top priority?",
-    "q3_a1": "Retention (Long term memory)",
-    "q3_a2": "Speed (Cramming)",
-    "q3_a3": "Understanding Concepts",
     "next": "Next",
+    "back": "Back",
     "finish": "Finish",
-    "error": "Failed to generate plan. Please try again."
+    "saving": "Saving...",
+    "error": "Failed to save preferences. Please try again.",
+    "primaryGoal": {
+      "question": "What's your primary goal?",
+      "career": "Career advancement",
+      "hobby": "Hobby or personal interest",
+      "exam": "Exam preparation",
+      "personal": "Personal growth",
+      "academic": "Academic studies"
+    },
+    "currentLevel": {
+      "question": "What's your current level?",
+      "beginner": "Beginner",
+      "elementary": "Elementary",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced",
+      "expert": "Expert"
+    },
+    "learningStyle": {
+      "question": "How do you learn best?",
+      "visual": "Visual (diagrams & videos)",
+      "reading": "Reading (text & articles)",
+      "handson": "Hands-on (practice & projects)"
+    },
+    "preferredContent": {
+      "question": "What content do you prefer?",
+      "videos": "Videos",
+      "articles": "Articles",
+      "interactive": "Interactive exercises"
+    },
+    "pace": {
+      "question": "What pace suits you?",
+      "intensive": "Intensive (daily, fast progress)",
+      "moderate": "Moderate (few times a week)",
+      "relaxed": "Relaxed (weekly, slow & steady)"
+    },
+    "reviewFrequency": {
+      "question": "How often do you want to review?",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly"
+    }
   },
   "plans": {
     "title": "My Plans",
@@ -291,9 +329,46 @@
       "productivity": "Improve productivity"
     }
   },
+  "habits": {
+    "title": "Daily Habits",
+    "todayChecklist": "Today's Habits",
+    "allComplete": "All done for today!",
+    "noHabits": "No habits yet. Create one or generate from a goal.",
+    "allHabits": "All Habits",
+    "createHabit": "New Habit",
+    "habitTitle": "Habit name",
+    "habitDescription": "Description (optional)",
+    "frequency": "Frequency",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "custom": "Custom days",
+    "generateFromGoal": "Generate habits from goal",
+    "generating": "Generating...",
+    "suggestions": "Suggested Habits",
+    "addAll": "Add All",
+    "create": "Create",
+    "cancel": "Cancel",
+    "streak": "Current Streak",
+    "longestStreak": "Longest Streak",
+    "days": "days",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this habit?"
+  },
   "profile": {
     "title": "Profile",
-    "subtitle": "Customize your profile and learning preferences here."
+    "subtitle": "Your account and learning preferences.",
+    "user": "User",
+    "preferences": "Learning Preferences",
+    "loading": "Loading preferences...",
+    "noPreferences": "Complete the onboarding quiz to set your preferences.",
+    "goToOnboarding": "Take the Quiz",
+    "primaryGoal": "Primary Goal",
+    "currentLevel": "Current Level",
+    "learningStyle": "Learning Style",
+    "preferredContent": "Preferred Content",
+    "pace": "Learning Pace",
+    "reviewFrequency": "Review Frequency",
+    "signOut": "Sign Out"
   },
   "notifications": {
     "title": "Notifications",

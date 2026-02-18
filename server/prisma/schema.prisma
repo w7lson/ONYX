@@ -12,15 +12,24 @@ model UserProfile {
   id               String            @id @default(uuid())
   clerkId          String            @unique
   email            String            @unique
-  quizResults      Json?
-  learningStyle    String?
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
+
+  // Onboarding preferences
+  primaryGoal      String?
+  currentLevel     String?
+  learningStyle    String?
+  preferredContent String?
+  pace             String?
+  reviewFrequency  String?
+  onboardingDone   Boolean           @default(false)
+
   plans            LearningPlan[]
   decks            Deck[]
   pomodoroSessions PomodoroSession[]
   tests            Test[]
   goals            Goal[]
+  habits           Habit[]
 }
 
 model LearningPlan {
@@ -153,6 +162,7 @@ model Goal {
 
   user       UserProfile  @relation(fields: [userId], references: [clerkId])
   milestones Milestone[]
+  habits     Habit[]
 }
 
 model Milestone {
@@ -167,4 +177,35 @@ model Milestone {
   createdAt   DateTime  @default(now())
 
   goal Goal @relation(fields: [goalId], references: [id], onDelete: Cascade)
+}
+
+// ===== DAILY HABITS =====
+
+model Habit {
+  id            String            @id @default(uuid())
+  userId        String
+  goalId        String?
+  title         String
+  description   String?
+  frequency     String            @default("daily")
+  daysOfWeek    Json?
+  isAIGenerated Boolean           @default(false)
+  isArchived    Boolean           @default(false)
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  user        UserProfile         @relation(fields: [userId], references: [clerkId])
+  goal        Goal?               @relation(fields: [goalId], references: [id], onDelete: SetNull)
+  completions HabitCompletion[]
+}
+
+model HabitCompletion {
+  id          String   @id @default(uuid())
+  habitId     String
+  completedAt DateTime @default(now())
+  date        String
+
+  habit Habit @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  @@unique([habitId, date])
 }

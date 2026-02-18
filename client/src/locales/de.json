@@ -25,29 +25,67 @@
   "dashboard": {
     "welcome": "Willkommen, {{name}}!",
     "subtitle": "Dein Lern-Hub",
+    "loading": "Laden...",
     "noGoals": "Deine aktiven Ziele und Fortschritte werden hier angezeigt.",
-    "setupGoals": "Setze deine Ziele, um loszulegen"
+    "setupGoals": "Setze deine Ziele, um loszulegen",
+    "noHabitsYet": "Noch keine Gewohnheiten. Setze Ziele, um Gewohnheiten zu generieren, oder erstelle eine manuell.",
+    "manageHabits": "Gewohnheiten verwalten",
+    "activeGoals": "Aktive Ziele",
+    "dueCards": "Fällige Karten",
+    "startPomodoro": "Pomodoro starten",
+    "reviewFlashcards": "Karteikarten wiederholen",
+    "takeTest": "Test absolvieren"
   },
   "onboarding": {
     "title": "Passe dein Lernerlebnis an",
-    "subtitle": "Beantworte ein paar Fragen, damit unsere AI den perfekten Plan für dich erstellt."
+    "subtitle": "Beantworte ein paar Fragen, damit wir dein Erlebnis personalisieren können."
   },
   "quiz": {
-    "q1": "Wie viel Zeit kannst du täglich investieren?",
-    "q1_a1": "15-30 Minuten",
-    "q1_a2": "1 Stunde",
-    "q1_a3": "2+ Stunden",
-    "q2": "Welche Materialkomplexität bevorzugst du?",
-    "q2_a1": "Anfänger / Einfach",
-    "q2_a2": "Mittelstufe",
-    "q2_a3": "Fortgeschritten / Technisch",
-    "q3": "Was ist deine höchste Priorität?",
-    "q3_a1": "Behalten (Langzeitgedächtnis)",
-    "q3_a2": "Geschwindigkeit (Pauken)",
-    "q3_a3": "Konzepte verstehen",
     "next": "Weiter",
+    "back": "Zurück",
     "finish": "Fertig",
-    "error": "Plan konnte nicht erstellt werden. Bitte versuche es erneut."
+    "saving": "Speichern...",
+    "error": "Einstellungen konnten nicht gespeichert werden. Bitte versuche es erneut.",
+    "primaryGoal": {
+      "question": "Was ist dein Hauptziel?",
+      "career": "Karriereentwicklung",
+      "hobby": "Hobby oder persönliches Interesse",
+      "exam": "Prüfungsvorbereitung",
+      "personal": "Persönliches Wachstum",
+      "academic": "Akademisches Studium"
+    },
+    "currentLevel": {
+      "question": "Was ist dein aktuelles Niveau?",
+      "beginner": "Anfänger",
+      "elementary": "Grundkenntnisse",
+      "intermediate": "Mittelstufe",
+      "advanced": "Fortgeschritten",
+      "expert": "Experte"
+    },
+    "learningStyle": {
+      "question": "Wie lernst du am besten?",
+      "visual": "Visuell (Diagramme & Videos)",
+      "reading": "Lesen (Texte & Artikel)",
+      "handson": "Praktisch (Übungen & Projekte)"
+    },
+    "preferredContent": {
+      "question": "Welche Inhalte bevorzugst du?",
+      "videos": "Videos",
+      "articles": "Artikel",
+      "interactive": "Interaktive Übungen"
+    },
+    "pace": {
+      "question": "Welches Tempo passt zu dir?",
+      "intensive": "Intensiv (täglich, schneller Fortschritt)",
+      "moderate": "Moderat (mehrmals pro Woche)",
+      "relaxed": "Entspannt (wöchentlich, langsam & stetig)"
+    },
+    "reviewFrequency": {
+      "question": "Wie oft möchtest du wiederholen?",
+      "daily": "Täglich",
+      "weekly": "Wöchentlich",
+      "monthly": "Monatlich"
+    }
   },
   "plans": {
     "title": "Meine Pläne",
@@ -291,9 +329,46 @@
       "productivity": "Produktivität steigern"
     }
   },
+  "habits": {
+    "title": "Tägliche Gewohnheiten",
+    "todayChecklist": "Heutige Gewohnheiten",
+    "allComplete": "Alles erledigt für heute!",
+    "noHabits": "Noch keine Gewohnheiten. Erstelle eine oder generiere sie aus einem Ziel.",
+    "allHabits": "Alle Gewohnheiten",
+    "createHabit": "Neue Gewohnheit",
+    "habitTitle": "Name der Gewohnheit",
+    "habitDescription": "Beschreibung (optional)",
+    "frequency": "Häufigkeit",
+    "daily": "Täglich",
+    "weekly": "Wöchentlich",
+    "custom": "Benutzerdefinierte Tage",
+    "generateFromGoal": "Gewohnheiten aus Ziel generieren",
+    "generating": "Generiere...",
+    "suggestions": "Vorgeschlagene Gewohnheiten",
+    "addAll": "Alle hinzufügen",
+    "create": "Erstellen",
+    "cancel": "Abbrechen",
+    "streak": "Aktuelle Serie",
+    "longestStreak": "Längste Serie",
+    "days": "Tage",
+    "delete": "Löschen",
+    "confirmDelete": "Bist du sicher, dass du diese Gewohnheit löschen möchtest?"
+  },
   "profile": {
     "title": "Profil",
-    "subtitle": "Passe hier dein Profil und deine Lernpräferenzen an."
+    "subtitle": "Dein Konto und deine Lernpräferenzen.",
+    "user": "Benutzer",
+    "preferences": "Lernpräferenzen",
+    "loading": "Präferenzen werden geladen...",
+    "noPreferences": "Schließe das Onboarding-Quiz ab, um deine Präferenzen festzulegen.",
+    "goToOnboarding": "Quiz starten",
+    "primaryGoal": "Hauptziel",
+    "currentLevel": "Aktuelles Niveau",
+    "learningStyle": "Lernstil",
+    "preferredContent": "Bevorzugte Inhalte",
+    "pace": "Lerntempo",
+    "reviewFrequency": "Wiederholungshäufigkeit",
+    "signOut": "Abmelden"
   },
   "notifications": {
     "title": "Benachrichtigungen",

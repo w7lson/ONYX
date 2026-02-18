@@ -31,7 +31,7 @@ app.get('/api/protected', requireAuth, (req, res) => {
     res.json({ message: 'This is a protected route', auth: req.auth });
 });
 
-import { generatePlan, getUserPlans } from './controllers/planController.js';
+import { generatePlan, getUserPlans, toggleTask } from './controllers/planController.js';
 import {
     getDecks, createDeck, deleteDeck,
     getDeckCards, addCard, deleteCard,
@@ -40,10 +40,17 @@ import {
 import { saveSession, getSessions } from './controllers/pomodoroController.js';
 import { generateTest, submitTest, getUserTests, getTest, deleteTest } from './controllers/testController.js';
 import { createGoal, getUserGoals, getGoal, updateGoal, deleteGoal, updateMilestones } from './controllers/goalController.js';
+import { savePreferences, getPreferences, updatePreferences } from './controllers/preferencesController.js';
+import {
+    generateHabits, createHabit, getUserHabits, getTodayHabits,
+    completeHabit, uncompleteHabit, updateHabit, deleteHabit,
+    getStreaks, getHabitStats
+} from './controllers/habitController.js';
 
 // Plan Endpoints
 app.get('/api/plans', requireAuth, getUserPlans);
 app.post('/api/plans/generate', requireAuth, generatePlan);
+app.patch('/api/tasks/:taskId/toggle', requireAuth, toggleTask);
 
 // Flashcard Endpoints
 app.get('/api/decks', requireAuth, getDecks);
@@ -67,6 +74,11 @@ app.get('/api/tests', requireAuth, getUserTests);
 app.get('/api/tests/:testId', requireAuth, getTest);
 app.delete('/api/tests/:testId', requireAuth, deleteTest);
 
+// Preferences Endpoints
+app.post('/api/preferences', requireAuth, savePreferences);
+app.get('/api/preferences', requireAuth, getPreferences);
+app.patch('/api/preferences', requireAuth, updatePreferences);
+
 // Goal Endpoints
 app.post('/api/goals', requireAuth, createGoal);
 app.get('/api/goals', requireAuth, getUserGoals);
@@ -74,6 +86,18 @@ app.get('/api/goals/:goalId', requireAuth, getGoal);
 app.put('/api/goals/:goalId', requireAuth, updateGoal);
 app.delete('/api/goals/:goalId', requireAuth, deleteGoal);
 app.put('/api/goals/:goalId/milestones', requireAuth, updateMilestones);
+
+// Habit Endpoints
+app.post('/api/habits/generate', requireAuth, generateHabits);
+app.post('/api/habits', requireAuth, createHabit);
+app.get('/api/habits', requireAuth, getUserHabits);
+app.get('/api/habits/today', requireAuth, getTodayHabits);
+app.post('/api/habits/:habitId/complete', requireAuth, completeHabit);
+app.delete('/api/habits/:habitId/complete', requireAuth, uncompleteHabit);
+app.put('/api/habits/:habitId', requireAuth, updateHabit);
+app.delete('/api/habits/:habitId', requireAuth, deleteHabit);
+app.get('/api/habits/streaks', requireAuth, getStreaks);
+app.get('/api/habits/stats', requireAuth, getHabitStats);
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

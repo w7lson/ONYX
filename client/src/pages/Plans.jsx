@@ -10,23 +10,35 @@ export default function Plans() {
     const [plans, setPlans] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchPlans = async () => {
-            try {
-                const token = await getToken();
-                const response = await axios.get('/api/plans', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                setPlans(response.data);
-            } catch (error) {
-                console.error("Failed to fetch plans:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const fetchPlans = async () => {
+        try {
+            const token = await getToken();
+            const response = await axios.get('/api/plans', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setPlans(response.data);
+        } catch (error) {
+            console.error("Failed to fetch plans:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchPlans();
     }, [getToken]);
+
+    const handleToggleTask = async (taskId) => {
+        try {
+            const token = await getToken();
+            await axios.patch(`/api/tasks/${taskId}/toggle`, {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            fetchPlans();
+        } catch (error) {
+            console.error("Failed to toggle task:", error);
+        }
+    };
 
     if (loading) {
         return (
@@ -92,9 +104,16 @@ export default function Plans() {
 
                                             <ul className="space-y-1">
                                                 {module.tasks.map((task) => (
-                                                    <li key={task.id} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                                    <li
+                                                        key={task.id}
+                                                        onClick={() => handleToggleTask(task.id)}
+                                                        className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 py-0.5 transition-colors"
+                                                    >
+                                                        <span className={`flex-shrink-0 w-4 h-4 rounded border flex items-center justify-center ${task.isCompleted ? 'bg-blue-500 border-blue-500 text-white' : 'border-gray-300 dark:border-gray-600'}`}>
+                                                            {task.isCompleted && <span className="text-xs">✓</span>}
+                                                        </span>
                                                         <span className={task.isCompleted ? 'line-through text-gray-400 dark:text-gray-600' : ''}>
-                                                            {task.isCompleted ? '✓' : '○'} {task.content}
+                                                            {task.content}
                                                         </span>
                                                     </li>
                                                 ))}
