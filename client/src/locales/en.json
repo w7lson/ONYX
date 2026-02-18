@@ -10,7 +10,8 @@
     "goals": "Goals",
     "profile": "Profile",
     "notifications": "Notifications",
-    "settings": "Settings"
+    "settings": "Settings",
+    "progress": "Progress"
   },
   "sections": {
     "learn": "Learn",
@@ -20,7 +21,8 @@
   "landing": {
     "title": "Structure Your Learning with AI",
     "subtitle": "Create personalized learning plans in seconds.",
-    "cta": "Get Started"
+    "cta": "Get Started",
+    "tryGuest": "Try without an account"
   },
   "dashboard": {
     "welcome": "Welcome, {{name}}!",
@@ -38,7 +40,39 @@
   },
   "onboarding": {
     "title": "Tailor Your Learning Experience",
-    "subtitle": "Answer a few questions so we can personalize your experience."
+    "subtitle": "Answer a few questions so we can personalize your experience.",
+    "resultsTitle": "You're all set!",
+    "resultsSubtitle": "Here's a summary of your learning preferences.",
+    "continue": "Continue",
+    "goalTitle": "Set Your First Goal",
+    "goalSubtitle": "Goals help you stay focused and build daily habits. You can always set one later.",
+    "setGoalNow": "Set a Goal Now",
+    "skipForNow": "Skip for now",
+    "tourTitle": "Here's What You Can Do",
+    "tourSubtitle": "ONYX Study is packed with tools to help you learn effectively.",
+    "goToDashboard": "Go to Dashboard",
+    "tour": {
+      "pomodoro": {
+        "title": "Pomodoro Timer",
+        "desc": "Stay focused with timed study sessions and built-in breaks."
+      },
+      "flashcards": {
+        "title": "Spaced Repetition Flashcards",
+        "desc": "Create decks, review cards, and let the SM-2 algorithm schedule your reviews."
+      },
+      "tests": {
+        "title": "AI-Generated Tests",
+        "desc": "Generate quizzes on any topic and track your scores over time."
+      },
+      "goals": {
+        "title": "Goals & Milestones",
+        "desc": "Break big goals into milestones and generate daily habits from them."
+      },
+      "progress": {
+        "title": "Progress & Stats",
+        "desc": "See your study time, test scores, and activity trends in one place."
+      }
+    }
   },
   "quiz": {
     "next": "Next",
@@ -268,6 +302,13 @@
     "buildOwn": "Build your own goal",
     "buildOwnDesc": "Create a custom goal from scratch",
     "back": "Back",
+    "addGoal": "Add Goal",
+    "editGoal": "Edit goal",
+    "open": "Open",
+    "milestones": "milestones",
+    "filterAll": "All",
+    "sortDreamFirst": "Dream goals first",
+    "sortMonthlyFirst": "Monthly goals first",
     "specifyTitle": "Specify Your Goal",
     "specify": {
       "subtitle": "Define your goal step by step.",
@@ -318,7 +359,10 @@
       "tip3": "Reward yourself when you hit milestones.",
       "savePlan": "Save Plan",
       "saving": "Saving...",
-      "deletePlan": "Delete Plan"
+      "deletePlan": "Delete Plan",
+      "rename": "Rename",
+      "editFocus": "Edit Focus",
+      "complete": "Complete"
     },
     "templateNames": {
       "loseWeight": "Lose weight",
@@ -372,7 +416,41 @@
   },
   "notifications": {
     "title": "Notifications",
-    "subtitle": "Your notifications and reminders will appear here."
+    "subtitle": "Your notifications and reminders.",
+    "markAllRead": "Mark all as read",
+    "noNotifications": "No notifications yet",
+    "noNotificationsDesc": "You'll see updates about your streaks, goals, and study progress here.",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "earlier": "Earlier",
+    "minutesAgo": "{{count}}m ago",
+    "hoursAgo": "{{count}}h ago",
+    "daysAgo": "{{count}}d ago"
+  },
+  "progress": {
+    "title": "Progress & Stats",
+    "subtitle": "Track your learning activity across all features.",
+    "totalStudyTime": "Study Time",
+    "testsAvgScore": "Avg Test Score",
+    "flashcardReviews": "Card Reviews",
+    "goalsCompleted": "Goals Done",
+    "weeklyActivity": "Weekly Activity",
+    "studyTime": "Study Time (Last 30 Days)",
+    "testScores": "Test Score Trend",
+    "noData": "Not enough data yet. Start studying to see your progress!",
+    "pomodoroMinutes": "Pomodoro",
+    "reviews": "Reviews",
+    "habits": "Habits",
+    "tests": "Tests"
+  },
+  "guest": {
+    "signUp": "Sign Up",
+    "signUpCta": "Sign up to unlock all features",
+    "restrictedTitle": "Feature Locked",
+    "restrictedMessage": "Create a free account to access this feature and save your progress.",
+    "welcomeGuest": "Welcome, Guest!",
+    "dashboardSubtitle": "You're exploring ONYX Study as a guest.",
+    "dashboardMessage": "Sign up to save your progress, set goals, track habits, and access all study tools."
   },
   "settings": {
     "title": "Settings",

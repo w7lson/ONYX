@@ -1,9 +1,17 @@
 import { SignInButton, SignedIn, SignedOut } from "@clerk/clerk-react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useGuest } from '../contexts/GuestContext';
 
 export default function Landing() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const { enterGuestMode } = useGuest();
+
+    const handleTryAsGuest = () => {
+        enterGuestMode();
+        navigate('/onboarding');
+    };
 
     return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-gray-950 text-center px-4 transition-colors">
@@ -16,6 +24,12 @@ export default function Landing() {
                         {t('landing.cta')}
                     </button>
                 </SignInButton>
+                <button
+                    onClick={handleTryAsGuest}
+                    className="mt-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 font-medium transition-colors"
+                >
+                    {t('landing.tryGuest')}
+                </button>
             </SignedOut>
 
             <SignedIn>

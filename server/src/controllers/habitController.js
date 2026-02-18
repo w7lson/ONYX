@@ -1,5 +1,6 @@
 import OpenAI from 'openai';
 import { PrismaClient } from '@prisma/client';
+import { createNotification } from './notificationController.js';
 
 const prisma = new PrismaClient();
 const openai = new OpenAI({
@@ -188,6 +189,44 @@ export const completeHabit = async (req, res) => {
             update: {},
             create: { habitId, date: today },
         });
+
+        // Check for streak milestones (fire-and-forget)
+        try {
+            const habitIds = (await prisma.habit.findMany({
+                where: { userId, isArchived: false },
+                select: { id: true },
+            })).map(h => h.id);
+
+            const completedDates = [...new Set(
+                (await prisma.habitCompletion.findMany({
+                    where: { habitId: { in: habitIds }, completedAt: { gte: new Date(Date.now() - 120 * 86400000) } },
+                    select: { date: true },
+                })).map(c => c.date)
+            )].sort().reverse();
+
+            let streak = 0;
+            let checkDate = completedDates.includes(today) ? today : null;
+            if (checkDate) {
+                const dateSet = new Set(completedDates);
+                let d = new Date(checkDate);
+                while (dateSet.has(d.toISOString().split('T')[0])) {
+                    streak++;
+                    d.setDate(d.getDate() - 1);
+                }
+            }
+
+            const milestones = [7, 14, 30, 60, 100];
+            if (milestones.includes(streak)) {
+                await createNotification(userId, {
+                    type: 'streak',
+                    title: `${streak}-day streak!`,
+                    message: `You've completed habits for ${streak} days in a row. Keep it up!`,
+                    link: '/dashboard',
+                });
+            }
+        } catch (e) {
+            console.error('Streak notification error (non-blocking):', e);
+        }
 
         res.json(completion);
     } catch (error) {

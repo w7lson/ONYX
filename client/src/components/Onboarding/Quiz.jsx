@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
+import { useGuest } from '../../contexts/GuestContext';
 
 const QUESTIONS = [
     {
@@ -31,13 +31,13 @@ const QUESTIONS = [
     },
 ];
 
-export default function Quiz() {
+export default function Quiz({ onComplete }) {
     const { t } = useTranslation();
     const [currentStep, setCurrentStep] = useState(0);
     const [answers, setAnswers] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const navigate = useNavigate();
     const { getToken } = useAuth();
+    const { isGuest } = useGuest();
 
     const currentQuestion = QUESTIONS[currentStep];
 
@@ -49,6 +49,12 @@ export default function Quiz() {
         if (currentStep < QUESTIONS.length - 1) {
             setCurrentStep(currentStep + 1);
         } else {
+            // Guest mode: skip API save, just pass answers forward
+            if (isGuest) {
+                if (onComplete) onComplete(answers);
+                return;
+            }
+
             setIsSubmitting(true);
             try {
                 const token = await getToken();
@@ -62,7 +68,9 @@ export default function Quiz() {
                 });
 
                 if (!res.ok) throw new Error('Failed to save preferences');
-                navigate('/dashboard');
+                if (onComplete) {
+                    onComplete(answers);
+                }
             } catch (error) {
                 console.error("Failed to save preferences:", error);
                 alert(t('quiz.error'));

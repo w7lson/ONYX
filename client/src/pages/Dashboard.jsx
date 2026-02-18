@@ -1,17 +1,75 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useUser, useAuth } from '@clerk/clerk-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Target, Plus, Timer, BookOpen, FileText, Layers } from 'lucide-react';
+import { SignInButton } from '@clerk/clerk-react';
 import HabitChecklist from '../components/Habits/HabitChecklist';
 import HabitCreateModal from '../components/Habits/HabitCreateModal';
 import HabitList from '../components/Habits/HabitList';
 import StreakDisplay from '../components/Habits/StreakDisplay';
+import { useGuest } from '../contexts/GuestContext';
+
+function GuestDashboard() {
+    const { t } = useTranslation();
+
+    return (
+        <div className="max-w-4xl mx-auto p-6">
+            <h1 className="text-3xl font-bold mb-1 text-gray-800 dark:text-gray-100">
+                {t('guest.welcomeGuest')}
+            </h1>
+            <p className="text-gray-500 dark:text-gray-400 mb-6">{t('guest.dashboardSubtitle')}</p>
+
+            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-8 mb-6">
+                <div className="flex flex-col items-center text-center">
+                    <div className="w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-950 flex items-center justify-center mb-4">
+                        <Target size={32} className="text-blue-500" />
+                    </div>
+                    <p className="text-gray-500 dark:text-gray-400 mb-4 max-w-md">
+                        {t('guest.dashboardMessage')}
+                    </p>
+                    <SignInButton mode="modal">
+                        <button className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors">
+                            {t('guest.signUpCta')}
+                        </button>
+                    </SignInButton>
+                </div>
+            </div>
+
+            {/* Quick Actions (limited for guests) */}
+            <div className="grid grid-cols-3 gap-3">
+                <Link
+                    to="/learning"
+                    className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 transition-all"
+                >
+                    <BookOpen size={24} className="text-purple-500 mb-2" />
+                    <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{t('nav.techniques')}</p>
+                </Link>
+                <Link
+                    to="/plans"
+                    className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 transition-all"
+                >
+                    <FileText size={24} className="text-green-500 mb-2" />
+                    <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{t('nav.plans')}</p>
+                </Link>
+                <Link
+                    to="/settings"
+                    className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 transition-all"
+                >
+                    <Timer size={24} className="text-blue-500 mb-2" />
+                    <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{t('nav.settings')}</p>
+                </Link>
+            </div>
+        </div>
+    );
+}
 
 export default function Dashboard() {
+    const { isGuest } = useGuest();
     const { user } = useUser();
     const { getToken } = useAuth();
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const [todayHabits, setTodayHabits] = useState([]);
     const [allHabits, setAllHabits] = useState([]);
@@ -26,7 +84,35 @@ export default function Dashboard() {
         return { Authorization: `Bearer ${token}` };
     }, [getToken]);
 
+    // Check if user has completed onboarding (skip for guests)
+    useEffect(() => {
+        if (isGuest) return;
+        const checkOnboarding = async () => {
+            try {
+                const headers = await authHeaders();
+                const res = await fetch('/api/preferences', { headers });
+                if (res.status === 404) {
+                    navigate('/onboarding', { replace: true });
+                    return;
+                }
+                if (res.ok) {
+                    const prefs = await res.json();
+                    if (!prefs.onboardingDone) {
+                        navigate('/onboarding', { replace: true });
+                    }
+                }
+            } catch (err) {
+                // If preferences check fails, don't block dashboard
+            }
+        };
+        checkOnboarding();
+    }, [authHeaders, navigate, isGuest]);
+
     const fetchData = useCallback(async () => {
+        if (isGuest) {
+            setLoading(false);
+            return;
+        }
         try {
             const headers = await authHeaders();
             const [todayRes, allRes, streakRes, goalsRes, decksRes] = await Promise.all([
@@ -57,7 +143,7 @@ export default function Dashboard() {
         } finally {
             setLoading(false);
         }
-    }, [authHeaders]);
+    }, [authHeaders, isGuest]);
 
     useEffect(() => {
         fetchData();
@@ -112,6 +198,8 @@ export default function Dashboard() {
             console.error('Error deleting habit:', error);
         }
     };
+
+    if (isGuest) return <GuestDashboard />;
 
     const completed = todayHabits.filter(h => h.completedToday).length;
     const hasHabits = allHabits.length > 0;

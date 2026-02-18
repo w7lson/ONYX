@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../contexts/ThemeContext';
+import { useNotifications } from '../contexts/NotificationContext';
 import {
     LayoutDashboard,
     BookOpen,
@@ -14,6 +15,7 @@ import {
     User,
     Bell,
     Settings,
+    BarChart3,
     ChevronLeft,
     ChevronRight,
     Sun,
@@ -45,6 +47,7 @@ const navSections = [
         labelKey: 'sections.track',
         items: [
             { to: '/goals', icon: Target, labelKey: 'nav.goals' },
+            { to: '/progress', icon: BarChart3, labelKey: 'nav.progress' },
         ],
     },
 ];
@@ -59,6 +62,7 @@ export default function Sidebar() {
     const [collapsed, setCollapsed] = useState(false);
     const { t } = useTranslation();
     const { theme, toggleTheme } = useTheme();
+    const { unreadCount } = useNotifications();
 
     const renderNavLink = ({ to, icon: Icon, labelKey }) => (
         <NavLink
@@ -72,7 +76,14 @@ export default function Sidebar() {
                 }`
             }
         >
-            <Icon size={20} className="shrink-0" />
+            <span className="relative shrink-0">
+                <Icon size={20} />
+                {to === '/notifications' && unreadCount > 0 && (
+                    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                        {unreadCount > 9 ? '9+' : unreadCount}
+                    </span>
+                )}
+            </span>
             {!collapsed && (
                 <motion.span
                     initial={{ opacity: 0 }}

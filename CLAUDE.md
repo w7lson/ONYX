@@ -37,9 +37,9 @@ Both client and server use npm as the package manager.
 
 **Core user flow:** Landing → Sign up → Dashboard → Onboarding quiz (6 preference questions) → Saves preferences to UserProfile via `POST /api/preferences` → Dashboard.
 
-**App layout:** Authenticated pages use `AppLayout` (sidebar + header with Clerk UserButton + content area). Landing and Onboarding pages render without sidebar. Signed-in users on `/` are auto-redirected to `/dashboard`.
+**App layout:** Authenticated pages use `AppLayout` (sidebar + header with Clerk UserButton + content area). Landing and Onboarding pages render without sidebar. Signed-in users on `/` are auto-redirected to `/dashboard`. Guest users can access Dashboard, Plans, Learning, Settings; restricted routes show GuestRestrictionOverlay with sign-up CTA.
 
-**Sidebar structure:** Grouped navigation — Dashboard | Learn (Plans, Techniques) | Practice (Flashcards, Pomodoro, AI Tests) | Track (Goals) | Account (Profile, Notifications, Settings). Theme toggle at bottom.
+**Sidebar structure:** Grouped navigation — Dashboard | Learn (Plans, Techniques) | Practice (Flashcards, Pomodoro, AI Tests) | Track (Goals, Progress) | Account (Profile, Notifications, Settings). Theme toggle at bottom.
 
 ### Key backend files
 - `server/src/index.js` — Express app entry, all route definitions (uses `import 'dotenv/config'` as first import for ES module compatibility)
@@ -53,7 +53,9 @@ Both client and server use npm as the package manager.
 - `server/src/controllers/habitController.js` — Habit CRUD, AI generation, completion, streaks, stats
 - `server/src/utils/sm2.js` — SM-2 spaced repetition algorithm
 - `server/src/middleware/auth.js` — Clerk token verification middleware
-- `server/prisma/schema.prisma` — Database schema (14 models)
+- `server/src/controllers/notificationController.js` — Notification CRUD + createNotification helper (used by other controllers)
+- `server/src/controllers/progressController.js` — Aggregated stats (overview, weekly activity, study time, test scores)
+- `server/prisma/schema.prisma` — Database schema (15 models)
 
 ### Key frontend files
 - `client/src/App.jsx` — React Router setup, route definitions with auth guards
@@ -62,6 +64,10 @@ Both client and server use npm as the package manager.
 - `client/src/components/Onboarding/Quiz.jsx` — 6-step onboarding preference quiz (i18n)
 - `client/src/contexts/ThemeContext.jsx` — Dark/light theme provider, persists to localStorage
 - `client/src/contexts/PomodoroContext.jsx` — Global timer state, persists across navigation
+- `client/src/contexts/NotificationContext.jsx` — Polls unread count every 60s, provides unreadCount
+- `client/src/contexts/GuestContext.jsx` — Guest mode state, auto-exits on sign-in
+- `client/src/components/GuestRestrictionOverlay.jsx` — Sign-up CTA for restricted guest routes
+- `client/src/pages/Progress.jsx` — Progress & stats dashboard with recharts
 - `client/src/i18n.js` — i18next configuration
 - `client/src/locales/` — Translation files (en.json, de.json, uk.json)
 - `client/src/pages/` — Landing, Dashboard, Onboarding, Plans, Learning, Flashcards, Pomodoro, Tests, Goals, Profile, Notifications, Settings
@@ -104,6 +110,15 @@ Both client and server use npm as the package manager.
 - `DELETE /api/habits/:habitId` — Delete habit
 - `GET /api/habits/streaks` — Get current + longest streak
 - `GET /api/habits/stats` — Get habit statistics
+- `GET /api/notifications` — List notifications (supports limit, unreadOnly params)
+- `GET /api/notifications/unread-count` — Get unread notification count
+- `PATCH /api/notifications/:id/read` — Mark notification as read
+- `POST /api/notifications/mark-all-read` — Mark all notifications as read
+- `DELETE /api/notifications/:id` — Delete notification
+- `GET /api/progress/overview` — Aggregated stats (study time, tests, reviews, goals, habits)
+- `GET /api/progress/weekly-activity` — 7-day activity breakdown
+- `GET /api/progress/study-time` — Pomodoro study time over N days
+- `GET /api/progress/test-scores` — Last 20 test scores with dates
 
 All endpoints except webhook are protected with `requireAuth`.
 
@@ -118,7 +133,7 @@ Frontend needs `VITE_CLERK_PUBLISHABLE_KEY`. Backend needs `DATABASE_URL`, `DIRE
 
 PostgreSQL via Supabase with connection pooling. Schema synced via `npx prisma db push` (no migration history).
 
-**Models (14):** `UserProfile` (Clerk link, 6 preference fields, onboardingDone flag), `LearningPlan`, `Module`, `Task` (isCompleted toggle), `Deck`, `Flashcard` (SM-2 fields), `FlashcardReview`, `PomodoroSession`, `Test`, `TestQuestion`, `Goal` (with focus, duration, status), `Milestone` (ordered, with description/reward/targetDate), `Habit` (frequency, daysOfWeek, AI-generated flag), `HabitCompletion` (unique per habit+date).
+**Models (15):** `UserProfile` (Clerk link, 6 preference fields, onboardingDone flag), `LearningPlan`, `Module`, `Task` (isCompleted toggle), `Deck`, `Flashcard` (SM-2 fields), `FlashcardReview`, `PomodoroSession`, `Test`, `TestQuestion`, `Goal` (with focus, duration, status), `Milestone` (ordered, with description/reward/targetDate), `Habit` (frequency, daysOfWeek, AI-generated flag), `HabitCompletion` (unique per habit+date), `Notification` (type, title, message, link, isRead).
 
 ## Feature Roadmap & Status
 
@@ -140,22 +155,13 @@ PostgreSQL via Supabase with connection pooling. Schema synced via `npx prisma d
 - **Daily Habits system** — AI-generated + manual habits, `Habit` + `HabitCompletion` models, 10 API endpoints (generate, CRUD, complete/uncomplete, streaks, stats), HabitChecklist/HabitCreateModal/AIHabitSuggestions/StreakDisplay/HabitList components
 - **Dashboard (habits-centric)** — Welcome header, streak + stats bar (4 cards), today's habit checklist with toggle, manage habits view, quick action cards (Pomodoro, Flashcards, Tests)
 - **Task completion toggle** — `PATCH /api/tasks/:taskId/toggle` endpoint, clickable checkboxes on Plans page
+- **Notifications system** — `Notification` model (15th), notificationController (CRUD + mark read + createNotification helper), NotificationContext (polls unread count), unread badge in Sidebar, full notifications page with grouping/mark read/delete, triggers from habit streaks, goal completion, test scores
+- **Progress/Stats dashboard** — progressController (4 endpoints: overview, weekly-activity, study-time, test-scores), Progress page with recharts (AreaChart, BarChart, LineChart), stat cards
+- **Enhanced onboarding** — Multi-phase flow: Quiz → Results screen (preference summary) → Goal setup prompt → Feature tour (5 features) → Dashboard. Auto-redirects new users from Dashboard
+- **Guest mode** — GuestContext (isGuest flag, auto-exits on sign-in), GuestRestrictionOverlay (sign-up CTA), AuthOrGuest/LayoutGuard route components, Landing "Try without account" link, guest-friendly Dashboard/Onboarding/Plans/Learning/Settings, header shows "Sign Up" for guests
 
-### Guest Mode Architecture (planned, not yet implemented)
-- **GuestContext** (`client/src/contexts/GuestContext.jsx`) — `isGuest` flag, `guestPlan` state stored in memory/sessionStorage, `setGuestPlan()` to save generated plan
-- **GuestRestrictionOverlay** — Reusable component shown when guest tries to access restricted features (Flashcards, Pomodoro, Tests, Goals, Habits). Shows sign-up CTA
-- **Route changes** — Loosen `SignedIn` guards on `/dashboard` and `/plans` to also allow guests. Other routes remain auth-only
-- **Landing page** — Add "Try without account" link → navigates to `/onboarding` in guest mode (quiz only generates a plan preview, no DB save)
-- **Header** — Conditional: show "Sign Up" button for guests instead of Clerk UserButton
-- **Flow:** Landing → "Try without account" → Onboarding quiz → Plan preview (read-only, no save) → Sign-up prompt to save & access full features
-
-### Stage 2 — Nice-to-have
+### Stage 2 — Nice-to-have (remaining)
 1. **Google OAuth** — Clerk Dashboard configuration (no code changes)
-2. **Notifications system** — `Notification` model, notificationController (CRUD + mark read), replace placeholder page, unread badge in Sidebar
-3. **Progress/Stats dashboard** — `progressController.js`, aggregated stats from all features, charts (recharts), weekly activity
-4. **Written answer AI grading** — Extend testController for `type === 'written'`, Groq grading, aiFeedback field, frontend textarea + feedback display
-5. **Enhanced onboarding** — Multi-step: Results screen → Goal setup prompt → Feature tour → Dashboard
-6. **Guest mode implementation** — Based on Stage 1 architecture plan
 
 ### Stage 3 — Code Quality & Optimization
 1. **Refactoring** — Singleton PrismaClient, shared asyncHandler middleware, standardize API calls (shared axios instance with auto-auth), input validation (zod)

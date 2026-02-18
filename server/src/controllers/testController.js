@@ -1,5 +1,6 @@
 import OpenAI from 'openai';
 import { PrismaClient } from '@prisma/client';
+import { createNotification } from './notificationController.js';
 
 const prisma = new PrismaClient();
 const openai = new OpenAI({
@@ -134,6 +135,13 @@ export const submitTest = async (req, res) => {
             data: { score, completedAt: new Date() },
             include: { questions: true }
         });
+
+        createNotification(userId, {
+            type: 'test_result',
+            title: `Test completed: ${score}%`,
+            message: `You scored ${score}% on "${test.topic}".`,
+            link: '/tests',
+        }).catch(e => console.error('Test notification error:', e));
 
         res.json(updatedTest);
     } catch (error) {

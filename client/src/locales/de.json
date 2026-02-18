@@ -10,7 +10,8 @@
     "goals": "Ziele",
     "profile": "Profil",
     "notifications": "Benachrichtigungen",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "progress": "Fortschritt"
   },
   "sections": {
     "learn": "Lernen",
@@ -20,7 +21,8 @@
   "landing": {
     "title": "Strukturiere dein Lernen mit AI",
     "subtitle": "Erstelle personalisierte Lernpläne in Sekunden.",
-    "cta": "Loslegen"
+    "cta": "Loslegen",
+    "tryGuest": "Ohne Konto ausprobieren"
   },
   "dashboard": {
     "welcome": "Willkommen, {{name}}!",
@@ -38,7 +40,39 @@
   },
   "onboarding": {
     "title": "Passe dein Lernerlebnis an",
-    "subtitle": "Beantworte ein paar Fragen, damit wir dein Erlebnis personalisieren können."
+    "subtitle": "Beantworte ein paar Fragen, damit wir dein Erlebnis personalisieren können.",
+    "resultsTitle": "Alles bereit!",
+    "resultsSubtitle": "Hier ist eine Zusammenfassung deiner Lernpräferenzen.",
+    "continue": "Weiter",
+    "goalTitle": "Setze dein erstes Ziel",
+    "goalSubtitle": "Ziele helfen dir, fokussiert zu bleiben und tägliche Gewohnheiten aufzubauen. Du kannst auch später eines setzen.",
+    "setGoalNow": "Jetzt ein Ziel setzen",
+    "skipForNow": "Erstmal überspringen",
+    "tourTitle": "Das kannst du alles machen",
+    "tourSubtitle": "ONYX Study bietet viele Tools, die dir beim effektiven Lernen helfen.",
+    "goToDashboard": "Zum Dashboard",
+    "tour": {
+      "pomodoro": {
+        "title": "Pomodoro-Timer",
+        "desc": "Bleib fokussiert mit zeitgesteuerten Lernsitzungen und eingebauten Pausen."
+      },
+      "flashcards": {
+        "title": "Karteikarten mit verteiltem Wiederholen",
+        "desc": "Erstelle Stapel, wiederhole Karten und lass den SM-2-Algorithmus deine Wiederholungen planen."
+      },
+      "tests": {
+        "title": "AI-generierte Tests",
+        "desc": "Generiere Quizze zu jedem Thema und verfolge deine Ergebnisse."
+      },
+      "goals": {
+        "title": "Ziele & Meilensteine",
+        "desc": "Teile große Ziele in Meilensteine auf und generiere tägliche Gewohnheiten daraus."
+      },
+      "progress": {
+        "title": "Fortschritt & Statistiken",
+        "desc": "Sieh deine Lernzeit, Testergebnisse und Aktivitätstrends an einem Ort."
+      }
+    }
   },
   "quiz": {
     "next": "Weiter",
@@ -268,6 +302,13 @@
     "buildOwn": "Eigenes Ziel erstellen",
     "buildOwnDesc": "Erstelle ein individuelles Ziel von Grund auf",
     "back": "Zurück",
+    "addGoal": "Ziel hinzufügen",
+    "editGoal": "Ziel bearbeiten",
+    "open": "Öffnen",
+    "milestones": "Meilensteine",
+    "filterAll": "Alle",
+    "sortDreamFirst": "Traumziele zuerst",
+    "sortMonthlyFirst": "Monatsziele zuerst",
     "specifyTitle": "Ziel spezifizieren",
     "specify": {
       "subtitle": "Definiere dein Ziel Schritt für Schritt.",
@@ -318,7 +359,10 @@
       "tip3": "Belohne dich selbst, wenn du Meilensteine erreichst.",
       "savePlan": "Plan speichern",
       "saving": "Speichern...",
-      "deletePlan": "Plan löschen"
+      "deletePlan": "Plan löschen",
+      "rename": "Umbenennen",
+      "editFocus": "Fokus ändern",
+      "complete": "Abschließen"
     },
     "templateNames": {
       "loseWeight": "Abnehmen",
@@ -372,7 +416,41 @@
   },
   "notifications": {
     "title": "Benachrichtigungen",
-    "subtitle": "Deine Benachrichtigungen und Erinnerungen erscheinen hier."
+    "subtitle": "Deine Benachrichtigungen und Erinnerungen.",
+    "markAllRead": "Alle als gelesen markieren",
+    "noNotifications": "Noch keine Benachrichtigungen",
+    "noNotificationsDesc": "Hier siehst du Updates zu deinen Serien, Zielen und Lernfortschritten.",
+    "today": "Heute",
+    "yesterday": "Gestern",
+    "earlier": "Früher",
+    "minutesAgo": "vor {{count}}min",
+    "hoursAgo": "vor {{count}}h",
+    "daysAgo": "vor {{count}}T"
+  },
+  "progress": {
+    "title": "Fortschritt & Statistiken",
+    "subtitle": "Verfolge deine Lernaktivitäten über alle Funktionen hinweg.",
+    "totalStudyTime": "Lernzeit",
+    "testsAvgScore": "Ø Testergebnis",
+    "flashcardReviews": "Karten-Reviews",
+    "goalsCompleted": "Ziele erreicht",
+    "weeklyActivity": "Wöchentliche Aktivität",
+    "studyTime": "Lernzeit (Letzte 30 Tage)",
+    "testScores": "Testergebnis-Trend",
+    "noData": "Noch nicht genug Daten. Fang an zu lernen, um deinen Fortschritt zu sehen!",
+    "pomodoroMinutes": "Pomodoro",
+    "reviews": "Wiederholungen",
+    "habits": "Gewohnheiten",
+    "tests": "Tests"
+  },
+  "guest": {
+    "signUp": "Registrieren",
+    "signUpCta": "Registriere dich, um alle Funktionen freizuschalten",
+    "restrictedTitle": "Funktion gesperrt",
+    "restrictedMessage": "Erstelle ein kostenloses Konto, um diese Funktion zu nutzen und deinen Fortschritt zu speichern.",
+    "welcomeGuest": "Willkommen, Gast!",
+    "dashboardSubtitle": "Du erkundest ONYX Study als Gast.",
+    "dashboardMessage": "Registriere dich, um deinen Fortschritt zu speichern, Ziele zu setzen, Gewohnheiten zu verfolgen und alle Lerntools zu nutzen."
   },
   "settings": {
     "title": "Einstellungen",

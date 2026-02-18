@@ -6,6 +6,8 @@ import './i18n.js'
 import { ClerkProvider } from '@clerk/clerk-react'
 import { ThemeProvider } from './contexts/ThemeContext.jsx'
 import { PomodoroProvider } from './contexts/PomodoroContext.jsx'
+import { NotificationProvider } from './contexts/NotificationContext.jsx'
+import { GuestProvider } from './contexts/GuestContext.jsx'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -18,7 +20,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
       <ThemeProvider>
         <PomodoroProvider>
-          <App />
+          <NotificationProvider>
+            <GuestProvider>
+              <App />
+            </GuestProvider>
+          </NotificationProvider>
         </PomodoroProvider>
       </ThemeProvider>
     </ClerkProvider>

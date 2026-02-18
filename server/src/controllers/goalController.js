@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { createNotification } from './notificationController.js';
 
 const prisma = new PrismaClient();
 
@@ -110,6 +111,15 @@ export const updateGoal = async (req, res) => {
             include: { milestones: { orderBy: { order: 'asc' } } }
         });
 
+        if (status === 'completed' && existing.status !== 'completed') {
+            createNotification(userId, {
+                type: 'goal_complete',
+                title: 'Goal completed!',
+                message: `You completed "${goal.title}". Great job!`,
+                link: '/goals',
+            }).catch(e => console.error('Goal notification error:', e));
+        }
+
         res.json(goal);
     } catch (error) {
         console.error("Error updating goal:", error);
@@ -176,5 +186,31 @@ export const updateMilestones = async (req, res) => {
     } catch (error) {
         console.error("Error updating milestones:", error);
         res.status(500).json({ error: "Failed to update milestones" });
+    }
+};
+
+export const toggleMilestone = async (req, res) => {
+    const { userId } = req.auth;
+    const { milestoneId } = req.params;
+
+    try {
+        const milestone = await prisma.milestone.findFirst({
+            where: { id: milestoneId },
+            include: { goal: true }
+        });
+
+        if (!milestone || milestone.goal.userId !== userId) {
+            return res.status(404).json({ error: "Milestone not found" });
+        }
+
+        const updated = await prisma.milestone.update({
+            where: { id: milestoneId },
+            data: { isCompleted: !milestone.isCompleted }
+        });
+
+        res.json(updated);
+    } catch (error) {
+        console.error("Error toggling milestone:", error);
+        res.status(500).json({ error: "Failed to toggle milestone" });
     }
 };

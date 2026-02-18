@@ -39,13 +39,17 @@ import {
 } from './controllers/flashcardController.js';
 import { saveSession, getSessions } from './controllers/pomodoroController.js';
 import { generateTest, submitTest, getUserTests, getTest, deleteTest } from './controllers/testController.js';
-import { createGoal, getUserGoals, getGoal, updateGoal, deleteGoal, updateMilestones } from './controllers/goalController.js';
+import { createGoal, getUserGoals, getGoal, updateGoal, deleteGoal, updateMilestones, toggleMilestone } from './controllers/goalController.js';
 import { savePreferences, getPreferences, updatePreferences } from './controllers/preferencesController.js';
 import {
     generateHabits, createHabit, getUserHabits, getTodayHabits,
     completeHabit, uncompleteHabit, updateHabit, deleteHabit,
     getStreaks, getHabitStats
 } from './controllers/habitController.js';
+import {
+    getNotifications, getUnreadCount, markAsRead, markAllAsRead, deleteNotification
+} from './controllers/notificationController.js';
+import { getOverview, getWeeklyActivity, getStudyTime, getTestScores } from './controllers/progressController.js';
 
 // Plan Endpoints
 app.get('/api/plans', requireAuth, getUserPlans);
@@ -86,6 +90,7 @@ app.get('/api/goals/:goalId', requireAuth, getGoal);
 app.put('/api/goals/:goalId', requireAuth, updateGoal);
 app.delete('/api/goals/:goalId', requireAuth, deleteGoal);
 app.put('/api/goals/:goalId/milestones', requireAuth, updateMilestones);
+app.patch('/api/milestones/:milestoneId/toggle', requireAuth, toggleMilestone);
 
 // Habit Endpoints
 app.post('/api/habits/generate', requireAuth, generateHabits);
@@ -98,6 +103,19 @@ app.put('/api/habits/:habitId', requireAuth, updateHabit);
 app.delete('/api/habits/:habitId', requireAuth, deleteHabit);
 app.get('/api/habits/streaks', requireAuth, getStreaks);
 app.get('/api/habits/stats', requireAuth, getHabitStats);
+
+// Notification Endpoints
+app.get('/api/notifications', requireAuth, getNotifications);
+app.get('/api/notifications/unread-count', requireAuth, getUnreadCount);
+app.patch('/api/notifications/:notificationId/read', requireAuth, markAsRead);
+app.patch('/api/notifications/read-all', requireAuth, markAllAsRead);
+app.delete('/api/notifications/:notificationId', requireAuth, deleteNotification);
+
+// Progress Endpoints
+app.get('/api/progress/overview', requireAuth, getOverview);
+app.get('/api/progress/weekly-activity', requireAuth, getWeeklyActivity);
+app.get('/api/progress/study-time', requireAuth, getStudyTime);
+app.get('/api/progress/test-scores', requireAuth, getTestScores);
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
