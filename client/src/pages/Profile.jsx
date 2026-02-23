@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const PREFERENCE_OPTIONS = {
     primaryGoal: ['career', 'hobby', 'exam', 'personal', 'academic'],
-    currentLevel: ['beginner', 'elementary', 'intermediate', 'advanced', 'expert'],
+    currentLevel: ['under1h', '1-2hours', '2-4hours', '4-6hours', '6plus'],
     learningStyle: ['visual', 'reading', 'handson'],
     preferredContent: ['videos', 'articles', 'interactive'],
     pace: ['intensive', 'moderate', 'relaxed'],

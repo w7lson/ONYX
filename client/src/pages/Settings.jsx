@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '../contexts/ThemeContext';
-import { Sun, Moon, Globe } from 'lucide-react';
+import { Globe } from 'lucide-react';
 
 const languages = [
     { code: 'en', label: 'English' },
@@ -10,7 +9,6 @@ const languages = [
 
 export default function Settings() {
     const { t, i18n } = useTranslation();
-    const { theme, setTheme } = useTheme();
 
     const changeLanguage = (code) => {
         i18n.changeLanguage(code);
@@ -42,41 +40,6 @@ export default function Settings() {
                                 {label}
                             </button>
                         ))}
-                    </div>
-                </div>
-
-                <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
-                    <div className="flex items-center gap-3 mb-4">
-                        {theme === 'dark' ? (
-                            <Moon size={20} className="text-gray-600 dark:text-gray-400" />
-                        ) : (
-                            <Sun size={20} className="text-gray-600 dark:text-gray-400" />
-                        )}
-                        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">{t('settings.theme')}</h2>
-                    </div>
-                    <div className="flex gap-3">
-                        <button
-                            onClick={() => setTheme('light')}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                                theme === 'light'
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                            }`}
-                        >
-                            <Sun size={16} />
-                            {t('settings.lightMode')}
-                        </button>
-                        <button
-                            onClick={() => setTheme('dark')}
-                            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                                theme === 'dark'
-                                    ? 'bg-blue-600 text-white'
-                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                            }`}
-                        >
-                            <Moon size={16} />
-                            {t('settings.darkMode')}
-                        </button>
                     </div>
                 </div>
             </div>

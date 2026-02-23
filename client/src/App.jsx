@@ -18,11 +18,12 @@ import GuestRestrictionOverlay from "./components/GuestRestrictionOverlay";
 import { useGuest } from "./contexts/GuestContext";
 import './App.css';
 
-function AuthOrGuest({ children, guestAllowed = false }) {
+function AuthOrGuest({ children, guestAllowed = false, publicAllowed = false }) {
   const { isGuest } = useGuest();
 
   if (isGuest && guestAllowed) return children;
   if (isGuest && !guestAllowed) return <GuestRestrictionOverlay />;
+  if (publicAllowed) return children;
 
   return (
     <>
@@ -59,7 +60,7 @@ function App() {
         <Route
           path="/onboarding"
           element={
-            <AuthOrGuest guestAllowed>
+            <AuthOrGuest guestAllowed publicAllowed>
               <Onboarding />
             </AuthOrGuest>
           }

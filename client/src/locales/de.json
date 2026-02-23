@@ -22,7 +22,8 @@
     "title": "Strukturiere dein Lernen mit AI",
     "subtitle": "Erstelle personalisierte Lernpläne in Sekunden.",
     "cta": "Loslegen",
-    "tryGuest": "Ohne Konto ausprobieren"
+    "tryGuest": "Ohne Konto ausprobieren",
+    "login": "Anmelden"
   },
   "dashboard": {
     "welcome": "Willkommen, {{name}}!",
@@ -44,6 +45,11 @@
     "resultsTitle": "Alles bereit!",
     "resultsSubtitle": "Hier ist eine Zusammenfassung deiner Lernpräferenzen.",
     "continue": "Weiter",
+    "languageTitle": "Wähle deine Sprache",
+    "languageSubtitle": "Du kannst dies später in den Einstellungen ändern",
+    "signupTitle": "Erstelle dein Konto",
+    "signupSubtitle": "Registriere dich, um deine Lernpräferenzen zu speichern und deine personalisierte Reise zu starten.",
+    "createAccount": "Registrieren, um fortzufahren",
     "goalTitle": "Setze dein erstes Ziel",
     "goalSubtitle": "Ziele helfen dir, fokussiert zu bleiben und tägliche Gewohnheiten aufzubauen. Du kannst auch später eines setzen.",
     "setGoalNow": "Jetzt ein Ziel setzen",
@@ -89,12 +95,12 @@
       "academic": "Akademisches Studium"
     },
     "currentLevel": {
-      "question": "Was ist dein aktuelles Niveau?",
-      "beginner": "Anfänger",
-      "elementary": "Grundkenntnisse",
-      "intermediate": "Mittelstufe",
-      "advanced": "Fortgeschritten",
-      "expert": "Experte"
+      "question": "Wie viel Zeit widmest du täglich dem Lernen?",
+      "under1h": "Weniger als 1 Stunde",
+      "1-2hours": "1–2 Stunden",
+      "2-4hours": "2–4 Stunden",
+      "4-6hours": "4–6 Stunden",
+      "6plus": "6+ Stunden"
     },
     "learningStyle": {
       "question": "Wie lernst du am besten?",
@@ -425,7 +431,7 @@
     "noPreferences": "Schließe das Onboarding-Quiz ab, um deine Präferenzen festzulegen.",
     "goToOnboarding": "Quiz starten",
     "primaryGoal": "Hauptziel",
-    "currentLevel": "Aktuelles Niveau",
+    "currentLevel": "Tägliche Lernzeit",
     "learningStyle": "Lernstil",
     "preferredContent": "Bevorzugte Inhalte",
     "pace": "Lerntempo",

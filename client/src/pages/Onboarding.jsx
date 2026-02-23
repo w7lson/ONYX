@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle, Target, Timer, BookOpen, FileText, BarChart3, ArrowRight, Sparkles } from 'lucide-react';
+import { CheckCircle, Target, Timer, BookOpen, FileText, BarChart3, ArrowRight, Sparkles, UserPlus } from 'lucide-react';
+import { SignInButton, useAuth } from '@clerk/clerk-react';
 import Quiz from '../components/Onboarding/Quiz';
 import { useGuest } from '../contexts/GuestContext';
 
@@ -10,6 +11,7 @@ export default function Onboarding() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { isGuest } = useGuest();
+    const { isSignedIn, getToken } = useAuth();
     const [phase, setPhase] = useState('quiz');
     const [answers, setAnswers] = useState({});
 
@@ -29,6 +31,41 @@ export default function Onboarding() {
     const handleFinish = () => {
         navigate('/dashboard');
     };
+
+    // When user signs up during the 'signup' phase, sync pending preferences
+    useEffect(() => {
+        if (isSignedIn && phase === 'signup') {
+            const syncPendingPreferences = async () => {
+                const pending = localStorage.getItem('pendingOnboardingAnswers');
+                if (!pending) {
+                    setPhase('goalPrompt');
+                    return;
+                }
+
+                try {
+                    const data = JSON.parse(pending);
+                    const token = await getToken();
+                    const res = await fetch('/api/preferences', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data),
+                    });
+                    if (res.ok) {
+                        localStorage.removeItem('pendingOnboardingAnswers');
+                    }
+                } catch (err) {
+                    console.error('Failed to sync pending preferences:', err);
+                }
+
+                setPhase('goalPrompt');
+            };
+
+            syncPendingPreferences();
+        }
+    }, [isSignedIn, phase, getToken]);
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -52,11 +89,24 @@ export default function Onboarding() {
                         <ResultsScreen
                             key="results"
                             answers={answers}
-                            onNext={() => isGuest ? setPhase('tour') : setPhase('goalPrompt')}
+                            onNext={() => {
+                                if (!isSignedIn && !isGuest) {
+                                    setPhase('signup');
+                                } else if (isGuest) {
+                                    setPhase('tour');
+                                } else {
+                                    setPhase('goalPrompt');
+                                }
+                            }}
+                            showSignupHint={!isSignedIn && !isGuest}
                         />
                     )}
 
-                    {phase === 'goalPrompt' && !isGuest && (
+                    {phase === 'signup' && !isSignedIn && (
+                        <SignUpScreen key="signup" />
+                    )}
+
+                    {phase === 'goalPrompt' && isSignedIn && (
                         <GoalPromptScreen
                             key="goalPrompt"
                             onGoToGoals={handleGoToGoals}
@@ -76,7 +126,7 @@ export default function Onboarding() {
     );
 }
 
-function ResultsScreen({ answers, onNext }) {
+function ResultsScreen({ answers, onNext, showSignupHint }) {
     const { t } = useTranslation();
 
     const preferenceItems = [
@@ -128,10 +178,40 @@ function ResultsScreen({ answers, onNext }) {
                     onClick={onNext}
                     className="px-8 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors inline-flex items-center gap-2"
                 >
-                    {t('onboarding.continue')}
+                    {showSignupHint ? t('onboarding.createAccount') : t('onboarding.continue')}
                     <ArrowRight size={18} />
                 </button>
             </div>
+        </motion.div>
+    );
+}
+
+function SignUpScreen() {
+    const { t } = useTranslation();
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="max-w-lg mx-auto text-center"
+        >
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+                <UserPlus size={32} className="text-blue-600 dark:text-blue-400" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                {t('onboarding.signupTitle')}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-8">
+                {t('onboarding.signupSubtitle')}
+            </p>
+
+            <SignInButton mode="modal">
+                <button className="w-full px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors inline-flex items-center justify-center gap-2">
+                    <UserPlus size={18} />
+                    {t('onboarding.createAccount')}
+                </button>
+            </SignInButton>
         </motion.div>
     );
 }

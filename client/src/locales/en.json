@@ -22,7 +22,8 @@
     "title": "Structure Your Learning with AI",
     "subtitle": "Create personalized learning plans in seconds.",
     "cta": "Get Started",
-    "tryGuest": "Try without an account"
+    "tryGuest": "Try without an account",
+    "login": "Log in"
   },
   "dashboard": {
     "welcome": "Welcome, {{name}}!",
@@ -44,6 +45,11 @@
     "resultsTitle": "You're all set!",
     "resultsSubtitle": "Here's a summary of your learning preferences.",
     "continue": "Continue",
+    "languageTitle": "Choose your language",
+    "languageSubtitle": "You can change this later in Settings",
+    "signupTitle": "Create your account",
+    "signupSubtitle": "Sign up to save your learning preferences and start your personalized journey.",
+    "createAccount": "Sign up to continue",
     "goalTitle": "Set Your First Goal",
     "goalSubtitle": "Goals help you stay focused and build daily habits. You can always set one later.",
     "setGoalNow": "Set a Goal Now",
@@ -89,12 +95,12 @@
       "academic": "Academic studies"
     },
     "currentLevel": {
-      "question": "What's your current level?",
-      "beginner": "Beginner",
-      "elementary": "Elementary",
-      "intermediate": "Intermediate",
-      "advanced": "Advanced",
-      "expert": "Expert"
+      "question": "How much time do you devote to studying daily?",
+      "under1h": "Less than 1 hour",
+      "1-2hours": "1–2 hours",
+      "2-4hours": "2–4 hours",
+      "4-6hours": "4–6 hours",
+      "6plus": "6+ hours"
     },
     "learningStyle": {
       "question": "How do you learn best?",
@@ -425,7 +431,7 @@
     "noPreferences": "Complete the onboarding quiz to set your preferences.",
     "goToOnboarding": "Take the Quiz",
     "primaryGoal": "Primary Goal",
-    "currentLevel": "Current Level",
+    "currentLevel": "Daily Study Time",
     "learningStyle": "Learning Style",
     "preferredContent": "Preferred Content",
     "pace": "Learning Pace",

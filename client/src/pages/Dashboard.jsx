@@ -90,6 +90,26 @@ export default function Dashboard() {
         const checkOnboarding = async () => {
             try {
                 const headers = await authHeaders();
+
+                // Sync any pending onboarding answers from pre-auth quiz
+                const pending = localStorage.getItem('pendingOnboardingAnswers');
+                if (pending) {
+                    try {
+                        const data = JSON.parse(pending);
+                        const syncRes = await fetch('/api/preferences', {
+                            method: 'POST',
+                            headers: { ...headers, 'Content-Type': 'application/json' },
+                            body: JSON.stringify(data),
+                        });
+                        if (syncRes.ok) {
+                            localStorage.removeItem('pendingOnboardingAnswers');
+                            return; // Preferences synced, no need to check onboarding
+                        }
+                    } catch (syncErr) {
+                        console.error('Failed to sync pending preferences:', syncErr);
+                    }
+                }
+
                 const res = await fetch('/api/preferences', { headers });
                 if (res.status === 404) {
                     navigate('/onboarding', { replace: true });

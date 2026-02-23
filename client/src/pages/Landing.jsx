@@ -19,17 +19,26 @@ export default function Landing() {
             <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">{t('landing.subtitle')}</p>
 
             <SignedOut>
-                <SignInButton mode="modal">
-                    <button className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold text-lg hover:bg-blue-700 transition-colors">
-                        {t('landing.cta')}
-                    </button>
-                </SignInButton>
                 <button
-                    onClick={handleTryAsGuest}
-                    className="mt-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 font-medium transition-colors"
+                    onClick={() => navigate('/onboarding')}
+                    className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold text-lg hover:bg-blue-700 transition-colors"
                 >
-                    {t('landing.tryGuest')}
+                    {t('landing.cta')}
                 </button>
+                <div className="mt-4 flex items-center gap-4">
+                    <button
+                        onClick={handleTryAsGuest}
+                        className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 font-medium transition-colors"
+                    >
+                        {t('landing.tryGuest')}
+                    </button>
+                    <span className="text-gray-300 dark:text-gray-600">|</span>
+                    <SignInButton mode="modal">
+                        <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition-colors">
+                            {t('landing.login')}
+                        </button>
+                    </SignInButton>
+                </div>
             </SignedOut>
 
             <SignedIn>
