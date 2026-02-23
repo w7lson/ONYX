@@ -31,7 +31,12 @@ app.get('/api/protected', requireAuth, (req, res) => {
     res.json({ message: 'This is a protected route', auth: req.auth });
 });
 
-import { generatePlan, getUserPlans, toggleTask } from './controllers/planController.js';
+import {
+    generatePlanFromGoal, savePlan, getUserPlans, toggleTask,
+    updatePlan, deletePlan,
+    addModule, updateModule, deleteModule, reorderModules,
+    addTask, updateTask, deleteTask
+} from './controllers/planController.js';
 import {
     getDecks, createDeck, deleteDeck,
     getDeckCards, addCard, deleteCard,
@@ -53,8 +58,18 @@ import { getOverview, getWeeklyActivity, getStudyTime, getTestScores } from './c
 
 // Plan Endpoints
 app.get('/api/plans', requireAuth, getUserPlans);
-app.post('/api/plans/generate', requireAuth, generatePlan);
+app.post('/api/plans/generate', requireAuth, generatePlanFromGoal);
+app.post('/api/plans', requireAuth, savePlan);
+app.put('/api/plans/:planId', requireAuth, updatePlan);
+app.delete('/api/plans/:planId', requireAuth, deletePlan);
 app.patch('/api/tasks/:taskId/toggle', requireAuth, toggleTask);
+app.post('/api/plans/:planId/modules', requireAuth, addModule);
+app.put('/api/modules/:moduleId', requireAuth, updateModule);
+app.delete('/api/modules/:moduleId', requireAuth, deleteModule);
+app.put('/api/plans/:planId/reorder', requireAuth, reorderModules);
+app.post('/api/modules/:moduleId/tasks', requireAuth, addTask);
+app.put('/api/tasks/:taskId', requireAuth, updateTask);
+app.delete('/api/tasks/:taskId', requireAuth, deleteTask);
 
 // Flashcard Endpoints
 app.get('/api/decks', requireAuth, getDecks);

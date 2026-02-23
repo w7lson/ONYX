@@ -97,21 +97,37 @@ export const updateGoal = async (req, res) => {
             return res.status(404).json({ error: "Goal not found" });
         }
 
+        const updateData = {
+            ...(title !== undefined && { title }),
+            ...(description !== undefined && { description }),
+            ...(focus !== undefined && { focus }),
+            ...(duration !== undefined && { duration }),
+            ...(reward !== undefined && { reward }),
+            ...(targetDate !== undefined && { targetDate: targetDate ? new Date(targetDate) : null }),
+            ...(status !== undefined && { status }),
+            ...(failureReason !== undefined && { failureReason }),
+            ...(failureLesson !== undefined && { failureLesson }),
+        };
+
+        // When reactivating, clear failure fields
+        if (status === 'active' && (existing.status === 'failed' || existing.status === 'completed')) {
+            updateData.failureReason = null;
+            updateData.failureLesson = null;
+        }
+
         const goal = await prisma.goal.update({
             where: { id: goalId },
-            data: {
-                ...(title !== undefined && { title }),
-                ...(description !== undefined && { description }),
-                ...(focus !== undefined && { focus }),
-                ...(duration !== undefined && { duration }),
-                ...(reward !== undefined && { reward }),
-                ...(targetDate !== undefined && { targetDate: targetDate ? new Date(targetDate) : null }),
-                ...(status !== undefined && { status }),
-                ...(failureReason !== undefined && { failureReason }),
-                ...(failureLesson !== undefined && { failureLesson }),
-            },
+            data: updateData,
             include: { milestones: { orderBy: { order: 'asc' } } }
         });
+
+        // Sync linked plan status with goal status
+        if (status !== undefined && status !== existing.status) {
+            await prisma.learningPlan.updateMany({
+                where: { goalId },
+                data: { status },
+            });
+        }
 
         if (status === 'completed' && existing.status !== 'completed') {
             createNotification(userId, {

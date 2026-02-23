@@ -37,6 +37,7 @@ model UserProfile {
 model LearningPlan {
   id          String   @id @default(uuid())
   userId      String
+  goalId      String?  @unique
   title       String
   description String?
   status      String   @default("active")
@@ -44,6 +45,7 @@ model LearningPlan {
   updatedAt   DateTime @updatedAt
 
   user    UserProfile @relation(fields: [userId], references: [clerkId])
+  goal    Goal?       @relation(fields: [goalId], references: [id], onDelete: SetNull)
   modules Module[]
 }
 
@@ -63,6 +65,7 @@ model Task {
   moduleId    String
   content     String
   isCompleted Boolean @default(false)
+  type        String?
 
   module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
 }
@@ -167,6 +170,7 @@ model Goal {
   user       UserProfile  @relation(fields: [userId], references: [clerkId])
   milestones Milestone[]
   habits     Habit[]
+  plan       LearningPlan?
 }
 
 model Milestone {

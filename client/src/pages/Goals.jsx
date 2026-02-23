@@ -4,8 +4,9 @@ import { useAuth } from '@clerk/clerk-react';
 import {
     Target, Dumbbell, Rocket, Trophy, Globe, BookOpen, Zap, Pencil, ArrowLeft,
     Plus, ChevronDown, Check, Briefcase, DollarSign, Heart, GraduationCap,
-    Users, Sparkles, Palette, Home, Filter, ArrowDownAZ, ArrowUpAZ
+    Users, Sparkles, Palette, Home, Filter, ArrowDownAZ, ArrowUpAZ, RotateCcw
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import GoalSpecify from '../components/Goals/GoalSpecify';
 
 const GOAL_TEMPLATES = [
@@ -108,6 +109,20 @@ export default function Goals() {
             fetchGoals();
         } catch (error) {
             console.error('Error deleting goal:', error);
+        }
+    };
+
+    const handleReactivateGoal = async (goalId) => {
+        try {
+            const headers = await authHeaders();
+            await fetch(`/api/goals/${goalId}`, {
+                method: 'PUT',
+                headers: { ...headers, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: 'active' }),
+            });
+            fetchGoals();
+        } catch (error) {
+            console.error('Error reactivating goal:', error);
         }
     };
 
@@ -326,6 +341,7 @@ export default function Goals() {
                             onToggleExpand={() => setExpandedGoalId(expandedGoalId === goal.id ? null : goal.id)}
                             onEdit={() => handleEditGoal(goal.id)}
                             onDelete={() => handleDeleteGoal(goal.id)}
+                            onReactivate={() => handleReactivateGoal(goal.id)}
                             onToggleMilestone={handleToggleMilestone}
                         />
                     ))}
@@ -350,7 +366,7 @@ export default function Goals() {
     );
 }
 
-function GoalRow({ goal, isExpanded, onToggleExpand, onEdit, onDelete, onToggleMilestone }) {
+function GoalRow({ goal, isExpanded, onToggleExpand, onEdit, onDelete, onReactivate, onToggleMilestone }) {
     const { t } = useTranslation();
     const FocusIcon = FOCUS_ICONS[goal.focus] || Target;
     const completedMilestones = goal.milestones?.filter(m => m.isCompleted).length || 0;
@@ -406,6 +422,27 @@ function GoalRow({ goal, isExpanded, onToggleExpand, onEdit, onDelete, onToggleM
                 )}
 
                 {/* Actions */}
+                {(isCompleted || isFailed) && (
+                    <button
+                        onClick={onReactivate}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
+                        title={t('goals.reactivate')}
+                    >
+                        <RotateCcw size={13} />
+                        {t('goals.reactivate')}
+                    </button>
+                )}
+
+                {!isCompleted && !isFailed && (
+                    <Link
+                        to={`/plans?goalId=${goal.id}`}
+                        className="p-2 text-gray-400 hover:text-green-500 transition-colors rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
+                        title={t('goals.generatePlan')}
+                    >
+                        <Sparkles size={16} />
+                    </Link>
+                )}
+
                 <button
                     onClick={onEdit}
                     className="p-2 text-gray-400 hover:text-blue-500 transition-colors rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
