@@ -157,9 +157,11 @@ model Goal {
   duration    String
   reward      String?
   targetDate  DateTime?
-  status      String      @default("draft")
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  status        String      @default("draft")
+  failureReason String?
+  failureLesson String?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 
   user       UserProfile  @relation(fields: [userId], references: [clerkId])
   milestones Milestone[]

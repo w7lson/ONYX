@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@clerk/clerk-react';
-import { ArrowLeft, ArrowRight, MoreVertical, Pencil, Target, CheckCircle } from 'lucide-react';
+import { ArrowLeft, ArrowRight, MoreVertical, Pencil, Target, CheckCircle, XCircle } from 'lucide-react';
 import FocusSelector from './FocusSelector';
 import MilestoneList from './MilestoneList';
 import GoalSidebar from './GoalSidebar';
@@ -39,6 +39,9 @@ export default function GoalSpecify({ goalId, onBack, onSaved }) {
     const [showGoalMenu, setShowGoalMenu] = useState(false);
     const [renaming, setRenaming] = useState(false);
     const [showFocusPicker, setShowFocusPicker] = useState(false);
+    const [showFailureForm, setShowFailureForm] = useState(false);
+    const [failureReason, setFailureReason] = useState('');
+    const [failureLesson, setFailureLesson] = useState('');
     const goalMenuRef = useRef(null);
 
     const authHeaders = useCallback(async () => {
@@ -61,16 +64,43 @@ export default function GoalSpecify({ goalId, onBack, onSaved }) {
         if (!goalId) return;
         try {
             const { headers } = await authHeaders();
-            await fetch(`/api/goals/${goalId}`, {
+            const res = await fetch(`/api/goals/${goalId}`, {
                 method: 'PUT',
                 headers: { ...headers, 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: 'completed' }),
             });
-            if (onSaved) onSaved();
+            if (res.ok && onSaved) onSaved();
         } catch (error) {
             console.error('Error completing goal:', error);
         }
     };
+
+    const handleFailGoal = async () => {
+        if (!goalId || !failureReason) return;
+        try {
+            const { headers } = await authHeaders();
+            const res = await fetch(`/api/goals/${goalId}`, {
+                method: 'PUT',
+                headers: { ...headers, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    status: 'failed',
+                    failureReason,
+                    ...(failureLesson && { failureLesson }),
+                }),
+            });
+            if (res.ok && onSaved) onSaved();
+        } catch (error) {
+            console.error('Error marking goal as failed:', error);
+        }
+    };
+
+    const FAILURE_REASONS = [
+        'lostMotivation',
+        'notEnoughTime',
+        'unrealistic',
+        'changedPriorities',
+        'other',
+    ];
 
     // Load existing goal for editing
     useEffect(() => {
@@ -88,7 +118,7 @@ export default function GoalSpecify({ goalId, onBack, onSaved }) {
                     setReward(goal.reward || '');
                     setTargetDate(goal.targetDate ? goal.targetDate.split('T')[0] : '');
                     if (goal.milestones?.length > 0) {
-                        setMilestones(goal.milestones.map(m => ({
+                        setMilestones(goal.milestones.filter(m => !m.isCompleted).map(m => ({
                             id: m.id,
                             title: m.title,
                             description: m.description || '',
@@ -341,6 +371,13 @@ export default function GoalSpecify({ goalId, onBack, onSaved }) {
                                                         <CheckCircle size={14} />
                                                         {t('goals.specify.complete')}
                                                     </button>
+                                                    <button
+                                                        onClick={() => { setShowFailureForm(true); setShowGoalMenu(false); }}
+                                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950"
+                                                    >
+                                                        <XCircle size={14} />
+                                                        {t('goals.specify.failed')}
+                                                    </button>
                                                 </>
                                             )}
                                         </div>
@@ -352,6 +389,51 @@ export default function GoalSpecify({ goalId, onBack, onSaved }) {
                             {showFocusPicker && (
                                 <div className="mb-4">
                                     <FocusSelector focus={focus} onFocusChange={(f) => { setFocus(f); setShowFocusPicker(false); }} />
+                                </div>
+                            )}
+
+                            {/* Failure reflection questionnaire */}
+                            {showFailureForm && (
+                                <div className="mb-6 p-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg">
+                                    <h3 className="text-sm font-semibold text-red-700 dark:text-red-400 mb-3">{t('goals.specify.failureTitle')}</h3>
+                                    <div className="mb-3">
+                                        <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">{t('goals.specify.failureReasonQ')}</label>
+                                        <select
+                                            value={failureReason}
+                                            onChange={(e) => setFailureReason(e.target.value)}
+                                            className="w-full px-3 py-2 rounded-lg border border-red-200 dark:border-red-800 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-red-400 text-sm"
+                                        >
+                                            <option value="">{t('goals.specify.selectReason')}</option>
+                                            {FAILURE_REASONS.map(r => (
+                                                <option key={r} value={r}>{t(`goals.specify.failureReasons.${r}`)}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">{t('goals.specify.failureLessonQ')}</label>
+                                        <textarea
+                                            value={failureLesson}
+                                            onChange={(e) => setFailureLesson(e.target.value)}
+                                            placeholder={t('goals.specify.failureLessonPlaceholder')}
+                                            rows={2}
+                                            className="w-full px-3 py-2 rounded-lg border border-red-200 dark:border-red-800 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-red-400 text-sm resize-none"
+                                        />
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={handleFailGoal}
+                                            disabled={!failureReason}
+                                            className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                        >
+                                            {t('goals.specify.submitFailure')}
+                                        </button>
+                                        <button
+                                            onClick={() => setShowFailureForm(false)}
+                                            className="px-4 py-2 text-gray-600 dark:text-gray-400 text-sm hover:text-gray-800 dark:hover:text-gray-200 transition-colors"
+                                        >
+                                            {t('goals.specify.cancel')}
+                                        </button>
+                                    </div>
                                 </div>
                             )}
 

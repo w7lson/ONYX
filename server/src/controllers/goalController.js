@@ -89,7 +89,7 @@ export const getGoal = async (req, res) => {
 export const updateGoal = async (req, res) => {
     const { userId } = req.auth;
     const { goalId } = req.params;
-    const { title, description, focus, duration, reward, targetDate, status } = req.body;
+    const { title, description, focus, duration, reward, targetDate, status, failureReason, failureLesson } = req.body;
 
     try {
         const existing = await prisma.goal.findFirst({ where: { id: goalId, userId } });
@@ -107,6 +107,8 @@ export const updateGoal = async (req, res) => {
                 ...(reward !== undefined && { reward }),
                 ...(targetDate !== undefined && { targetDate: targetDate ? new Date(targetDate) : null }),
                 ...(status !== undefined && { status }),
+                ...(failureReason !== undefined && { failureReason }),
+                ...(failureLesson !== undefined && { failureLesson }),
             },
             include: { milestones: { orderBy: { order: 'asc' } } }
         });
@@ -116,6 +118,15 @@ export const updateGoal = async (req, res) => {
                 type: 'goal_complete',
                 title: 'Goal completed!',
                 message: `You completed "${goal.title}". Great job!`,
+                link: '/goals',
+            }).catch(e => console.error('Goal notification error:', e));
+        }
+
+        if (status === 'failed' && existing.status !== 'failed') {
+            createNotification(userId, {
+                type: 'goal_failed',
+                title: 'Goal marked as failed',
+                message: `You marked "${goal.title}" as failed. Reflect and try again!`,
                 link: '/goals',
             }).catch(e => console.error('Goal notification error:', e));
         }

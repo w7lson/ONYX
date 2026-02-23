@@ -297,6 +297,7 @@
     "title": "Goals",
     "subtitle": "Set goals and build plans to achieve them.",
     "setFirstGoal": "Set Your First Goal",
+    "setGoal": "Set Your Goal",
     "emptyMessage": "You haven't set any goals yet. Start by choosing a goal to work towards.",
     "templates": "Choose a goal",
     "buildOwn": "Build your own goal",
@@ -307,6 +308,9 @@
     "open": "Open",
     "milestones": "milestones",
     "filterAll": "All",
+    "filterActive": "Active",
+    "filterCompleted": "Completed",
+    "filterFailed": "Failed",
     "sortDreamFirst": "Dream goals first",
     "sortMonthlyFirst": "Monthly goals first",
     "specifyTitle": "Specify Your Goal",
@@ -362,7 +366,21 @@
       "deletePlan": "Delete Plan",
       "rename": "Rename",
       "editFocus": "Edit Focus",
-      "complete": "Complete"
+      "complete": "Complete",
+      "failed": "Failed",
+      "failureTitle": "Why did this goal fail?",
+      "failureReasonQ": "What was the main reason?",
+      "selectReason": "Select a reason...",
+      "failureLessonQ": "What would you do differently?",
+      "failureLessonPlaceholder": "Reflect on what you learned...",
+      "failureReasons": {
+        "lostMotivation": "Lost motivation",
+        "notEnoughTime": "Not enough time",
+        "unrealistic": "Goal was unrealistic",
+        "changedPriorities": "Changed priorities",
+        "other": "Other"
+      },
+      "submitFailure": "Mark as Failed"
     },
     "templateNames": {
       "loseWeight": "Lose weight",

@@ -297,6 +297,7 @@
     "title": "Ziele",
     "subtitle": "Setze Ziele und erstelle Pläne, um sie zu erreichen.",
     "setFirstGoal": "Erstes Ziel setzen",
+    "setGoal": "Ziel setzen",
     "emptyMessage": "Du hast noch keine Ziele gesetzt. Beginne mit der Auswahl eines Ziels.",
     "templates": "Wähle ein Ziel",
     "buildOwn": "Eigenes Ziel erstellen",
@@ -307,6 +308,9 @@
     "open": "Öffnen",
     "milestones": "Meilensteine",
     "filterAll": "Alle",
+    "filterActive": "Aktiv",
+    "filterCompleted": "Abgeschlossen",
+    "filterFailed": "Gescheitert",
     "sortDreamFirst": "Traumziele zuerst",
     "sortMonthlyFirst": "Monatsziele zuerst",
     "specifyTitle": "Ziel spezifizieren",
@@ -362,7 +366,21 @@
       "deletePlan": "Plan löschen",
       "rename": "Umbenennen",
       "editFocus": "Fokus ändern",
-      "complete": "Abschließen"
+      "complete": "Abschließen",
+      "failed": "Gescheitert",
+      "failureTitle": "Warum ist dieses Ziel gescheitert?",
+      "failureReasonQ": "Was war der Hauptgrund?",
+      "selectReason": "Grund auswählen...",
+      "failureLessonQ": "Was würdest du anders machen?",
+      "failureLessonPlaceholder": "Reflektiere, was du gelernt hast...",
+      "failureReasons": {
+        "lostMotivation": "Motivation verloren",
+        "notEnoughTime": "Nicht genug Zeit",
+        "unrealistic": "Ziel war unrealistisch",
+        "changedPriorities": "Prioritäten geändert",
+        "other": "Sonstiges"
+      },
+      "submitFailure": "Als gescheitert markieren"
     },
     "templateNames": {
       "loseWeight": "Abnehmen",

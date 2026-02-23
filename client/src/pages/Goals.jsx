@@ -47,6 +47,7 @@ export default function Goals() {
 
     // Filter & sort
     const [focusFilter, setFocusFilter] = useState('all');
+    const [statusFilter, setStatusFilter] = useState('active');
     const [sortOrder, setSortOrder] = useState('dreamFirst'); // 'dreamFirst' | 'monthlyFirst'
 
     const authHeaders = useCallback(async () => {
@@ -113,10 +114,18 @@ export default function Goals() {
     // Get unique focus categories from goals
     const focusCategories = [...new Set(goals.map(g => g.focus))];
 
-    // Filter goals
-    let filteredGoals = focusFilter === 'all'
-        ? goals
-        : goals.filter(g => g.focus === focusFilter);
+    // Filter goals by status
+    let filteredGoals = goals.filter(g => {
+        if (statusFilter === 'active') return g.status !== 'completed' && g.status !== 'failed';
+        if (statusFilter === 'completed') return g.status === 'completed';
+        if (statusFilter === 'failed') return g.status === 'failed';
+        return true;
+    });
+
+    // Filter by focus
+    if (focusFilter !== 'all') {
+        filteredGoals = filteredGoals.filter(g => g.focus === focusFilter);
+    }
 
     // Sort goals
     filteredGoals = [...filteredGoals].sort((a, b) => {
@@ -241,6 +250,27 @@ export default function Goals() {
 
             {/* Filter & Sort Bar */}
             <div className="flex flex-wrap items-center gap-2 mb-6">
+                {/* Status filter */}
+                <div className="flex items-center gap-1.5">
+                    {['active', 'all', 'completed', 'failed'].map(s => (
+                        <button
+                            key={s}
+                            onClick={() => setStatusFilter(s)}
+                            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                                statusFilter === s
+                                    ? s === 'completed' ? 'bg-green-600 text-white'
+                                    : s === 'failed' ? 'bg-red-600 text-white'
+                                    : 'bg-blue-600 text-white'
+                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                            }`}
+                        >
+                            {t(`goals.filter${s.charAt(0).toUpperCase() + s.slice(1)}`)}
+                        </button>
+                    ))}
+                </div>
+
+                <div className="h-5 w-px bg-gray-200 dark:bg-gray-700 mx-1" />
+
                 {/* Focus filter */}
                 <div className="flex items-center gap-1.5">
                     <Filter size={14} className="text-gray-400" />
@@ -286,19 +316,36 @@ export default function Goals() {
             </div>
 
             {/* Goals Table */}
-            <div className="space-y-3">
-                {filteredGoals.map(goal => (
-                    <GoalRow
-                        key={goal.id}
-                        goal={goal}
-                        isExpanded={expandedGoalId === goal.id}
-                        onToggleExpand={() => setExpandedGoalId(expandedGoalId === goal.id ? null : goal.id)}
-                        onEdit={() => handleEditGoal(goal.id)}
-                        onDelete={() => handleDeleteGoal(goal.id)}
-                        onToggleMilestone={handleToggleMilestone}
-                    />
-                ))}
-            </div>
+            {filteredGoals.length > 0 ? (
+                <div className="space-y-3">
+                    {filteredGoals.map(goal => (
+                        <GoalRow
+                            key={goal.id}
+                            goal={goal}
+                            isExpanded={expandedGoalId === goal.id}
+                            onToggleExpand={() => setExpandedGoalId(expandedGoalId === goal.id ? null : goal.id)}
+                            onEdit={() => handleEditGoal(goal.id)}
+                            onDelete={() => handleDeleteGoal(goal.id)}
+                            onToggleMilestone={handleToggleMilestone}
+                        />
+                    ))}
+                </div>
+            ) : (
+                <div className="flex flex-col items-center justify-center py-16">
+                    <div className="w-20 h-20 rounded-2xl bg-blue-50 dark:bg-blue-950 flex items-center justify-center mb-6">
+                        <Target size={40} className="text-blue-500" />
+                    </div>
+                    <p className="text-gray-500 dark:text-gray-400 text-center mb-8 max-w-md">
+                        {t('goals.emptyMessage')}
+                    </p>
+                    <button
+                        onClick={() => setStep('templates')}
+                        className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg"
+                    >
+                        {t('goals.setGoal')}
+                    </button>
+                </div>
+            )}
         </div>
     );
 }
@@ -310,13 +357,24 @@ function GoalRow({ goal, isExpanded, onToggleExpand, onEdit, onDelete, onToggleM
     const totalMilestones = goal.milestones?.length || 0;
     const progress = totalMilestones > 0 ? Math.round((completedMilestones / totalMilestones) * 100) : 0;
 
+    const isCompleted = goal.status === 'completed';
+    const isFailed = goal.status === 'failed';
+
     return (
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+        <div className={`rounded-xl overflow-hidden border ${
+            isCompleted
+                ? 'bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800'
+                : isFailed
+                    ? 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800'
+                    : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700'
+        }`}>
             {/* Goal header row */}
             <div className="flex items-center gap-4 px-5 py-4">
                 {/* Focus icon */}
-                <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-950 flex items-center justify-center shrink-0">
-                    <FocusIcon size={20} className="text-blue-500" />
+                <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
+                    isCompleted ? 'bg-green-100 dark:bg-green-900' : isFailed ? 'bg-red-100 dark:bg-red-900' : 'bg-blue-50 dark:bg-blue-950'
+                }`}>
+                    <FocusIcon size={20} className={isCompleted ? 'text-green-500' : isFailed ? 'text-red-500' : 'text-blue-500'} />
                 </div>
 
                 {/* Title + meta */}

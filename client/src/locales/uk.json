@@ -297,6 +297,7 @@
     "title": "Цілі",
     "subtitle": "Встановлюйте цілі та створюйте плани для їх досягнення.",
     "setFirstGoal": "Встановити першу ціль",
+    "setGoal": "Встановити ціль",
     "emptyMessage": "У вас ще немає цілей. Почніть з вибору цілі, до якої хочете рухатися.",
     "templates": "Оберіть ціль",
     "buildOwn": "Створити свою ціль",
@@ -307,6 +308,9 @@
     "open": "Відкрити",
     "milestones": "етапів",
     "filterAll": "Усі",
+    "filterActive": "Активні",
+    "filterCompleted": "Завершені",
+    "filterFailed": "Невдалі",
     "sortDreamFirst": "Спочатку мрії",
     "sortMonthlyFirst": "Спочатку місячні",
     "specifyTitle": "Уточніть вашу ціль",
@@ -362,7 +366,21 @@
       "deletePlan": "Видалити план",
       "rename": "Перейменувати",
       "editFocus": "Змінити фокус",
-      "complete": "Завершити"
+      "complete": "Завершити",
+      "failed": "Невдала",
+      "failureTitle": "Чому ця ціль не вдалася?",
+      "failureReasonQ": "Яка була основна причина?",
+      "selectReason": "Оберіть причину...",
+      "failureLessonQ": "Що б ви зробили інакше?",
+      "failureLessonPlaceholder": "Поміркуйте, що ви дізналися...",
+      "failureReasons": {
+        "lostMotivation": "Втратив мотивацію",
+        "notEnoughTime": "Недостатньо часу",
+        "unrealistic": "Ціль була нереалістичною",
+        "changedPriorities": "Змінилися пріоритети",
+        "other": "Інше"
+      },
+      "submitFailure": "Позначити як невдалу"
     },
     "templateNames": {
       "loseWeight": "Схуднути",
