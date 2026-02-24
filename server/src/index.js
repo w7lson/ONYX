@@ -45,7 +45,7 @@ import {
 import { saveSession, getSessions } from './controllers/pomodoroController.js';
 import { generateTest, submitTest, getUserTests, getTest, deleteTest } from './controllers/testController.js';
 import { createGoal, getUserGoals, getGoal, updateGoal, deleteGoal, updateMilestones, toggleMilestone } from './controllers/goalController.js';
-import { savePreferences, getPreferences, updatePreferences } from './controllers/preferencesController.js';
+import { savePreferences, getPreferences, updatePreferences, getWelcomeGuideStatus, completeWelcomeGuide } from './controllers/preferencesController.js';
 import {
     generateHabits, createHabit, getUserHabits, getTodayHabits,
     completeHabit, uncompleteHabit, updateHabit, deleteHabit,
@@ -97,6 +97,10 @@ app.delete('/api/tests/:testId', requireAuth, deleteTest);
 app.post('/api/preferences', requireAuth, savePreferences);
 app.get('/api/preferences', requireAuth, getPreferences);
 app.patch('/api/preferences', requireAuth, updatePreferences);
+
+// Welcome Guide Endpoints
+app.get('/api/welcome-guide', requireAuth, getWelcomeGuideStatus);
+app.post('/api/welcome-guide/complete', requireAuth, completeWelcomeGuide);
 
 // Goal Endpoints
 app.post('/api/goals', requireAuth, createGoal);

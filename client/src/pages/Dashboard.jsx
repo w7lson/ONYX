@@ -78,6 +78,7 @@ export default function Dashboard() {
     const [showCreate, setShowCreate] = useState(false);
     const [showManage, setShowManage] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [activeGoals, setActiveGoals] = useState([]);
 
     const authHeaders = useCallback(async () => {
         const token = await getToken();
@@ -151,7 +152,9 @@ export default function Dashboard() {
             let dueCards = 0;
             if (goalsRes.ok) {
                 const goals = await goalsRes.json();
-                activeGoals = goals.filter(g => g.status === 'active').length;
+                const active = goals.filter(g => g.status === 'active');
+                activeGoals = active.length;
+                setActiveGoals(active);
             }
             if (decksRes.ok) {
                 const decks = await decksRes.json();
@@ -354,6 +357,7 @@ export default function Dashboard() {
                 <HabitCreateModal
                     onClose={() => setShowCreate(false)}
                     onCreate={handleCreateHabit}
+                    goals={activeGoals}
                 />
             )}
         </div>

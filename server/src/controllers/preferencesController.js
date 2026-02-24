@@ -97,6 +97,7 @@ export const getPreferences = async (req, res) => {
                 reviewFrequency: true,
                 language: true,
                 onboardingDone: true,
+                welcomeGuideCompleted: true,
             },
         });
 
@@ -108,5 +109,54 @@ export const getPreferences = async (req, res) => {
     } catch (error) {
         console.error("Error fetching preferences:", error);
         res.status(500).json({ error: "Failed to fetch preferences" });
+    }
+};
+
+export const getWelcomeGuideStatus = async (req, res) => {
+    const { userId } = req.auth;
+
+    try {
+        const profile = await prisma.userProfile.findUnique({
+            where: { clerkId: userId },
+            select: { welcomeGuideCompleted: true },
+        });
+
+        if (profile?.welcomeGuideCompleted) {
+            return res.json({ completed: true, tasks: {} });
+        }
+
+        const [goalCount, habitCount, planCount] = await Promise.all([
+            prisma.goal.count({ where: { userId } }),
+            prisma.habit.count({ where: { userId, isArchived: false } }),
+            prisma.learningPlan.count({ where: { userId } }),
+        ]);
+
+        res.json({
+            completed: false,
+            tasks: {
+                hasGoal: goalCount > 0,
+                hasHabit: habitCount > 0,
+                hasPlan: planCount > 0,
+            },
+        });
+    } catch (error) {
+        console.error("Error fetching welcome guide status:", error);
+        res.status(500).json({ error: "Failed to fetch welcome guide status" });
+    }
+};
+
+export const completeWelcomeGuide = async (req, res) => {
+    const { userId } = req.auth;
+
+    try {
+        await prisma.userProfile.update({
+            where: { clerkId: userId },
+            data: { welcomeGuideCompleted: true },
+        });
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error("Error completing welcome guide:", error);
+        res.status(500).json({ error: "Failed to complete welcome guide" });
     }
 };

@@ -24,6 +24,7 @@ model UserProfile {
   reviewFrequency  String?
   language         String?
   onboardingDone   Boolean           @default(false)
+  welcomeGuideCompleted Boolean      @default(false)
 
   plans            LearningPlan[]
   decks            Deck[]

@@ -184,11 +184,22 @@ export const completeHabit = async (req, res) => {
             return res.status(404).json({ error: "Habit not found" });
         }
 
-        const completion = await prisma.habitCompletion.upsert({
-            where: { habitId_date: { habitId, date: today } },
-            update: {},
-            create: { habitId, date: today },
-        });
+        let completion;
+        try {
+            completion = await prisma.habitCompletion.upsert({
+                where: { habitId_date: { habitId, date: today } },
+                update: {},
+                create: { habitId, date: today },
+            });
+        } catch (upsertError) {
+            if (upsertError.code === 'P2002') {
+                completion = await prisma.habitCompletion.findUnique({
+                    where: { habitId_date: { habitId, date: today } },
+                });
+            } else {
+                throw upsertError;
+            }
+        }
 
         // Check for streak milestones (fire-and-forget)
         try {

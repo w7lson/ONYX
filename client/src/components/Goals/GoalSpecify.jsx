@@ -1,10 +1,11 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@clerk/clerk-react';
-import { ArrowLeft, ArrowRight, MoreVertical, Pencil, Target, CheckCircle, XCircle, RotateCcw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, MoreVertical, Pencil, Target, CheckCircle, XCircle, RotateCcw, X, Plus } from 'lucide-react';
 import FocusSelector from './FocusSelector';
 import MilestoneList from './MilestoneList';
 import GoalSidebar from './GoalSidebar';
+import TemplateBrowser from './TemplateBrowser';
 
 const DURATION_OPTIONS = [
     { key: 'dream', label: '5+ years' },
@@ -14,9 +15,13 @@ const DURATION_OPTIONS = [
     { key: 'monthly', label: '1-6 months' },
 ];
 
-export default function GoalSpecify({ goalId, onBack, onSaved }) {
+export default function GoalSpecify({ goalId, templateKey, templateData, onBack, onSaved }) {
     const { t } = useTranslation();
     const { getToken } = useAuth();
+
+    // Track whether template is applied
+    const [isTemplateApplied, setIsTemplateApplied] = useState(false);
+    const [showTemplateBrowser, setShowTemplateBrowser] = useState(false);
 
     // Wizard step: 1 = goal text, 2 = duration, 3 = milestones
     const [step, setStep] = useState(1);
@@ -28,6 +33,54 @@ export default function GoalSpecify({ goalId, onBack, onSaved }) {
     const [milestones, setMilestones] = useState([
         { id: `temp-${Date.now()}`, title: 'First milestone', description: '', reward: '', targetDate: '', order: 0 },
     ]);
+
+    // Apply template data on mount (only for new goals with a template)
+    useEffect(() => {
+        if (!goalId && templateData) {
+            setFocus(templateData.focus);
+            setDuration(templateData.duration);
+            setGoalTitle(t(templateData.titleKey));
+            setMilestones(
+                templateData.milestoneKeys.map((key, i) => ({
+                    id: `temp-${Date.now()}-${i}`,
+                    title: t(key),
+                    description: '',
+                    reward: '',
+                    targetDate: '',
+                    order: i,
+                }))
+            );
+            setIsTemplateApplied(true);
+            setStep(3); // Skip to milestones since everything is pre-filled
+        }
+    }, []); // Run once on mount
+
+    const handleRemoveTemplate = () => {
+        setGoalTitle('');
+        setMilestones([
+            { id: `temp-${Date.now()}`, title: '', description: '', reward: '', targetDate: '', order: 0 },
+        ]);
+        setIsTemplateApplied(false);
+    };
+
+    const handleApplyBrowserTemplate = (templateGoal) => {
+        setFocus(templateGoal.focus);
+        setDuration(templateGoal.duration);
+        setGoalTitle(t(templateGoal.titleKey));
+        setMilestones(
+            templateGoal.milestoneKeys.map((key, i) => ({
+                id: `temp-${Date.now()}-${i}`,
+                title: t(key),
+                description: '',
+                reward: '',
+                targetDate: '',
+                order: i,
+            }))
+        );
+        setIsTemplateApplied(true);
+        setShowTemplateBrowser(false);
+        setStep(3);
+    };
 
     // Sidebar state
     const [description, setDescription] = useState('');
@@ -258,10 +311,10 @@ export default function GoalSpecify({ goalId, onBack, onSaved }) {
             {/* Focus bar */}
             <FocusSelector focus={focus} onFocusChange={setFocus} />
 
-            {/* 75/25 layout */}
+            {/* 75/25 layout (full width when template browser is open) */}
             <div className="flex gap-6">
-                {/* Left: Questions (75%) */}
-                <div className="w-3/4">
+                {/* Left: Questions */}
+                <div className={showTemplateBrowser ? 'w-full' : 'w-3/4'}>
                     {/* Step 1: Goal text */}
                     {step === 1 && (
                         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-6">
@@ -356,30 +409,53 @@ export default function GoalSpecify({ goalId, onBack, onSaved }) {
                                     </p>
                                 </div>
                                 <div ref={goalMenuRef} className="relative ml-2">
-                                    <button
-                                        onClick={() => setShowGoalMenu(!showGoalMenu)}
-                                        className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
-                                    >
-                                        <MoreVertical size={18} />
-                                    </button>
-                                    {showGoalMenu && (
-                                        <div className="absolute right-0 top-full mt-1 z-20 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-1 min-w-[180px]">
+                                    {/* Remove template button (replaces 3-dots for unsaved templates) */}
+                                    {!goalId && isTemplateApplied && (
+                                        <button
+                                            onClick={handleRemoveTemplate}
+                                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/30 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
+                                        >
+                                            <X size={14} />
+                                            {t('goals.removeTemplate')}
+                                        </button>
+                                    )}
+
+                                    {/* Add a template button (shows after removing template) */}
+                                    {!goalId && !isTemplateApplied && (
+                                        <button
+                                            onClick={() => setShowTemplateBrowser(true)}
+                                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/30 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
+                                        >
+                                            <Plus size={14} />
+                                            {t('goals.addTemplate')}
+                                        </button>
+                                    )}
+
+                                    {/* 3-dots menu (only for saved goals) */}
+                                    {goalId && (
+                                        <>
                                             <button
-                                                onClick={() => { setRenaming(true); setShowGoalMenu(false); }}
-                                                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                                                onClick={() => setShowGoalMenu(!showGoalMenu)}
+                                                className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
                                             >
-                                                <Pencil size={14} />
-                                                {t('goals.specify.rename')}
+                                                <MoreVertical size={18} />
                                             </button>
-                                            <button
-                                                onClick={() => { setShowFocusPicker(!showFocusPicker); setShowGoalMenu(false); }}
-                                                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
-                                            >
-                                                <Target size={14} />
-                                                {t('goals.specify.editFocus')}
-                                            </button>
-                                            {goalId && (
-                                                <>
+                                            {showGoalMenu && (
+                                                <div className="absolute right-0 top-full mt-1 z-20 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-1 min-w-[180px]">
+                                                    <button
+                                                        onClick={() => { setRenaming(true); setShowGoalMenu(false); }}
+                                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                                                    >
+                                                        <Pencil size={14} />
+                                                        {t('goals.specify.rename')}
+                                                    </button>
+                                                    <button
+                                                        onClick={() => { setShowFocusPicker(!showFocusPicker); setShowGoalMenu(false); }}
+                                                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                                                    >
+                                                        <Target size={14} />
+                                                        {t('goals.specify.editFocus')}
+                                                    </button>
                                                     <hr className="my-1 border-gray-100 dark:border-gray-800" />
                                                     {(goalStatus === 'completed' || goalStatus === 'failed') ? (
                                                         <button
@@ -407,9 +483,9 @@ export default function GoalSpecify({ goalId, onBack, onSaved }) {
                                                             </button>
                                                         </>
                                                     )}
-                                                </>
+                                                </div>
                                             )}
-                                        </div>
+                                        </>
                                     )}
                                 </div>
                             </div>
@@ -418,6 +494,16 @@ export default function GoalSpecify({ goalId, onBack, onSaved }) {
                             {showFocusPicker && (
                                 <div className="mb-4">
                                     <FocusSelector focus={focus} onFocusChange={(f) => { setFocus(f); setShowFocusPicker(false); }} />
+                                </div>
+                            )}
+
+                            {/* Inline template browser */}
+                            {showTemplateBrowser && (
+                                <div className="mb-4">
+                                    <TemplateBrowser
+                                        onSelect={handleApplyBrowserTemplate}
+                                        onClose={() => setShowTemplateBrowser(false)}
+                                    />
                                 </div>
                             )}
 
@@ -481,8 +567,8 @@ export default function GoalSpecify({ goalId, onBack, onSaved }) {
                     )}
                 </div>
 
-                {/* Right: Sidebar (25%) */}
-                <div className="w-1/4">
+                {/* Right: Sidebar (25%) — hidden when template browser is open */}
+                {!showTemplateBrowser && <div className="w-1/4">
                     <GoalSidebar
                         description={description}
                         reward={reward}
@@ -494,7 +580,7 @@ export default function GoalSpecify({ goalId, onBack, onSaved }) {
                         onSave={handleSave}
                         saving={saving}
                     />
-                </div>
+                </div>}
             </div>
         </div>
     );

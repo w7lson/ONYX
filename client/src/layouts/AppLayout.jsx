@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import { UserButton, SignInButton } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
 import Sidebar from '../components/Sidebar';
+import WelcomeGuide from '../components/WelcomeGuide';
 import { useGuest } from '../contexts/GuestContext';
 
 export default function AppLayout() {
@@ -27,6 +28,7 @@ export default function AppLayout() {
                     <Outlet />
                 </main>
             </div>
+            {!isGuest && <WelcomeGuide />}
         </div>
     );
 }

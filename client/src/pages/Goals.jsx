@@ -18,6 +18,48 @@ const GOAL_TEMPLATES = [
     { key: 'productivity', icon: Zap },
 ];
 
+const TEMPLATE_DATA = {
+    loseWeight: {
+        focus: 'healthFitness',
+        duration: 'monthly',
+        titleKey: 'goals.templateData.loseWeight.title',
+        milestoneKeys: [
+            'goals.templateData.loseWeight.m1',
+            'goals.templateData.loseWeight.m2',
+            'goals.templateData.loseWeight.m3',
+            'goals.templateData.loseWeight.m4',
+            'goals.templateData.loseWeight.m5',
+            'goals.templateData.loseWeight.m6',
+        ],
+    },
+    learnLanguage: {
+        focus: 'educationLearning',
+        duration: 'shortTerm',
+        titleKey: 'goals.templateData.learnLanguage.title',
+        milestoneKeys: [
+            'goals.templateData.learnLanguage.m1',
+            'goals.templateData.learnLanguage.m2',
+            'goals.templateData.learnLanguage.m3',
+            'goals.templateData.learnLanguage.m4',
+            'goals.templateData.learnLanguage.m5',
+            'goals.templateData.learnLanguage.m6',
+        ],
+    },
+    readMore: {
+        focus: 'personalGrowth',
+        duration: 'monthly',
+        titleKey: 'goals.templateData.readMore.title',
+        milestoneKeys: [
+            'goals.templateData.readMore.m1',
+            'goals.templateData.readMore.m2',
+            'goals.templateData.readMore.m3',
+            'goals.templateData.readMore.m4',
+            'goals.templateData.readMore.m5',
+            'goals.templateData.readMore.m6',
+        ],
+    },
+};
+
 const FOCUS_ICONS = {
     careerWork: Briefcase,
     moneyFinance: DollarSign,
@@ -44,6 +86,7 @@ export default function Goals() {
     const [step, setStep] = useState('loading'); // 'loading' | 'list' | 'templates' | 'specify'
     const [goals, setGoals] = useState([]);
     const [editingGoalId, setEditingGoalId] = useState(null);
+    const [selectedTemplate, setSelectedTemplate] = useState(null);
     const [expandedGoalId, setExpandedGoalId] = useState(null);
 
     // Filter & sort
@@ -204,7 +247,7 @@ export default function Goals() {
                     {GOAL_TEMPLATES.map(({ key, icon: Icon }) => (
                         <button
                             key={key}
-                            onClick={() => { setEditingGoalId(null); setStep('specify'); }}
+                            onClick={() => { setEditingGoalId(null); setSelectedTemplate(key); setStep('specify'); }}
                             className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-5 text-left hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 transition-all cursor-pointer"
                         >
                             <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950 flex items-center justify-center mb-3">
@@ -218,7 +261,7 @@ export default function Goals() {
                 </div>
 
                 <button
-                    onClick={() => { setEditingGoalId(null); setStep('specify'); }}
+                    onClick={() => { setEditingGoalId(null); setSelectedTemplate(null); setStep('specify'); }}
                     className="w-full bg-white dark:bg-gray-900 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600 p-5 text-left hover:border-blue-400 dark:hover:border-blue-600 transition-all cursor-pointer"
                 >
                     <div className="flex items-center gap-4">
@@ -241,7 +284,9 @@ export default function Goals() {
             <div className="max-w-6xl mx-auto p-6">
                 <GoalSpecify
                     goalId={editingGoalId}
-                    onBack={() => { setEditingGoalId(null); setStep(goals.length > 0 ? 'list' : 'empty'); }}
+                    templateKey={selectedTemplate}
+                    templateData={selectedTemplate ? TEMPLATE_DATA[selectedTemplate] : null}
+                    onBack={() => { setEditingGoalId(null); setSelectedTemplate(null); setStep(goals.length > 0 ? 'list' : 'empty'); }}
                     onSaved={handleGoalSaved}
                 />
             </div>

@@ -440,6 +440,8 @@
       },
       "submitFailure": "Mark as Failed"
     },
+    "removeTemplate": "Remove template",
+    "addTemplate": "Add a template",
     "templateNames": {
       "loseWeight": "Lose weight",
       "sideHustle": "Start a side hustle",
@@ -447,6 +449,250 @@
       "learnLanguage": "Learn a new language",
       "readMore": "Read more books",
       "productivity": "Improve productivity"
+    },
+    "templateData": {
+      "loseWeight": {
+        "title": "Lose 10 kilos",
+        "m1": "Research and create a dietary/nutrition plan that achieves your objective",
+        "m2": "Get a health check-up and identify critical weight loss data (BMR, body fat %, etc.)",
+        "m3": "Research and create an exercise plan that achieves your objective",
+        "m4": "Remove problematic foods from the pantry, freezer, and refrigerator",
+        "m5": "Set up a weekly meal prep routine",
+        "m6": "Track daily calorie intake for 1 week"
+      },
+      "learnLanguage": {
+        "title": "Learn a new language to conversational level",
+        "m1": "Choose a language and find learning resources (apps, courses, books)",
+        "m2": "Learn the 500 most common words and basic grammar",
+        "m3": "Complete a beginner course or textbook",
+        "m4": "Start daily practice with native content (podcasts, videos)",
+        "m5": "Have your first conversation with a native speaker",
+        "m6": "Pass a beginner-level proficiency test"
+      },
+      "readMore": {
+        "title": "Read 12 books this year",
+        "m1": "Create a reading list of 12+ books across different genres",
+        "m2": "Set a daily reading habit (at least 30 minutes per day)",
+        "m3": "Finish your first book and write a short review",
+        "m4": "Join a book club or online reading community",
+        "m5": "Complete 6 books (halfway checkpoint)",
+        "m6": "Write short notes or takeaways for each book you finish"
+      }
+    },
+    "templateBrowser": {
+      "title": "Choose a Template",
+      "allCategories": "All Categories",
+      "selectTopic": "Select a topic to see goals",
+      "milestones": "milestones",
+      "topics": {
+        "interpersonalSkills": "Interpersonal Skills",
+        "jobsEmployment": "Jobs & Employment",
+        "weightManagement": "Weight Management",
+        "exerciseTraining": "Exercise & Training",
+        "languages": "Languages",
+        "skillsDevelopment": "Skills Development",
+        "readingKnowledge": "Reading & Knowledge",
+        "productivity": "Productivity",
+        "saving": "Saving",
+        "budgetingInvesting": "Budgeting & Investing"
+      },
+      "careerWork": {
+        "interpersonalSkills": {
+          "publicSpeaker": {
+            "title": "Become a proficient public speaker",
+            "m1": "Speak in front of your first small group (5-10 people)",
+            "m2": "READ: The Wealthy Speaker by Jane Atkinson",
+            "m3": "Join a local Toastmasters club or speaking group",
+            "m4": "Prepare and deliver a 5-minute structured speech",
+            "m5": "Record yourself speaking and review for improvements",
+            "m6": "Speak in front of 25+ people at an event or meeting"
+          },
+          "negotiation": {
+            "title": "Improve sales, negotiation, and persuasive skills",
+            "m1": "READ: Never Split the Difference by Chris Voss",
+            "m2": "Practice active listening techniques in daily conversations",
+            "m3": "Role-play a negotiation scenario with a friend or mentor",
+            "m4": "Successfully negotiate a real deal (salary, contract, purchase)",
+            "m5": "Complete an online course on persuasion or sales techniques"
+          }
+        },
+        "jobsEmployment": {
+          "newJob": {
+            "title": "Land a new job in my field",
+            "m1": "Update resume and LinkedIn profile",
+            "m2": "Research and list 20 target companies",
+            "m3": "Prepare answers for common interview questions",
+            "m4": "Apply to at least 5 positions per week",
+            "m5": "Network with 3 people in your target industry",
+            "m6": "Complete a mock interview with feedback"
+          },
+          "promotion": {
+            "title": "Get a promotion at work",
+            "m1": "Schedule a meeting with your manager to discuss growth path",
+            "m2": "Identify and close 2-3 key skill gaps for the next level",
+            "m3": "Take on a high-visibility project or initiative",
+            "m4": "Document your achievements and impact metrics",
+            "m5": "Find a mentor in a senior role and meet regularly"
+          }
+        }
+      },
+      "healthFitness": {
+        "weightManagement": {
+          "loseWeight": {
+            "title": "Lose 10 kilos",
+            "m1": "Research and create a dietary/nutrition plan",
+            "m2": "Get a health check-up and identify critical data (BMR, body fat %)",
+            "m3": "Research and create an exercise plan",
+            "m4": "Remove problematic foods from the pantry and refrigerator",
+            "m5": "Set up a weekly meal prep routine",
+            "m6": "Track daily calorie intake for 1 week"
+          },
+          "healthyEating": {
+            "title": "Build healthy eating habits",
+            "m1": "Track your current eating habits for one week",
+            "m2": "Plan balanced meals for each day of the week",
+            "m3": "Learn to cook 5 healthy go-to recipes",
+            "m4": "Replace processed snacks with whole food alternatives",
+            "m5": "Maintain a consistent meal schedule for 30 days"
+          }
+        },
+        "exerciseTraining": {
+          "workoutRoutine": {
+            "title": "Start a consistent workout routine",
+            "m1": "Choose a workout program that fits your schedule",
+            "m2": "Set up a home gym or join a local gym",
+            "m3": "Complete workouts 3x per week for the first month",
+            "m4": "Track your exercises, sets, and reps in a log",
+            "m5": "Increase workout intensity or add a new exercise type"
+          },
+          "run5k": {
+            "title": "Run a 5K race",
+            "m1": "Get proper running shoes fitted at a specialty store",
+            "m2": "Start a Couch to 5K (C25K) training program",
+            "m3": "Run continuously for 15 minutes without stopping",
+            "m4": "Complete a practice 5K run on your own",
+            "m5": "Register for an official 5K race event",
+            "m6": "Complete the race and set your baseline time"
+          }
+        }
+      },
+      "educationLearning": {
+        "languages": {
+          "learnLanguage": {
+            "title": "Learn a new language to conversational level",
+            "m1": "Choose a language and find learning resources",
+            "m2": "Learn the 500 most common words and basic grammar",
+            "m3": "Complete a beginner course or textbook",
+            "m4": "Start daily practice with native content (podcasts, videos)",
+            "m5": "Have your first conversation with a native speaker",
+            "m6": "Pass a beginner-level proficiency test"
+          },
+          "proficiencyExam": {
+            "title": "Pass a language proficiency exam",
+            "m1": "Research exam requirements and choose a target level",
+            "m2": "Take a practice test to assess your starting point",
+            "m3": "Create a study schedule covering all exam sections",
+            "m4": "Complete focused practice on your weakest area",
+            "m5": "Take 3 full-length practice exams under timed conditions"
+          }
+        },
+        "skillsDevelopment": {
+          "onlineCert": {
+            "title": "Complete an online certification",
+            "m1": "Research certifications relevant to your career goals",
+            "m2": "Enroll in the course and set a completion deadline",
+            "m3": "Complete 50% of the coursework",
+            "m4": "Build a project or portfolio piece using new skills",
+            "m5": "Pass the certification exam"
+          },
+          "learnToCode": {
+            "title": "Learn to code",
+            "m1": "Choose a programming language and learning platform",
+            "m2": "Complete an introductory course (variables, loops, functions)",
+            "m3": "Build your first small project (calculator, to-do app)",
+            "m4": "Learn version control with Git and GitHub",
+            "m5": "Contribute to an open-source project or build a portfolio site",
+            "m6": "Complete a capstone project that solves a real problem"
+          }
+        }
+      },
+      "personalGrowth": {
+        "readingKnowledge": {
+          "read12Books": {
+            "title": "Read 12 books this year",
+            "m1": "Create a reading list of 12+ books across different genres",
+            "m2": "Set a daily reading habit (at least 30 minutes per day)",
+            "m3": "Finish your first book and write a short review",
+            "m4": "Join a book club or online reading community",
+            "m5": "Complete 6 books (halfway checkpoint)",
+            "m6": "Write short notes or takeaways for each book you finish"
+          },
+          "journaling": {
+            "title": "Develop a daily journaling habit",
+            "m1": "Choose a journaling format (gratitude, free-write, prompts)",
+            "m2": "Write for at least 5 minutes every morning for 7 days",
+            "m3": "Experiment with different journaling methods",
+            "m4": "Review your entries weekly to identify patterns",
+            "m5": "Maintain a 30-day unbroken journaling streak"
+          }
+        },
+        "productivity": {
+          "timeManagement": {
+            "title": "Master time management",
+            "m1": "Track how you spend your time for one full week",
+            "m2": "Identify and eliminate your top 3 time-wasting activities",
+            "m3": "Implement a time-blocking system for your work day",
+            "m4": "Learn and apply the Eisenhower Matrix for task prioritization",
+            "m5": "Maintain your productivity system consistently for 30 days"
+          },
+          "morningRoutine": {
+            "title": "Build a consistent morning routine",
+            "m1": "Define your ideal morning routine (exercise, reading, planning)",
+            "m2": "Set a consistent wake-up time and stick to it for 7 days",
+            "m3": "Add one healthy habit to your morning (meditation, stretching)",
+            "m4": "Prepare the night before (clothes, meals, tasks for the day)",
+            "m5": "Complete your full morning routine for 21 consecutive days"
+          }
+        }
+      },
+      "moneyFinance": {
+        "saving": {
+          "emergencyFund": {
+            "title": "Build a 3-month emergency fund",
+            "m1": "Calculate your monthly essential expenses",
+            "m2": "Open a dedicated high-yield savings account",
+            "m3": "Set up automatic monthly transfers to your savings",
+            "m4": "Save your first month's worth of expenses",
+            "m5": "Reach the full 3-month emergency fund target"
+          },
+          "majorPurchase": {
+            "title": "Save for a major purchase",
+            "m1": "Define exactly what you're saving for and the total cost",
+            "m2": "Set a target date and calculate monthly savings needed",
+            "m3": "Cut one unnecessary subscription or expense",
+            "m4": "Reach 50% of your savings target",
+            "m5": "Reach 100% of your savings target"
+          }
+        },
+        "budgetingInvesting": {
+          "monthlyBudget": {
+            "title": "Create and stick to a monthly budget",
+            "m1": "List all income sources and fixed monthly expenses",
+            "m2": "Choose a budgeting method (50/30/20, zero-based, envelope)",
+            "m3": "Set up a budgeting app or spreadsheet",
+            "m4": "Track every expense for one full month",
+            "m5": "Stay within budget for 3 consecutive months"
+          },
+          "startInvesting": {
+            "title": "Start investing for the future",
+            "m1": "READ: The Intelligent Investor or A Random Walk Down Wall Street",
+            "m2": "Open a brokerage or retirement account",
+            "m3": "Research and choose your first index fund or ETF",
+            "m4": "Make your first investment (start small, learn the process)",
+            "m5": "Set up automatic monthly investment contributions"
+          }
+        }
+      }
     }
   },
   "habits": {
@@ -472,7 +718,19 @@
     "longestStreak": "Longest Streak",
     "days": "days",
     "delete": "Delete",
-    "confirmDelete": "Are you sure you want to delete this habit?"
+    "confirmDelete": "Are you sure you want to delete this habit?",
+    "linkedGoal": "Link to Goal (optional)",
+    "noGoal": "No goal"
+  },
+  "welcomeGuide": {
+    "title": "Welcome Guide",
+    "getStarted": "Get Started",
+    "taskGoal": "Create your first goal",
+    "taskHabit": "Add a habit",
+    "taskPlan": "Generate a learning plan",
+    "taskTechniques": "Visit the Techniques page",
+    "progress": "{{done}} of {{total}} complete",
+    "allDone": "All done! You're all set."
   },
   "profile": {
     "title": "Profile",

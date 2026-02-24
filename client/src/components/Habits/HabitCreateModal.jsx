@@ -4,12 +4,12 @@ import { X } from 'lucide-react';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-export default function HabitCreateModal({ onClose, onCreate }) {
+export default function HabitCreateModal({ onClose, onCreate, goals = [] }) {
     const { t } = useTranslation();
     const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
     const [frequency, setFrequency] = useState('daily');
     const [daysOfWeek, setDaysOfWeek] = useState([1, 2, 3, 4, 5]); // Mon-Fri default
+    const [selectedGoalId, setSelectedGoalId] = useState('');
 
     const toggleDay = (day) => {
         setDaysOfWeek(prev =>
@@ -21,9 +21,9 @@ export default function HabitCreateModal({ onClose, onCreate }) {
         if (!title.trim()) return;
         onCreate({
             title: title.trim(),
-            description: description.trim() || undefined,
             frequency,
             daysOfWeek: frequency === 'custom' ? daysOfWeek : undefined,
+            goalId: selectedGoalId || undefined,
         });
     };
 
@@ -47,13 +47,23 @@ export default function HabitCreateModal({ onClose, onCreate }) {
                     className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3"
                 />
 
-                <input
-                    type="text"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    placeholder={t('habits.habitDescription')}
-                    className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
-                />
+                {goals.length > 0 && (
+                    <>
+                        <label className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2 block">
+                            {t('habits.linkedGoal')}
+                        </label>
+                        <select
+                            value={selectedGoalId}
+                            onChange={(e) => setSelectedGoalId(e.target.value)}
+                            className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+                        >
+                            <option value="">{t('habits.noGoal')}</option>
+                            {goals.map(g => (
+                                <option key={g.id} value={g.id}>{g.title}</option>
+                            ))}
+                        </select>
+                    </>
+                )}
 
                 <label className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2 block">
                     {t('habits.frequency')}

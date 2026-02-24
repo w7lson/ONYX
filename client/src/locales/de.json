@@ -440,6 +440,8 @@
       },
       "submitFailure": "Als gescheitert markieren"
     },
+    "removeTemplate": "Vorlage entfernen",
+    "addTemplate": "Vorlage hinzufügen",
     "templateNames": {
       "loseWeight": "Abnehmen",
       "sideHustle": "Nebenprojekt starten",
@@ -447,6 +449,250 @@
       "learnLanguage": "Neue Sprache lernen",
       "readMore": "Mehr Bücher lesen",
       "productivity": "Produktivität steigern"
+    },
+    "templateData": {
+      "loseWeight": {
+        "title": "10 Kilo abnehmen",
+        "m1": "Einen Ernährungsplan erstellen, der dein Ziel erreicht",
+        "m2": "Gesundheitscheck machen und wichtige Daten ermitteln (BMR, Körperfettanteil usw.)",
+        "m3": "Einen Trainingsplan erstellen, der dein Ziel erreicht",
+        "m4": "Problematische Lebensmittel aus Vorratskammer, Gefrierschrank und Kühlschrank entfernen",
+        "m5": "Wöchentliche Mahlzeitenvorbereitung einrichten",
+        "m6": "Tägliche Kalorienaufnahme eine Woche lang erfassen"
+      },
+      "learnLanguage": {
+        "title": "Eine neue Sprache auf Konversationsniveau lernen",
+        "m1": "Sprache auswählen und Lernressourcen finden (Apps, Kurse, Bücher)",
+        "m2": "Die 500 häufigsten Wörter und Grundgrammatik lernen",
+        "m3": "Einen Anfängerkurs oder ein Lehrbuch abschließen",
+        "m4": "Tägliches Üben mit muttersprachlichen Inhalten beginnen (Podcasts, Videos)",
+        "m5": "Erstes Gespräch mit einem Muttersprachler führen",
+        "m6": "Einen Einstufungstest auf Anfängerniveau bestehen"
+      },
+      "readMore": {
+        "title": "12 Bücher dieses Jahr lesen",
+        "m1": "Eine Leseliste mit 12+ Büchern aus verschiedenen Genres erstellen",
+        "m2": "Tägliche Lesegewohnheit einrichten (mindestens 30 Minuten pro Tag)",
+        "m3": "Erstes Buch beenden und eine kurze Rezension schreiben",
+        "m4": "Einem Buchclub oder einer Online-Lesegemeinschaft beitreten",
+        "m5": "6 Bücher abschließen (Halbzeit-Kontrollpunkt)",
+        "m6": "Kurze Notizen oder Erkenntnisse für jedes gelesene Buch schreiben"
+      }
+    },
+    "templateBrowser": {
+      "title": "Vorlage auswählen",
+      "allCategories": "Alle Kategorien",
+      "selectTopic": "Wähle ein Thema, um Ziele zu sehen",
+      "milestones": "Meilensteine",
+      "topics": {
+        "interpersonalSkills": "Zwischenmenschliche Fähigkeiten",
+        "jobsEmployment": "Jobs & Beschäftigung",
+        "weightManagement": "Gewichtsmanagement",
+        "exerciseTraining": "Training & Sport",
+        "languages": "Sprachen",
+        "skillsDevelopment": "Kompetenzentwicklung",
+        "readingKnowledge": "Lesen & Wissen",
+        "productivity": "Produktivität",
+        "saving": "Sparen",
+        "budgetingInvesting": "Budget & Investitionen"
+      },
+      "careerWork": {
+        "interpersonalSkills": {
+          "publicSpeaker": {
+            "title": "Ein versierter Redner werden",
+            "m1": "Vor einer kleinen Gruppe (5-10 Personen) sprechen",
+            "m2": "LESEN: The Wealthy Speaker von Jane Atkinson",
+            "m3": "Einem lokalen Toastmasters-Club oder einer Redegruppe beitreten",
+            "m4": "Eine 5-minütige strukturierte Rede vorbereiten und halten",
+            "m5": "Sich selbst beim Sprechen aufnehmen und Verbesserungen überprüfen",
+            "m6": "Vor 25+ Personen bei einer Veranstaltung sprechen"
+          },
+          "negotiation": {
+            "title": "Verkaufs-, Verhandlungs- und Überzeugungsfähigkeiten verbessern",
+            "m1": "LESEN: Kompromisslos verhandeln von Chris Voss",
+            "m2": "Aktives Zuhören in täglichen Gesprächen üben",
+            "m3": "Eine Verhandlungssituation mit einem Freund oder Mentor durchspielen",
+            "m4": "Einen echten Deal erfolgreich verhandeln (Gehalt, Vertrag, Kauf)",
+            "m5": "Einen Online-Kurs über Überzeugung oder Verkaufstechniken abschließen"
+          }
+        },
+        "jobsEmployment": {
+          "newJob": {
+            "title": "Einen neuen Job in meinem Bereich finden",
+            "m1": "Lebenslauf und LinkedIn-Profil aktualisieren",
+            "m2": "20 Zielunternehmen recherchieren und auflisten",
+            "m3": "Antworten auf häufige Interviewfragen vorbereiten",
+            "m4": "Sich auf mindestens 5 Stellen pro Woche bewerben",
+            "m5": "Mit 3 Personen in der Zielbranche netzwerken",
+            "m6": "Ein Probeinterview mit Feedback absolvieren"
+          },
+          "promotion": {
+            "title": "Eine Beförderung bei der Arbeit erreichen",
+            "m1": "Ein Gespräch mit dem Vorgesetzten über den Karriereweg planen",
+            "m2": "2-3 wichtige Kompetenzlücken für die nächste Stufe identifizieren",
+            "m3": "Ein sichtbares Projekt oder eine Initiative übernehmen",
+            "m4": "Erfolge und Wirkungskennzahlen dokumentieren",
+            "m5": "Einen Mentor in einer Führungsposition finden und regelmäßig treffen"
+          }
+        }
+      },
+      "healthFitness": {
+        "weightManagement": {
+          "loseWeight": {
+            "title": "10 Kilo abnehmen",
+            "m1": "Einen Ernährungsplan erstellen",
+            "m2": "Gesundheitscheck machen und wichtige Daten ermitteln (BMR, Körperfett %)",
+            "m3": "Einen Trainingsplan erstellen",
+            "m4": "Problematische Lebensmittel aus dem Haushalt entfernen",
+            "m5": "Wöchentliche Mahlzeitenvorbereitung einrichten",
+            "m6": "Tägliche Kalorienaufnahme eine Woche lang erfassen"
+          },
+          "healthyEating": {
+            "title": "Gesunde Essgewohnheiten aufbauen",
+            "m1": "Aktuelle Essgewohnheiten eine Woche lang erfassen",
+            "m2": "Ausgewogene Mahlzeiten für jeden Wochentag planen",
+            "m3": "5 gesunde Lieblingsrezepte kochen lernen",
+            "m4": "Verarbeitete Snacks durch Vollwertalternativen ersetzen",
+            "m5": "Einen konsistenten Mahlzeitenplan 30 Tage lang einhalten"
+          }
+        },
+        "exerciseTraining": {
+          "workoutRoutine": {
+            "title": "Eine regelmäßige Trainingsroutine starten",
+            "m1": "Ein Trainingsprogramm wählen, das in den Zeitplan passt",
+            "m2": "Ein Heimstudio einrichten oder einem Fitnessstudio beitreten",
+            "m3": "Im ersten Monat 3x pro Woche trainieren",
+            "m4": "Übungen, Sätze und Wiederholungen in einem Protokoll erfassen",
+            "m5": "Trainingsintensität erhöhen oder eine neue Übungsart hinzufügen"
+          },
+          "run5k": {
+            "title": "Einen 5-km-Lauf absolvieren",
+            "m1": "Passende Laufschuhe in einem Fachgeschäft anpassen lassen",
+            "m2": "Ein Couch-to-5K (C25K) Trainingsprogramm starten",
+            "m3": "15 Minuten durchgehend ohne Pause laufen",
+            "m4": "Einen Übungs-5K-Lauf auf eigene Faust absolvieren",
+            "m5": "Sich für ein offizielles 5-km-Rennen anmelden",
+            "m6": "Das Rennen absolvieren und eine Basiszeit aufstellen"
+          }
+        }
+      },
+      "educationLearning": {
+        "languages": {
+          "learnLanguage": {
+            "title": "Eine neue Sprache auf Konversationsniveau lernen",
+            "m1": "Sprache auswählen und Lernressourcen finden",
+            "m2": "Die 500 häufigsten Wörter und Grundgrammatik lernen",
+            "m3": "Einen Anfängerkurs oder ein Lehrbuch abschließen",
+            "m4": "Tägliches Üben mit muttersprachlichen Inhalten beginnen",
+            "m5": "Erstes Gespräch mit einem Muttersprachler führen",
+            "m6": "Einen Einstufungstest auf Anfängerniveau bestehen"
+          },
+          "proficiencyExam": {
+            "title": "Eine Sprachprüfung bestehen",
+            "m1": "Prüfungsanforderungen recherchieren und Zielniveau wählen",
+            "m2": "Einen Übungstest machen, um den Ausgangspunkt zu bewerten",
+            "m3": "Einen Lernplan für alle Prüfungsbereiche erstellen",
+            "m4": "Gezielt den schwächsten Bereich üben",
+            "m5": "3 vollständige Übungsprüfungen unter Zeitbedingungen absolvieren"
+          }
+        },
+        "skillsDevelopment": {
+          "onlineCert": {
+            "title": "Eine Online-Zertifizierung abschließen",
+            "m1": "Für die Karriereziele relevante Zertifizierungen recherchieren",
+            "m2": "Sich für den Kurs anmelden und eine Frist setzen",
+            "m3": "50% der Kursarbeit abschließen",
+            "m4": "Ein Projekt oder Portfolio-Stück mit neuen Fähigkeiten erstellen",
+            "m5": "Die Zertifizierungsprüfung bestehen"
+          },
+          "learnToCode": {
+            "title": "Programmieren lernen",
+            "m1": "Eine Programmiersprache und Lernplattform wählen",
+            "m2": "Einen Einführungskurs abschließen (Variablen, Schleifen, Funktionen)",
+            "m3": "Erstes kleines Projekt erstellen (Taschenrechner, To-Do-App)",
+            "m4": "Versionskontrolle mit Git und GitHub lernen",
+            "m5": "Zu einem Open-Source-Projekt beitragen oder eine Portfolio-Seite erstellen",
+            "m6": "Ein Abschlussprojekt erstellen, das ein reales Problem löst"
+          }
+        }
+      },
+      "personalGrowth": {
+        "readingKnowledge": {
+          "read12Books": {
+            "title": "12 Bücher dieses Jahr lesen",
+            "m1": "Leseliste mit 12+ Büchern aus verschiedenen Genres erstellen",
+            "m2": "Tägliche Lesegewohnheit einrichten (mind. 30 Min. pro Tag)",
+            "m3": "Erstes Buch beenden und eine kurze Rezension schreiben",
+            "m4": "Einem Buchclub oder einer Online-Lesegemeinschaft beitreten",
+            "m5": "6 Bücher abschließen (Halbzeit-Kontrollpunkt)",
+            "m6": "Kurze Notizen oder Erkenntnisse für jedes Buch schreiben"
+          },
+          "journaling": {
+            "title": "Eine tägliche Tagebuch-Gewohnheit entwickeln",
+            "m1": "Ein Tagebuchformat wählen (Dankbarkeit, Freitext, Fragen)",
+            "m2": "7 Tage lang jeden Morgen mindestens 5 Minuten schreiben",
+            "m3": "Verschiedene Tagebuchmethoden ausprobieren",
+            "m4": "Einträge wöchentlich überprüfen, um Muster zu erkennen",
+            "m5": "Eine 30-tägige ununterbrochene Tagebuch-Serie beibehalten"
+          }
+        },
+        "productivity": {
+          "timeManagement": {
+            "title": "Zeitmanagement meistern",
+            "m1": "Eine Woche lang verfolgen, wie du deine Zeit verbringst",
+            "m2": "Die 3 größten Zeitfresser identifizieren und eliminieren",
+            "m3": "Ein Zeitblock-System für den Arbeitstag einführen",
+            "m4": "Die Eisenhower-Matrix für Aufgabenpriorisierung anwenden",
+            "m5": "Das Produktivitätssystem 30 Tage lang konsequent beibehalten"
+          },
+          "morningRoutine": {
+            "title": "Eine konsistente Morgenroutine aufbauen",
+            "m1": "Die ideale Morgenroutine definieren (Sport, Lesen, Planung)",
+            "m2": "Eine feste Aufwachzeit setzen und 7 Tage einhalten",
+            "m3": "Eine gesunde Gewohnheit zum Morgen hinzufügen (Meditation, Dehnung)",
+            "m4": "Am Abend vorher vorbereiten (Kleidung, Mahlzeiten, Aufgaben)",
+            "m5": "Die volle Morgenroutine 21 aufeinanderfolgende Tage durchführen"
+          }
+        }
+      },
+      "moneyFinance": {
+        "saving": {
+          "emergencyFund": {
+            "title": "Einen 3-Monats-Notfallfonds aufbauen",
+            "m1": "Monatliche wesentliche Ausgaben berechnen",
+            "m2": "Ein spezielles Sparkonto mit hohem Zinssatz eröffnen",
+            "m3": "Automatische monatliche Überweisungen auf das Sparkonto einrichten",
+            "m4": "Den ersten Monatsbetrag an Ausgaben ansparen",
+            "m5": "Das volle 3-Monats-Notfallfonds-Ziel erreichen"
+          },
+          "majorPurchase": {
+            "title": "Für eine größere Anschaffung sparen",
+            "m1": "Genau definieren, wofür gespart wird und die Gesamtkosten",
+            "m2": "Einen Zieltermin setzen und monatliches Sparziel berechnen",
+            "m3": "Ein unnötiges Abonnement oder eine Ausgabe streichen",
+            "m4": "50% des Sparziels erreichen",
+            "m5": "100% des Sparziels erreichen"
+          }
+        },
+        "budgetingInvesting": {
+          "monthlyBudget": {
+            "title": "Ein monatliches Budget erstellen und einhalten",
+            "m1": "Alle Einkommensquellen und festen monatlichen Ausgaben auflisten",
+            "m2": "Eine Budgetmethode wählen (50/30/20, Nullbasiert, Umschlag)",
+            "m3": "Eine Budget-App oder Tabelle einrichten",
+            "m4": "Jeden Ausgabe einen vollen Monat lang erfassen",
+            "m5": "3 aufeinanderfolgende Monate im Budget bleiben"
+          },
+          "startInvesting": {
+            "title": "Mit dem Investieren beginnen",
+            "m1": "LESEN: Der intelligente Investor oder Souverän investieren",
+            "m2": "Ein Depot- oder Vorsorgekonto eröffnen",
+            "m3": "Einen ersten Indexfonds oder ETF recherchieren und auswählen",
+            "m4": "Die erste Investition tätigen (klein anfangen, den Prozess lernen)",
+            "m5": "Automatische monatliche Investitionsbeiträge einrichten"
+          }
+        }
+      }
     }
   },
   "habits": {
@@ -472,7 +718,19 @@
     "longestStreak": "Längste Serie",
     "days": "Tage",
     "delete": "Löschen",
-    "confirmDelete": "Bist du sicher, dass du diese Gewohnheit löschen möchtest?"
+    "confirmDelete": "Bist du sicher, dass du diese Gewohnheit löschen möchtest?",
+    "linkedGoal": "Mit Ziel verknüpfen (optional)",
+    "noGoal": "Kein Ziel"
+  },
+  "welcomeGuide": {
+    "title": "Willkommens-Guide",
+    "getStarted": "Loslegen",
+    "taskGoal": "Erstelle dein erstes Ziel",
+    "taskHabit": "Füge eine Gewohnheit hinzu",
+    "taskPlan": "Erstelle einen Lernplan",
+    "taskTechniques": "Besuche die Techniken-Seite",
+    "progress": "{{done}} von {{total}} erledigt",
+    "allDone": "Alles erledigt! Du bist startklar."
   },
   "profile": {
     "title": "Profil",
