@@ -43,7 +43,7 @@ export const generateHabits = async (req, res) => {
 
         const profile = await prisma.userProfile.findUnique({
             where: { clerkId: userId },
-            select: { primaryGoal: true, currentLevel: true, pace: true, reviewFrequency: true }
+            select: { currentLevel: true, pace: true, reviewFrequency: true }
         });
 
         const prompt = `You are a goal-achievement coach. Given this goal and user profile, suggest 3-5 daily or weekly habits that will help achieve the goal.

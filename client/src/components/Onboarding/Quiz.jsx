@@ -13,10 +13,6 @@ const LANGUAGES = [
 
 const QUESTIONS = [
     {
-        id: 'primaryGoal',
-        options: ['career', 'hobby', 'exam', 'personal', 'academic'],
-    },
-    {
         id: 'currentLevel',
         options: ['under1h', '1-2hours', '2-4hours', '4-6hours', '6plus'],
     },

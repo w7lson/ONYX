@@ -74,12 +74,18 @@ model Task {
 // ===== FLASHCARDS / SPACED REPETITION =====
 
 model Deck {
-  id          String   @id @default(uuid())
-  userId      String
-  title       String
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id               String   @id @default(uuid())
+  userId           String
+  title            String
+  description      String?
+  newCardsPerDay   Int      @default(20)
+  maxCardsPerDay   Int      @default(100)
+  shuffleCards     Boolean  @default(false)
+  isArchived       Boolean  @default(false)
+  algorithm        String   @default("sm2")
+  desiredRetention Float    @default(0.9)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   user  UserProfile @relation(fields: [userId], references: [clerkId])
   cards Flashcard[]
@@ -90,9 +96,14 @@ model Flashcard {
   deckId         String
   front          String
   back           String
-  easeFactor     Float     @default(2.5)
-  interval       Int       @default(0)
+  state          String    @default("new")   // new | learning | review | relearning
+  stepIndex      Int       @default(0)        // SM-2: current step within learning/relearning phase
+  lapses         Int       @default(0)        // times failed during review phase
+  easeFactor     Float     @default(2.5)      // SM-2: ease factor
+  interval       Int       @default(0)        // days until next review
   repetitions    Int       @default(0)
+  stability      Float     @default(0)        // FSRS: memory stability (days)
+  difficulty     Float     @default(5)        // FSRS: item difficulty (1-10)
   nextReviewAt   DateTime  @default(now())
   lastReviewedAt DateTime?
   createdAt      DateTime  @default(now())

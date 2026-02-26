@@ -82,7 +82,6 @@ export const generatePlanFromGoal = async (req, res) => {
         const profile = await prisma.userProfile.findUnique({
             where: { clerkId: userId },
             select: {
-                primaryGoal: true,
                 currentLevel: true,
                 learningStyle: true,
                 preferredContent: true,
@@ -112,7 +111,6 @@ ${goal.reward ? `**Reward:** ${goal.reward}` : ''}
 ${milestonesText}
 
 **User Profile:**
-- Primary motivation: ${profile?.primaryGoal || 'not specified'}
 - Available daily time: ${profile?.currentLevel || 'not specified'}
 - Learning style: ${profile?.learningStyle || 'not specified'}
 - Preferred content: ${profile?.preferredContent || 'not specified'}

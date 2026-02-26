@@ -4,7 +4,7 @@ import { useAuth } from '@clerk/clerk-react';
 import { Link } from 'react-router-dom';
 import {
     ArrowLeft, Sparkles, Loader2, RefreshCw, Save, X,
-    ChevronDown, ChevronUp, Plus, Target, Clock
+    ChevronDown, ChevronUp, Plus, Clock
 } from 'lucide-react';
 import axios from 'axios';
 import GoalSelector from './GoalSelector';
@@ -12,7 +12,6 @@ import SuggestionBanner from './SuggestionBanner';
 import ModuleEditor from './ModuleEditor';
 
 const PREF_LABELS = {
-    primaryGoal: { key: 'primaryGoal', icon: Target },
     currentLevel: { key: 'currentLevel', icon: Clock },
     pace: { key: 'pace' },
     learningStyle: { key: 'learningStyle' },

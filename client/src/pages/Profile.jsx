@@ -1,11 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUser, useAuth, useClerk } from '@clerk/clerk-react';
-import { User, Target, BarChart3, Eye, BookOpen, Gauge, CalendarClock, LogOut, Pencil, Check, X } from 'lucide-react';
+import { User, BarChart3, Eye, BookOpen, Gauge, CalendarClock, LogOut, Pencil, Check, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const PREFERENCE_OPTIONS = {
-    primaryGoal: ['career', 'hobby', 'exam', 'personal', 'academic'],
     currentLevel: ['under1h', '1-2hours', '2-4hours', '4-6hours', '6plus'],
     learningStyle: ['visual', 'reading', 'handson'],
     preferredContent: ['videos', 'articles', 'interactive'],
@@ -14,7 +13,6 @@ const PREFERENCE_OPTIONS = {
 };
 
 const PREFERENCE_ICONS = {
-    primaryGoal: Target,
     currentLevel: BarChart3,
     learningStyle: Eye,
     preferredContent: BookOpen,

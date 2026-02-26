@@ -58,6 +58,45 @@ const TEMPLATE_DATA = {
             'goals.templateData.readMore.m6',
         ],
     },
+    sideHustle: {
+        focus: 'moneyFinance',
+        duration: 'shortTerm',
+        titleKey: 'goals.templateData.sideHustle.title',
+        milestoneKeys: [
+            'goals.templateData.sideHustle.m1',
+            'goals.templateData.sideHustle.m2',
+            'goals.templateData.sideHustle.m3',
+            'goals.templateData.sideHustle.m4',
+            'goals.templateData.sideHustle.m5',
+            'goals.templateData.sideHustle.m6',
+        ],
+    },
+    productivity: {
+        focus: 'personalGrowth',
+        duration: 'monthly',
+        titleKey: 'goals.templateData.productivity.title',
+        milestoneKeys: [
+            'goals.templateData.productivity.m1',
+            'goals.templateData.productivity.m2',
+            'goals.templateData.productivity.m3',
+            'goals.templateData.productivity.m4',
+            'goals.templateData.productivity.m5',
+            'goals.templateData.productivity.m6',
+        ],
+    },
+    weightlifting: {
+        focus: 'healthFitness',
+        duration: 'shortTerm',
+        titleKey: 'goals.templateData.weightlifting.title',
+        milestoneKeys: [
+            'goals.templateData.weightlifting.m1',
+            'goals.templateData.weightlifting.m2',
+            'goals.templateData.weightlifting.m3',
+            'goals.templateData.weightlifting.m4',
+            'goals.templateData.weightlifting.m5',
+            'goals.templateData.weightlifting.m6',
+        ],
+    },
 };
 
 const FOCUS_ICONS = {

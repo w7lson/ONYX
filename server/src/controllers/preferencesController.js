@@ -4,9 +4,9 @@ const prisma = new PrismaClient();
 
 export const savePreferences = async (req, res) => {
     const { userId } = req.auth;
-    const { primaryGoal, currentLevel, learningStyle, preferredContent, pace, reviewFrequency, language } = req.body;
+    const { currentLevel, learningStyle, preferredContent, pace, reviewFrequency, language } = req.body;
 
-    if (!primaryGoal || !currentLevel || !learningStyle || !preferredContent || !pace || !reviewFrequency) {
+    if (!currentLevel || !learningStyle || !preferredContent || !pace || !reviewFrequency) {
         return res.status(400).json({ error: "All preference fields are required" });
     }
 
@@ -14,7 +14,6 @@ export const savePreferences = async (req, res) => {
         const profile = await prisma.userProfile.upsert({
             where: { clerkId: userId },
             update: {
-                primaryGoal,
                 currentLevel,
                 learningStyle,
                 preferredContent,
@@ -26,7 +25,6 @@ export const savePreferences = async (req, res) => {
             create: {
                 clerkId: userId,
                 email: `${userId}@placeholder.com`,
-                primaryGoal,
                 currentLevel,
                 learningStyle,
                 preferredContent,
@@ -46,7 +44,7 @@ export const savePreferences = async (req, res) => {
 
 export const updatePreferences = async (req, res) => {
     const { userId } = req.auth;
-    const allowedFields = ['primaryGoal', 'currentLevel', 'learningStyle', 'preferredContent', 'pace', 'reviewFrequency', 'language'];
+    const allowedFields = ['currentLevel', 'learningStyle', 'preferredContent', 'pace', 'reviewFrequency', 'language'];
     const updates = {};
 
     for (const field of allowedFields) {
@@ -64,7 +62,6 @@ export const updatePreferences = async (req, res) => {
             where: { clerkId: userId },
             data: updates,
             select: {
-                primaryGoal: true,
                 currentLevel: true,
                 learningStyle: true,
                 preferredContent: true,
@@ -89,7 +86,6 @@ export const getPreferences = async (req, res) => {
         const profile = await prisma.userProfile.findUnique({
             where: { clerkId: userId },
             select: {
-                primaryGoal: true,
                 currentLevel: true,
                 learningStyle: true,
                 preferredContent: true,

@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus, Trash2, Layers } from 'lucide-react';
+import { Plus, Trash2, Layers, Upload } from 'lucide-react';
+import ImportCSV from './ImportCSV';
 
-export default function DeckList({ decks, onCreateDeck, onDeleteDeck, onSelectDeck, onReview }) {
+export default function DeckList({ decks, onCreateDeck, onDeleteDeck, onSelectDeck, onReview, onImport }) {
     const { t } = useTranslation();
     const [showCreate, setShowCreate] = useState(false);
+    const [showImport, setShowImport] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
 
@@ -25,13 +27,22 @@ export default function DeckList({ decks, onCreateDeck, onDeleteDeck, onSelectDe
                     </h1>
                     <p className="text-gray-500 dark:text-gray-400 mt-1">{t('flashcards.subtitle')}</p>
                 </div>
-                <button
-                    onClick={() => setShowCreate(!showCreate)}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
-                >
-                    <Plus size={18} />
-                    {t('flashcards.createDeck')}
-                </button>
+                <div className="flex gap-2">
+                    <button
+                        onClick={() => { setShowImport(!showImport); setShowCreate(false); }}
+                        className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-lg font-medium hover:bg-teal-700 transition-colors"
+                    >
+                        <Upload size={18} />
+                        {t('flashcards.import.button')}
+                    </button>
+                    <button
+                        onClick={() => { setShowCreate(!showCreate); setShowImport(false); }}
+                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                    >
+                        <Plus size={18} />
+                        {t('flashcards.createDeck')}
+                    </button>
+                </div>
             </div>
 
             {showCreate && (
@@ -65,6 +76,14 @@ export default function DeckList({ decks, onCreateDeck, onDeleteDeck, onSelectDe
                         </button>
                     </div>
                 </div>
+            )}
+
+            {showImport && (
+                <ImportCSV
+                    decks={decks}
+                    onImport={async (data) => { await onImport(data); setShowImport(false); }}
+                    onClose={() => setShowImport(false)}
+                />
             )}
 
             {decks.length === 0 ? (

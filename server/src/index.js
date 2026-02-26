@@ -38,9 +38,10 @@ import {
     addTask, updateTask, deleteTask
 } from './controllers/planController.js';
 import {
-    getDecks, createDeck, deleteDeck,
-    getDeckCards, addCard, deleteCard,
-    generateCards, getDueCards, reviewCard
+    getDecks, createDeck, updateDeck, deleteDeck,
+    getDeckCards, addCard, updateCard, deleteCard,
+    generateCards, importCards, getDueCards, reviewCard,
+    updateDeckSettings, duplicateDeck, resetProgress, exportDeck
 } from './controllers/flashcardController.js';
 import { saveSession, getSessions } from './controllers/pomodoroController.js';
 import { generateTest, submitTest, getUserTests, getTest, deleteTest } from './controllers/testController.js';
@@ -74,13 +75,20 @@ app.delete('/api/tasks/:taskId', requireAuth, deleteTask);
 // Flashcard Endpoints
 app.get('/api/decks', requireAuth, getDecks);
 app.post('/api/decks', requireAuth, createDeck);
+app.put('/api/decks/:deckId', requireAuth, updateDeck);
 app.delete('/api/decks/:deckId', requireAuth, deleteDeck);
 app.get('/api/decks/:deckId/cards', requireAuth, getDeckCards);
 app.post('/api/decks/:deckId/cards', requireAuth, addCard);
+app.put('/api/cards/:cardId', requireAuth, updateCard);
 app.delete('/api/cards/:cardId', requireAuth, deleteCard);
 app.post('/api/decks/:deckId/generate', requireAuth, generateCards);
+app.post('/api/decks/:deckId/import', requireAuth, importCards);
 app.get('/api/decks/:deckId/review', requireAuth, getDueCards);
 app.post('/api/cards/:cardId/review', requireAuth, reviewCard);
+app.patch('/api/decks/:deckId/settings', requireAuth, updateDeckSettings);
+app.post('/api/decks/:deckId/duplicate', requireAuth, duplicateDeck);
+app.post('/api/decks/:deckId/reset-progress', requireAuth, resetProgress);
+app.get('/api/decks/:deckId/export', requireAuth, exportDeck);
 
 // Pomodoro Endpoints
 app.post('/api/pomodoro/sessions', requireAuth, saveSession);

@@ -130,7 +130,6 @@ function ResultsScreen({ answers, onNext, showSignupHint }) {
     const { t } = useTranslation();
 
     const preferenceItems = [
-        { key: 'primaryGoal', icon: '🎯' },
         { key: 'currentLevel', icon: '📊' },
         { key: 'learningStyle', icon: '🧠' },
         { key: 'preferredContent', icon: '📚' },
