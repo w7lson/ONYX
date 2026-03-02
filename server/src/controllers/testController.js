@@ -1,14 +1,14 @@
 import OpenAI from 'openai';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../utils/prisma.js';
+import { asyncHandler } from '../middleware/asyncHandler.js';
 import { createNotification } from './notificationController.js';
 
-const prisma = new PrismaClient();
 const openai = new OpenAI({
     apiKey: process.env.GROQ_API_KEY,
     baseURL: "https://api.groq.com/openai/v1"
 });
 
-export const generateTest = async (req, res) => {
+export const generateTest = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
     const { topic, content, questionCount = 10 } = req.body;
 
@@ -16,18 +16,17 @@ export const generateTest = async (req, res) => {
         return res.status(400).json({ error: "Topic or content is required" });
     }
 
-    try {
-        await prisma.userProfile.upsert({
-            where: { clerkId: userId },
-            update: {},
-            create: { clerkId: userId, email: `${userId}@placeholder.com` },
-        });
+    await prisma.userProfile.upsert({
+        where: { clerkId: userId },
+        update: {},
+        create: { clerkId: userId, email: `${userId}@placeholder.com` },
+    });
 
-        const sourceText = content
-            ? `Based on the following study material:\n\n${content}\n\nGenerate`
-            : `Generate`;
+    const sourceText = content
+        ? `Based on the following study material:\n\n${content}\n\nGenerate`
+        : `Generate`;
 
-        const prompt = `${sourceText} a multiple choice test on "${topic || 'the provided material'}" with ${questionCount} questions.
+    const prompt = `${sourceText} a multiple choice test on "${topic || 'the provided material'}" with ${questionCount} questions.
 
 Each question must have 4 options (a, b, c, d) and indicate the correct answer letter.
 
@@ -43,53 +42,49 @@ Return valid JSON:
     ]
 }`;
 
-        const completion = await openai.chat.completions.create({
-            model: "llama-3.3-70b-versatile",
-            messages: [
-                { role: "system", content: "You are a test generator for educational purposes. Create clear, fair questions that test understanding." },
-                { role: "user", content: prompt }
-            ],
-            response_format: { type: "json_object" },
-        });
+    const completion = await openai.chat.completions.create({
+        model: "llama-3.3-70b-versatile",
+        messages: [
+            { role: "system", content: "You are a test generator for educational purposes. Create clear, fair questions that test understanding." },
+            { role: "user", content: prompt }
+        ],
+        response_format: { type: "json_object" },
+    });
 
-        const parsed = JSON.parse(completion.choices[0].message.content);
-        const questions = parsed.questions || [];
+    const parsed = JSON.parse(completion.choices[0].message.content);
+    const questions = parsed.questions || [];
 
-        const test = await prisma.test.create({
-            data: {
-                userId,
-                topic: topic || 'Custom material',
-                questions: {
-                    create: questions.map(q => ({
-                        type: 'mc',
-                        questionText: q.questionText,
-                        options: q.options,
-                        correctAnswer: q.correctAnswer,
-                    }))
-                }
-            },
-            include: { questions: true }
-        });
+    const test = await prisma.test.create({
+        data: {
+            userId,
+            topic: topic || 'Custom material',
+            questions: {
+                create: questions.map(q => ({
+                    type: 'mc',
+                    questionText: q.questionText,
+                    options: q.options,
+                    correctAnswer: q.correctAnswer,
+                }))
+            }
+        },
+        include: { questions: true }
+    });
 
-        // Strip correct answers so user can't cheat
-        const sanitized = {
-            ...test,
-            questions: test.questions.map(q => ({
-                id: q.id,
-                type: q.type,
-                questionText: q.questionText,
-                options: q.options,
-            }))
-        };
+    // Strip correct answers so user can't cheat
+    const sanitized = {
+        ...test,
+        questions: test.questions.map(q => ({
+            id: q.id,
+            type: q.type,
+            questionText: q.questionText,
+            options: q.options,
+        }))
+    };
 
-        res.json(sanitized);
-    } catch (error) {
-        console.error("Error generating test:", error);
-        res.status(500).json({ error: "Failed to generate test" });
-    }
-};
+    res.json(sanitized);
+});
 
-export const submitTest = async (req, res) => {
+export const submitTest = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
     const { testId } = req.params;
     const { answers } = req.body; // [{ questionId, userAnswer }]
@@ -98,131 +93,111 @@ export const submitTest = async (req, res) => {
         return res.status(400).json({ error: "Answers array is required" });
     }
 
-    try {
-        const test = await prisma.test.findFirst({
-            where: { id: testId, userId },
-            include: { questions: true }
-        });
+    const test = await prisma.test.findFirst({
+        where: { id: testId, userId },
+        include: { questions: true }
+    });
 
-        if (!test) {
-            return res.status(404).json({ error: "Test not found" });
-        }
-
-        let correctCount = 0;
-
-        for (const answer of answers) {
-            const question = test.questions.find(q => q.id === answer.questionId);
-            if (!question) continue;
-
-            const isCorrect = answer.userAnswer?.toLowerCase() === question.correctAnswer?.toLowerCase();
-            if (isCorrect) correctCount++;
-
-            await prisma.testQuestion.update({
-                where: { id: question.id },
-                data: {
-                    userAnswer: answer.userAnswer,
-                    isCorrect,
-                }
-            });
-        }
-
-        const score = test.questions.length > 0
-            ? Math.round((correctCount / test.questions.length) * 100)
-            : 0;
-
-        const updatedTest = await prisma.test.update({
-            where: { id: testId },
-            data: { score, completedAt: new Date() },
-            include: { questions: true }
-        });
-
-        createNotification(userId, {
-            type: 'test_result',
-            title: `Test completed: ${score}%`,
-            message: `You scored ${score}% on "${test.topic}".`,
-            link: '/tests',
-        }).catch(e => console.error('Test notification error:', e));
-
-        res.json(updatedTest);
-    } catch (error) {
-        console.error("Error submitting test:", error);
-        res.status(500).json({ error: "Failed to submit test" });
+    if (!test) {
+        return res.status(404).json({ error: "Test not found" });
     }
-};
 
-export const getUserTests = async (req, res) => {
+    let correctCount = 0;
+
+    for (const answer of answers) {
+        const question = test.questions.find(q => q.id === answer.questionId);
+        if (!question) continue;
+
+        const isCorrect = answer.userAnswer?.toLowerCase() === question.correctAnswer?.toLowerCase();
+        if (isCorrect) correctCount++;
+
+        await prisma.testQuestion.update({
+            where: { id: question.id },
+            data: {
+                userAnswer: answer.userAnswer,
+                isCorrect,
+            }
+        });
+    }
+
+    const score = test.questions.length > 0
+        ? Math.round((correctCount / test.questions.length) * 100)
+        : 0;
+
+    const updatedTest = await prisma.test.update({
+        where: { id: testId },
+        data: { score, completedAt: new Date() },
+        include: { questions: true }
+    });
+
+    createNotification(userId, {
+        type: 'test_result',
+        title: `Test completed: ${score}%`,
+        message: `You scored ${score}% on "${test.topic}".`,
+        link: '/tests',
+    }).catch(e => console.error('Test notification error:', e));
+
+    res.json(updatedTest);
+});
+
+export const getUserTests = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
 
-    try {
-        const tests = await prisma.test.findMany({
-            where: { userId },
-            include: {
-                questions: {
-                    select: { id: true, type: true }
-                }
-            },
-            orderBy: { createdAt: 'desc' }
-        });
+    const tests = await prisma.test.findMany({
+        where: { userId },
+        include: {
+            questions: {
+                select: { id: true, type: true }
+            }
+        },
+        orderBy: { createdAt: 'desc' }
+    });
 
-        res.json(tests);
-    } catch (error) {
-        console.error("Error fetching tests:", error);
-        res.status(500).json({ error: "Failed to fetch tests" });
-    }
-};
+    res.json(tests);
+});
 
-export const getTest = async (req, res) => {
+export const getTest = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
     const { testId } = req.params;
 
-    try {
-        const test = await prisma.test.findFirst({
-            where: { id: testId, userId },
-            include: { questions: true }
-        });
+    const test = await prisma.test.findFirst({
+        where: { id: testId, userId },
+        include: { questions: true }
+    });
 
-        if (!test) {
-            return res.status(404).json({ error: "Test not found" });
-        }
-
-        // If test is not completed, strip correct answers
-        if (!test.completedAt) {
-            test.questions = test.questions.map(q => ({
-                id: q.id,
-                type: q.type,
-                questionText: q.questionText,
-                options: q.options,
-                userAnswer: q.userAnswer,
-            }));
-        }
-
-        res.json(test);
-    } catch (error) {
-        console.error("Error fetching test:", error);
-        res.status(500).json({ error: "Failed to fetch test" });
+    if (!test) {
+        return res.status(404).json({ error: "Test not found" });
     }
-};
 
-export const deleteTest = async (req, res) => {
+    // If test is not completed, strip correct answers
+    if (!test.completedAt) {
+        test.questions = test.questions.map(q => ({
+            id: q.id,
+            type: q.type,
+            questionText: q.questionText,
+            options: q.options,
+            userAnswer: q.userAnswer,
+        }));
+    }
+
+    res.json(test);
+});
+
+export const deleteTest = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
     const { testId } = req.params;
 
-    try {
-        const test = await prisma.test.findFirst({
-            where: { id: testId, userId },
-        });
+    const test = await prisma.test.findFirst({
+        where: { id: testId, userId },
+    });
 
-        if (!test) {
-            return res.status(404).json({ error: "Test not found" });
-        }
-
-        await prisma.test.delete({
-            where: { id: testId },
-        });
-
-        res.json({ message: "Test deleted successfully" });
-    } catch (error) {
-        console.error("Error deleting test:", error);
-        res.status(500).json({ error: "Failed to delete test" });
+    if (!test) {
+        return res.status(404).json({ error: "Test not found" });
     }
-};
+
+    await prisma.test.delete({
+        where: { id: testId },
+    });
+
+    res.json({ message: "Test deleted successfully" });
+});

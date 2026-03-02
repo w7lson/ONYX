@@ -61,7 +61,7 @@ export default function DeckDetail({
         <div>
             <button
                 onClick={onBack}
-                className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 mb-4 transition-colors"
+                className="flex items-center gap-2 text-slate-400 hover:text-slate-200 mb-4 transition-colors"
             >
                 <ArrowLeft size={18} />
                 {t('flashcards.backToDecks')}
@@ -70,14 +70,14 @@ export default function DeckDetail({
             {/* Title row with 3-dots */}
             <div className="flex items-start justify-between mb-6">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">{deck.title}</h1>
+                    <h1 className="text-3xl font-bold text-slate-100">{deck.title}</h1>
                     {deck.description && (
-                        <p className="text-gray-500 dark:text-gray-400 mt-1">{deck.description}</p>
+                        <p className="text-slate-400 mt-1">{deck.description}</p>
                     )}
                 </div>
                 <button
                     onClick={onOpenSettings}
-                    className="p-2 text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors mt-1 shrink-0"
+                    className="p-2 text-slate-500 hover:text-slate-200 hover:bg-white/[0.06] rounded-md transition-colors mt-1 shrink-0"
                     title={t('flashcards.settings')}
                 >
                     <MoreVertical size={20} />
@@ -85,40 +85,40 @@ export default function DeckDetail({
             </div>
 
             {/* Stats card */}
-            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 mb-6 text-center">
+            <div className="bg-[#161A22] rounded-lg border border-white/[0.06] p-6 mb-6 text-center">
                 {/* Due count */}
                 <div className="mb-1">
-                    <span className="text-7xl font-bold text-gray-800 dark:text-gray-100">
+                    <span className="text-7xl font-bold text-slate-100">
                         {dueCards}
                     </span>
                 </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                <p className="text-sm text-slate-400 mb-6">
                     {dueCards === 0 ? t('flashcards.noCardsDue') : t('flashcards.todayDue')}
                 </p>
 
                 {/* Stats row: icon + number stacked, label below */}
                 <div className="flex items-start justify-center gap-10 mb-6">
                     <div className="flex flex-col items-center gap-1">
-                        <BookOpen size={22} className="text-gray-400" />
-                        <span className="text-xl font-bold text-gray-600 dark:text-gray-400">{notStudied}</span>
-                        <span className="text-xs text-gray-400 dark:text-gray-500">{t('flashcards.notStudied')}</span>
+                        <BookOpen size={22} className="text-slate-500" />
+                        <span className="text-xl font-bold text-slate-400">{notStudied}</span>
+                        <span className="text-xs text-slate-500">{t('flashcards.notStudied')}</span>
                     </div>
                     <div className="flex flex-col items-center gap-1">
                         <TrendingUp size={22} className="text-green-500" />
-                        <span className="text-xl font-bold text-green-600 dark:text-green-400">{learning}</span>
-                        <span className="text-xs text-gray-400 dark:text-gray-500">{t('flashcards.learning')}</span>
+                        <span className="text-xl font-bold text-green-400">{learning}</span>
+                        <span className="text-xs text-slate-500">{t('flashcards.learning')}</span>
                     </div>
                     <div className="flex flex-col items-center gap-1">
-                        <Star size={22} className="text-blue-500" />
-                        <span className="text-xl font-bold text-blue-600 dark:text-blue-400">{mastered}</span>
-                        <span className="text-xs text-gray-400 dark:text-gray-500">{t('flashcards.mastered')}</span>
+                        <Star size={22} className="text-blue-400" />
+                        <span className="text-xl font-bold text-blue-400">{mastered}</span>
+                        <span className="text-xs text-slate-500">{t('flashcards.mastered')}</span>
                     </div>
                 </div>
 
                 <button
                     onClick={onStudy}
                     disabled={dueCards === 0}
-                    className="w-full py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                    className="w-full py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                     {t('flashcards.studyCards')}
                 </button>
@@ -126,8 +126,8 @@ export default function DeckDetail({
 
             {/* Card list */}
             {cards.length === 0 ? (
-                <div className="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center">
-                    <p className="text-gray-500 dark:text-gray-400">{t('flashcards.noCards')}</p>
+                <div className="bg-[#161A22] border border-white/[0.06] rounded-lg p-6 text-center">
+                    <p className="text-slate-400">{t('flashcards.noCards')}</p>
                 </div>
             ) : (
                 <div className="space-y-3">
@@ -136,7 +136,7 @@ export default function DeckDetail({
                         return (
                             <div
                                 key={card.id}
-                                className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4"
+                                className="bg-[#161A22] rounded-lg border border-white/[0.06] p-4"
                             >
                                 {editingCardId === card.id ? (
                                     <div>
@@ -145,26 +145,26 @@ export default function DeckDetail({
                                             onChange={(e) => setEditFront(e.target.value)}
                                             placeholder={t('flashcards.front')}
                                             rows={2}
-                                            className="w-full px-3 py-2 rounded-lg border border-blue-300 dark:border-blue-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-sm"
+                                            className="w-full px-3 py-2 rounded-md border border-primary-500/40 bg-white/[0.05] text-slate-100 mb-2 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none text-sm"
                                         />
                                         <textarea
                                             value={editBack}
                                             onChange={(e) => setEditBack(e.target.value)}
                                             placeholder={t('flashcards.back')}
                                             rows={2}
-                                            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-sm"
+                                            className="w-full px-3 py-2 rounded-md border border-white/[0.08] bg-white/[0.05] text-slate-100 mb-2 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none text-sm"
                                         />
                                         <div className="flex gap-2">
                                             <button
                                                 onClick={handleSaveCard}
-                                                className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                                                className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-600 text-white rounded-md text-sm font-medium hover:bg-primary-700 transition-colors"
                                             >
                                                 <Check size={14} />
                                                 {t('flashcards.save')}
                                             </button>
                                             <button
                                                 onClick={handleCancelCardEdit}
-                                                className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                                                className="flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.06] text-slate-300 rounded-md text-sm font-medium hover:bg-white/[0.10] transition-colors"
                                             >
                                                 {t('flashcards.cancel')}
                                             </button>
@@ -182,20 +182,20 @@ export default function DeckDetail({
                                                     <span className="text-xs font-medium">{label.text}</span>
                                                 </div>
                                             )}
-                                            <p className="font-medium text-gray-800 dark:text-gray-100">{card.front}</p>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{card.back}</p>
+                                            <p className="font-medium text-slate-100">{card.front}</p>
+                                            <p className="text-sm text-slate-400 mt-1">{card.back}</p>
                                         </div>
                                         <div className="flex items-center gap-1 shrink-0 ml-3">
                                             <button
                                                 onClick={() => startEditCard(card)}
-                                                className="p-1.5 text-gray-400 hover:text-blue-500 transition-colors"
+                                                className="p-1.5 text-slate-500 hover:text-primary-400 transition-colors"
                                                 title={t('flashcards.editCard')}
                                             >
                                                 <Pencil size={14} />
                                             </button>
                                             <button
                                                 onClick={() => onDeleteCard(card.id)}
-                                                className="p-1.5 text-gray-400 hover:text-red-500 transition-colors"
+                                                className="p-1.5 text-slate-500 hover:text-red-400 transition-colors"
                                             >
                                                 <Trash2 size={14} />
                                             </button>

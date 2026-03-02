@@ -234,10 +234,10 @@ export default function Goals() {
     // Loading
     if (step === 'loading') {
         return (
-            <div className="max-w-5xl mx-auto p-6">
-                <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-1">{t('goals.title')}</h1>
-                <p className="text-gray-500 dark:text-gray-400 mb-8">{t('goals.subtitle')}</p>
-                <div className="text-center py-16 text-gray-400">{t('dashboard.loading')}</div>
+            <div>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1 tracking-tight">{t('goals.title')}</h1>
+                <p className="text-slate-500 dark:text-slate-400 mb-8">{t('goals.subtitle')}</p>
+                <div className="text-center py-16 text-slate-400">{t('dashboard.loading')}</div>
             </div>
         );
     }
@@ -245,20 +245,20 @@ export default function Goals() {
     // Empty state
     if (step === 'empty') {
         return (
-            <div className="max-w-5xl mx-auto p-6">
-                <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-1">{t('goals.title')}</h1>
-                <p className="text-gray-500 dark:text-gray-400 mb-12">{t('goals.subtitle')}</p>
+            <div>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1 tracking-tight">{t('goals.title')}</h1>
+                <p className="text-slate-500 dark:text-slate-400 mb-12">{t('goals.subtitle')}</p>
 
                 <div className="flex flex-col items-center justify-center py-16">
-                    <div className="w-20 h-20 rounded-2xl bg-blue-50 dark:bg-blue-950 flex items-center justify-center mb-6">
-                        <Target size={40} className="text-blue-500" />
+                    <div className="w-20 h-20 rounded-2xl bg-primary-50 dark:bg-primary-950 flex items-center justify-center mb-6">
+                        <Target size={40} className="text-primary-500" />
                     </div>
-                    <p className="text-gray-500 dark:text-gray-400 text-center mb-8 max-w-md">
+                    <p className="text-slate-500 dark:text-slate-400 text-center mb-8 max-w-md">
                         {t('goals.emptyMessage')}
                     </p>
                     <button
                         onClick={() => setStep('templates')}
-                        className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg"
+                        className="px-6 py-3 bg-primary-600 text-white rounded-[10px] font-semibold hover:bg-primary-700 transition-colors shadow-[0_4px_6px_-1px_rgb(0_0_0/0.1)]"
                     >
                         {t('goals.setFirstGoal')}
                     </button>
@@ -270,29 +270,29 @@ export default function Goals() {
     // Template selection
     if (step === 'templates') {
         return (
-            <div className="max-w-5xl mx-auto p-6">
+            <div>
                 <button
                     onClick={() => setStep(goals.length > 0 ? 'list' : 'empty')}
-                    className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 mb-6 transition-colors"
+                    className="flex items-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 mb-6 transition-colors"
                 >
                     <ArrowLeft size={18} />
                     {t('goals.back')}
                 </button>
 
-                <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-1">{t('goals.templates')}</h1>
-                <p className="text-gray-500 dark:text-gray-400 mb-8">{t('goals.subtitle')}</p>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1 tracking-tight">{t('goals.templates')}</h1>
+                <p className="text-slate-500 dark:text-slate-400 mb-8">{t('goals.subtitle')}</p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
                     {GOAL_TEMPLATES.map(({ key, icon: Icon }) => (
                         <button
                             key={key}
                             onClick={() => { setEditingGoalId(null); setSelectedTemplate(key); setStep('specify'); }}
-                            className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-5 text-left hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 transition-all cursor-pointer"
+                            className="bg-[#161A22] rounded-2xl border border-white/[0.06] p-5 text-left hover:shadow-[0_4px_6px_-1px_rgb(0_0_0/0.08)] hover:-translate-y-0.5 hover:border-primary-200 dark:hover:border-primary-900 transition-all cursor-pointer shadow-[0_1px_3px_0_rgb(0_0_0/0.07)]"
                         >
-                            <div className="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-950 flex items-center justify-center mb-3">
-                                <Icon size={24} className="text-blue-600" />
+                            <div className="w-12 h-12 rounded-xl bg-primary-50 dark:bg-primary-950 flex items-center justify-center mb-3">
+                                <Icon size={24} className="text-primary-600" />
                             </div>
-                            <h3 className="font-semibold text-gray-800 dark:text-gray-100">
+                            <h3 className="font-semibold text-slate-800 dark:text-slate-100">
                                 {t(`goals.templateNames.${key}`)}
                             </h3>
                         </button>
@@ -301,15 +301,15 @@ export default function Goals() {
 
                 <button
                     onClick={() => { setEditingGoalId(null); setSelectedTemplate(null); setStep('specify'); }}
-                    className="w-full bg-white dark:bg-gray-900 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600 p-5 text-left hover:border-blue-400 dark:hover:border-blue-600 transition-all cursor-pointer"
+                    className="w-full bg-[#161A22] rounded-2xl border-2 border-dashed border-white/[0.10] p-5 text-left hover:border-primary-500/50 transition-all cursor-pointer"
                 >
                     <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                            <Pencil size={24} className="text-gray-500 dark:text-gray-400" />
+                        <div className="w-12 h-12 rounded-xl bg-white/[0.06] flex items-center justify-center">
+                            <Pencil size={24} className="text-slate-500 dark:text-slate-400" />
                         </div>
                         <div>
-                            <h3 className="font-semibold text-gray-800 dark:text-gray-100">{t('goals.buildOwn')}</h3>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">{t('goals.buildOwnDesc')}</p>
+                            <h3 className="font-semibold text-slate-800 dark:text-slate-100">{t('goals.buildOwn')}</h3>
+                            <p className="text-sm text-slate-500 dark:text-slate-400">{t('goals.buildOwnDesc')}</p>
                         </div>
                     </div>
                 </button>
@@ -320,32 +320,30 @@ export default function Goals() {
     // Goal specification (create or edit)
     if (step === 'specify') {
         return (
-            <div className="max-w-6xl mx-auto p-6">
-                <GoalSpecify
-                    goalId={editingGoalId}
-                    templateKey={selectedTemplate}
-                    templateData={selectedTemplate ? TEMPLATE_DATA[selectedTemplate] : null}
-                    onBack={() => { setEditingGoalId(null); setSelectedTemplate(null); setStep(goals.length > 0 ? 'list' : 'empty'); }}
-                    onSaved={handleGoalSaved}
-                />
-            </div>
+            <GoalSpecify
+                goalId={editingGoalId}
+                templateKey={selectedTemplate}
+                templateData={selectedTemplate ? TEMPLATE_DATA[selectedTemplate] : null}
+                onBack={() => { setEditingGoalId(null); setSelectedTemplate(null); setStep(goals.length > 0 ? 'list' : 'empty'); }}
+                onSaved={handleGoalSaved}
+            />
         );
     }
 
     // Goal list view
     return (
-        <div className="max-w-5xl mx-auto p-6">
+        <div>
             <div className="flex items-center justify-between mb-1">
-                <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">{t('goals.title')}</h1>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">{t('goals.title')}</h1>
                 <button
                     onClick={() => setStep('templates')}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium text-sm hover:bg-blue-700 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-[10px] font-medium text-sm hover:bg-primary-700 transition-colors"
                 >
                     <Plus size={16} />
                     {t('goals.addGoal')}
                 </button>
             </div>
-            <p className="text-gray-500 dark:text-gray-400 mb-6">{t('goals.subtitle')}</p>
+            <p className="text-slate-500 dark:text-slate-400 mb-6">{t('goals.subtitle')}</p>
 
             {/* Filter & Sort Bar */}
             <div className="flex flex-wrap items-center gap-2 mb-6">
@@ -355,12 +353,12 @@ export default function Goals() {
                         <button
                             key={s}
                             onClick={() => setStatusFilter(s)}
-                            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                            className={`px-3 py-1.5 rounded-[10px] text-xs font-medium transition-colors ${
                                 statusFilter === s
-                                    ? s === 'completed' ? 'bg-green-600 text-white'
-                                    : s === 'failed' ? 'bg-red-600 text-white'
-                                    : 'bg-blue-600 text-white'
-                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                                    ? s === 'completed' ? 'bg-success-600 text-white'
+                                    : s === 'failed' ? 'bg-error-600 text-white'
+                                    : 'bg-primary-600 text-white'
+                                    : 'bg-white/[0.05] text-slate-400 hover:bg-white/[0.08]'
                             }`}
                         >
                             {t(`goals.filter${s.charAt(0).toUpperCase() + s.slice(1)}`)}
@@ -368,17 +366,17 @@ export default function Goals() {
                     ))}
                 </div>
 
-                <div className="h-5 w-px bg-gray-200 dark:bg-gray-700 mx-1" />
+                <div className="h-5 w-px bg-slate-200 dark:bg-slate-700 mx-1" />
 
                 {/* Focus filter */}
-                <div className="flex items-center gap-1.5">
-                    <Filter size={14} className="text-gray-400" />
+                <div className="flex items-center gap-1.5 flex-wrap">
+                    <Filter size={14} className="text-slate-400" />
                     <button
                         onClick={() => setFocusFilter('all')}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                        className={`px-3 py-1.5 rounded-[10px] text-xs font-medium transition-colors ${
                             focusFilter === 'all'
-                                ? 'bg-blue-600 text-white'
-                                : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                                ? 'bg-primary-600 text-white'
+                                : 'bg-white/[0.05] text-slate-400 hover:bg-white/[0.08]'
                         }`}
                     >
                         {t('goals.filterAll')}
@@ -389,10 +387,10 @@ export default function Goals() {
                             <button
                                 key={f}
                                 onClick={() => setFocusFilter(f)}
-                                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 ${
+                                className={`px-3 py-1.5 rounded-[10px] text-xs font-medium transition-colors flex items-center gap-1 ${
                                     focusFilter === f
-                                        ? 'bg-blue-600 text-white'
-                                        : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'
+                                        ? 'bg-primary-600 text-white'
+                                        : 'bg-white/[0.05] text-slate-400 hover:bg-white/[0.08]'
                                 }`}
                             >
                                 <FocusIcon size={12} />
@@ -402,19 +400,19 @@ export default function Goals() {
                     })}
                 </div>
 
-                <div className="h-5 w-px bg-gray-200 dark:bg-gray-700 mx-1" />
+                <div className="h-5 w-px bg-slate-200 dark:bg-slate-700 mx-1" />
 
                 {/* Sort order */}
                 <button
                     onClick={() => setSortOrder(sortOrder === 'dreamFirst' ? 'monthlyFirst' : 'dreamFirst')}
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-[10px] text-xs font-medium bg-white/[0.05] text-slate-400 hover:bg-white/[0.08] transition-colors"
                 >
                     {sortOrder === 'dreamFirst' ? <ArrowDownAZ size={14} /> : <ArrowUpAZ size={14} />}
                     {sortOrder === 'dreamFirst' ? t('goals.sortDreamFirst') : t('goals.sortMonthlyFirst')}
                 </button>
             </div>
 
-            {/* Goals Table */}
+            {/* Goals List */}
             {filteredGoals.length > 0 ? (
                 <div className="space-y-3">
                     {filteredGoals.map(goal => (
@@ -432,15 +430,15 @@ export default function Goals() {
                 </div>
             ) : (
                 <div className="flex flex-col items-center justify-center py-16">
-                    <div className="w-20 h-20 rounded-2xl bg-blue-50 dark:bg-blue-950 flex items-center justify-center mb-6">
-                        <Target size={40} className="text-blue-500" />
+                    <div className="w-20 h-20 rounded-2xl bg-primary-50 dark:bg-primary-950 flex items-center justify-center mb-6">
+                        <Target size={40} className="text-primary-500" />
                     </div>
-                    <p className="text-gray-500 dark:text-gray-400 text-center mb-8 max-w-md">
+                    <p className="text-slate-500 dark:text-slate-400 text-center mb-8 max-w-md">
                         {t('goals.emptyMessage')}
                     </p>
                     <button
                         onClick={() => setStep('templates')}
-                        className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg"
+                        className="px-6 py-3 bg-primary-600 text-white rounded-[10px] font-semibold hover:bg-primary-700 transition-colors shadow-[0_4px_6px_-1px_rgb(0_0_0/0.1)]"
                     >
                         {t('goals.setGoal')}
                     </button>
@@ -461,31 +459,31 @@ function GoalRow({ goal, isExpanded, onToggleExpand, onEdit, onDelete, onReactiv
     const isFailed = goal.status === 'failed';
 
     return (
-        <div className={`rounded-xl overflow-hidden border ${
+        <div className={`rounded-2xl overflow-hidden border shadow-[0_1px_3px_0_rgb(0_0_0/0.07)] ${
             isCompleted
-                ? 'bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800'
+                ? 'bg-success-950/20 border-success-800'
                 : isFailed
-                    ? 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800'
-                    : 'bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700'
+                    ? 'bg-error-950/20 border-error-800'
+                    : 'bg-[#161A22] border-white/[0.06]'
         }`}>
             {/* Goal header row */}
             <div className="flex items-center gap-4 px-5 py-4">
                 {/* Focus icon */}
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
-                    isCompleted ? 'bg-green-100 dark:bg-green-900' : isFailed ? 'bg-red-100 dark:bg-red-900' : 'bg-blue-50 dark:bg-blue-950'
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                    isCompleted ? 'bg-success-100 dark:bg-success-900' : isFailed ? 'bg-error-100 dark:bg-error-900' : 'bg-primary-50 dark:bg-primary-950'
                 }`}>
-                    <FocusIcon size={20} className={isCompleted ? 'text-green-500' : isFailed ? 'text-red-500' : 'text-blue-500'} />
+                    <FocusIcon size={20} className={isCompleted ? 'text-success-500' : isFailed ? 'text-error-500' : 'text-primary-500'} />
                 </div>
 
                 {/* Title + meta */}
                 <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-gray-800 dark:text-gray-100 truncate">{goal.title}</h3>
+                    <h3 className="font-semibold text-slate-800 dark:text-slate-100 truncate">{goal.title}</h3>
                     <div className="flex items-center gap-3 mt-0.5">
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                        <span className="text-xs text-slate-500 dark:text-slate-400">
                             {t(`goals.specify.durations.${goal.duration}`)}
                         </span>
                         {totalMilestones > 0 && (
-                            <span className="text-xs text-gray-400 dark:text-gray-500">
+                            <span className="text-xs text-slate-400 dark:text-slate-500">
                                 {completedMilestones}/{totalMilestones} {t('goals.milestones')}
                             </span>
                         )}
@@ -495,13 +493,13 @@ function GoalRow({ goal, isExpanded, onToggleExpand, onEdit, onDelete, onReactiv
                 {/* Progress bar */}
                 {totalMilestones > 0 && (
                     <div className="w-24 shrink-0">
-                        <div className="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                        <div className="h-1.5 bg-white/[0.08] rounded-full overflow-hidden">
                             <div
-                                className="h-full bg-blue-500 rounded-full transition-all"
+                                className="h-full bg-primary-500 rounded-full transition-all"
                                 style={{ width: `${progress}%` }}
                             />
                         </div>
-                        <p className="text-xs text-gray-400 dark:text-gray-500 text-right mt-0.5">{progress}%</p>
+                        <p className="text-xs text-slate-400 dark:text-slate-500 text-right mt-0.5">{progress}%</p>
                     </div>
                 )}
 
@@ -509,7 +507,7 @@ function GoalRow({ goal, isExpanded, onToggleExpand, onEdit, onDelete, onReactiv
                 {(isCompleted || isFailed) && (
                     <button
                         onClick={onReactivate}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/40 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors"
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-950/40 rounded-[10px] hover:bg-primary-100 dark:hover:bg-primary-900/40 transition-colors"
                         title={t('goals.reactivate')}
                     >
                         <RotateCcw size={13} />
@@ -520,7 +518,7 @@ function GoalRow({ goal, isExpanded, onToggleExpand, onEdit, onDelete, onReactiv
                 {!isCompleted && !isFailed && (
                     <Link
                         to={`/plans?goalId=${goal.id}`}
-                        className="p-2 text-gray-400 hover:text-green-500 transition-colors rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
+                        className="p-2 text-slate-400 hover:text-success-500 transition-colors rounded-lg hover:bg-white/[0.04]"
                         title={t('goals.generatePlan')}
                     >
                         <Sparkles size={16} />
@@ -529,7 +527,7 @@ function GoalRow({ goal, isExpanded, onToggleExpand, onEdit, onDelete, onReactiv
 
                 <button
                     onClick={onEdit}
-                    className="p-2 text-gray-400 hover:text-blue-500 transition-colors rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800"
+                    className="p-2 text-slate-400 hover:text-primary-500 transition-colors rounded-lg hover:bg-white/[0.04]"
                     title={t('goals.editGoal')}
                 >
                     <Pencil size={16} />
@@ -538,7 +536,7 @@ function GoalRow({ goal, isExpanded, onToggleExpand, onEdit, onDelete, onReactiv
                 {totalMilestones > 0 && (
                     <button
                         onClick={onToggleExpand}
-                        className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                        className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-slate-400 hover:text-white bg-white/[0.05] rounded-[10px] hover:bg-white/[0.08] transition-colors"
                     >
                         {t('goals.open')}
                         <ChevronDown size={14} className={`transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
@@ -548,23 +546,23 @@ function GoalRow({ goal, isExpanded, onToggleExpand, onEdit, onDelete, onReactiv
 
             {/* Expanded milestones */}
             {isExpanded && goal.milestones?.length > 0 && (
-                <div className="border-t border-gray-100 dark:border-gray-800 px-5 py-4">
+                <div className="border-t border-white/[0.06] px-5 py-4">
                     <div className="space-y-2">
                         {goal.milestones.filter(m => !m.isCompleted).map((milestone) => (
                             <label
                                 key={milestone.id}
-                                className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer"
+                                className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-white/[0.04] transition-colors cursor-pointer"
                             >
                                 <button
                                     onClick={(e) => { e.preventDefault(); onToggleMilestone(milestone.id); }}
-                                    className="w-5 h-5 rounded border-2 border-gray-300 dark:border-gray-600 hover:border-blue-400 flex items-center justify-center shrink-0 transition-colors"
+                                    className="w-5 h-5 rounded border-2 border-slate-300 dark:border-slate-600 hover:border-primary-400 flex items-center justify-center shrink-0 transition-colors"
                                 >
                                 </button>
-                                <span className="text-sm flex-1 text-gray-700 dark:text-gray-300">
+                                <span className="text-sm flex-1 text-slate-700 dark:text-slate-300">
                                     {milestone.title}
                                 </span>
                                 {milestone.targetDate && (
-                                    <span className="text-xs text-gray-400 dark:text-gray-500">
+                                    <span className="text-xs text-slate-400 dark:text-slate-500">
                                         {new Date(milestone.targetDate).toLocaleDateString()}
                                     </span>
                                 )}

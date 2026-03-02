@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
 import { useGuest } from '../../contexts/GuestContext';
+import { useToast } from '../../contexts/ToastContext';
 import { Globe } from 'lucide-react';
 
 const LANGUAGES = [
@@ -36,6 +37,7 @@ const QUESTIONS = [
 
 export default function Quiz({ onComplete }) {
     const { t, i18n } = useTranslation();
+    const toast = useToast();
     const [currentStep, setCurrentStep] = useState(0);
     const [answers, setAnswers] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -96,7 +98,7 @@ export default function Quiz({ onComplete }) {
                 }
             } catch (error) {
                 console.error("Failed to save preferences:", error);
-                alert(t('quiz.error'));
+                toast.error(t('quiz.error'));
             } finally {
                 setIsSubmitting(false);
             }

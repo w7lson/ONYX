@@ -1,8 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../utils/prisma.js';
+import { asyncHandler } from '../middleware/asyncHandler.js';
 
-const prisma = new PrismaClient();
-
-export const savePreferences = async (req, res) => {
+export const savePreferences = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
     const { currentLevel, learningStyle, preferredContent, pace, reviewFrequency, language } = req.body;
 
@@ -10,39 +9,34 @@ export const savePreferences = async (req, res) => {
         return res.status(400).json({ error: "All preference fields are required" });
     }
 
-    try {
-        const profile = await prisma.userProfile.upsert({
-            where: { clerkId: userId },
-            update: {
-                currentLevel,
-                learningStyle,
-                preferredContent,
-                pace,
-                reviewFrequency,
-                ...(language && { language }),
-                onboardingDone: true,
-            },
-            create: {
-                clerkId: userId,
-                email: `${userId}@placeholder.com`,
-                currentLevel,
-                learningStyle,
-                preferredContent,
-                pace,
-                reviewFrequency,
-                ...(language && { language }),
-                onboardingDone: true,
-            },
-        });
+    const profile = await prisma.userProfile.upsert({
+        where: { clerkId: userId },
+        update: {
+            currentLevel,
+            learningStyle,
+            preferredContent,
+            pace,
+            reviewFrequency,
+            ...(language && { language }),
+            onboardingDone: true,
+        },
+        create: {
+            clerkId: userId,
+            email: `${userId}@placeholder.com`,
+            currentLevel,
+            learningStyle,
+            preferredContent,
+            pace,
+            reviewFrequency,
+            ...(language && { language }),
+            onboardingDone: true,
+        },
+    });
 
-        res.json(profile);
-    } catch (error) {
-        console.error("Error saving preferences:", error);
-        res.status(500).json({ error: "Failed to save preferences" });
-    }
-};
+    res.json(profile);
+});
 
-export const updatePreferences = async (req, res) => {
+export const updatePreferences = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
     const allowedFields = ['currentLevel', 'learningStyle', 'preferredContent', 'pace', 'reviewFrequency', 'language'];
     const updates = {};
@@ -57,102 +51,82 @@ export const updatePreferences = async (req, res) => {
         return res.status(400).json({ error: "No valid fields to update" });
     }
 
-    try {
-        const profile = await prisma.userProfile.update({
-            where: { clerkId: userId },
-            data: updates,
-            select: {
-                currentLevel: true,
-                learningStyle: true,
-                preferredContent: true,
-                pace: true,
-                reviewFrequency: true,
-                language: true,
-                onboardingDone: true,
-            },
-        });
+    const profile = await prisma.userProfile.update({
+        where: { clerkId: userId },
+        data: updates,
+        select: {
+            currentLevel: true,
+            learningStyle: true,
+            preferredContent: true,
+            pace: true,
+            reviewFrequency: true,
+            language: true,
+            onboardingDone: true,
+        },
+    });
 
-        res.json(profile);
-    } catch (error) {
-        console.error("Error updating preferences:", error);
-        res.status(500).json({ error: "Failed to update preferences" });
-    }
-};
+    res.json(profile);
+});
 
-export const getPreferences = async (req, res) => {
+export const getPreferences = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
 
-    try {
-        const profile = await prisma.userProfile.findUnique({
-            where: { clerkId: userId },
-            select: {
-                currentLevel: true,
-                learningStyle: true,
-                preferredContent: true,
-                pace: true,
-                reviewFrequency: true,
-                language: true,
-                onboardingDone: true,
-                welcomeGuideCompleted: true,
-            },
-        });
+    const profile = await prisma.userProfile.findUnique({
+        where: { clerkId: userId },
+        select: {
+            currentLevel: true,
+            learningStyle: true,
+            preferredContent: true,
+            pace: true,
+            reviewFrequency: true,
+            language: true,
+            onboardingDone: true,
+            welcomeGuideCompleted: true,
+        },
+    });
 
-        if (!profile) {
-            return res.status(404).json({ error: "Profile not found" });
-        }
-
-        res.json(profile);
-    } catch (error) {
-        console.error("Error fetching preferences:", error);
-        res.status(500).json({ error: "Failed to fetch preferences" });
+    if (!profile) {
+        return res.status(404).json({ error: "Profile not found" });
     }
-};
 
-export const getWelcomeGuideStatus = async (req, res) => {
+    res.json(profile);
+});
+
+export const getWelcomeGuideStatus = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
 
-    try {
-        const profile = await prisma.userProfile.findUnique({
-            where: { clerkId: userId },
-            select: { welcomeGuideCompleted: true },
-        });
+    const profile = await prisma.userProfile.findUnique({
+        where: { clerkId: userId },
+        select: { welcomeGuideCompleted: true },
+    });
 
-        if (profile?.welcomeGuideCompleted) {
-            return res.json({ completed: true, tasks: {} });
-        }
-
-        const [goalCount, habitCount, planCount] = await Promise.all([
-            prisma.goal.count({ where: { userId } }),
-            prisma.habit.count({ where: { userId, isArchived: false } }),
-            prisma.learningPlan.count({ where: { userId } }),
-        ]);
-
-        res.json({
-            completed: false,
-            tasks: {
-                hasGoal: goalCount > 0,
-                hasHabit: habitCount > 0,
-                hasPlan: planCount > 0,
-            },
-        });
-    } catch (error) {
-        console.error("Error fetching welcome guide status:", error);
-        res.status(500).json({ error: "Failed to fetch welcome guide status" });
+    if (profile?.welcomeGuideCompleted) {
+        return res.json({ completed: true, tasks: {} });
     }
-};
 
-export const completeWelcomeGuide = async (req, res) => {
+    const [goalCount, habitCount, planCount] = await Promise.all([
+        prisma.goal.count({ where: { userId } }),
+        prisma.habit.count({ where: { userId, isArchived: false } }),
+        prisma.learningPlan.count({ where: { userId } }),
+    ]);
+
+    res.json({
+        completed: false,
+        tasks: {
+            hasGoal: goalCount > 0,
+            hasHabit: habitCount > 0,
+            hasPlan: planCount > 0,
+        },
+    });
+});
+
+export const completeWelcomeGuide = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
 
-    try {
-        await prisma.userProfile.update({
-            where: { clerkId: userId },
-            data: { welcomeGuideCompleted: true },
-        });
+    await prisma.userProfile.update({
+        where: { clerkId: userId },
+        data: { welcomeGuideCompleted: true },
+    });
 
-        res.json({ success: true });
-    } catch (error) {
-        console.error("Error completing welcome guide:", error);
-        res.status(500).json({ error: "Failed to complete welcome guide" });
-    }
-};
+    res.json({ success: true });
+});

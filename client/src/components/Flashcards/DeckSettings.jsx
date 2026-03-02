@@ -123,6 +123,7 @@ export default function DeckSettings({
 }) {
     const { t } = useTranslation();
     const [subView, setSubView] = useState(null); // null | 'algorithm' | 'rename'
+    const [pendingConfirm, setPendingConfirm] = useState(null); // { action, message }
 
     // Algorithm settings local state
     const [algorithm, setAlgorithm] = useState(deck.algorithm ?? 'sm2');
@@ -318,9 +319,7 @@ export default function DeckSettings({
         {
             icon: <Copy size={18} />,
             label: t('flashcards.duplicateDeck'),
-            onClick: () => {
-                if (window.confirm(`Duplicate "${deck.title}"?`)) onDuplicate();
-            },
+            onClick: () => setPendingConfirm({ action: onDuplicate, message: `Duplicate "${deck.title}"?` }),
             arrow: false,
         },
     ];
@@ -329,9 +328,7 @@ export default function DeckSettings({
         {
             icon: <RotateCcw size={18} />,
             label: t('flashcards.resetProgress'),
-            onClick: () => {
-                if (window.confirm('Reset all card progress? This cannot be undone.')) onResetProgress();
-            },
+            onClick: () => setPendingConfirm({ action: onResetProgress, message: 'Reset all card progress? This cannot be undone.' }),
             danger: false,
         },
         {
@@ -349,9 +346,7 @@ export default function DeckSettings({
         {
             icon: <Trash2 size={18} />,
             label: t('flashcards.deleteDeck'),
-            onClick: () => {
-                if (window.confirm(`Delete "${deck.title}"? This cannot be undone.`)) onDelete();
-            },
+            onClick: () => setPendingConfirm({ action: onDelete, message: `Delete "${deck.title}"? This cannot be undone.` }),
             danger: true,
         },
     ];
@@ -396,7 +391,7 @@ export default function DeckSettings({
             )}
 
             {/* Main settings rows */}
-            <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 divide-y divide-gray-100 dark:divide-gray-800 mb-3">
+            <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 divide-y divide-gray-100 dark:divide-gray-800 mb-3 overflow-hidden">
                 {settingRows.map((row, i) => (
                     <button
                         key={i}
@@ -417,7 +412,7 @@ export default function DeckSettings({
             </div>
 
             {/* Destructive rows */}
-            <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 divide-y divide-gray-100 dark:divide-gray-800">
+            <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 divide-y divide-gray-100 dark:divide-gray-800 overflow-hidden">
                 {destructiveRows.map((row, i) => (
                     <button
                         key={i}
@@ -431,6 +426,27 @@ export default function DeckSettings({
                     </button>
                 ))}
             </div>
+
+            {/* Inline confirmation dialog */}
+            {pendingConfirm && (
+                <div className="mt-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
+                    <p className="text-sm text-amber-800 dark:text-amber-200 mb-3">{pendingConfirm.message}</p>
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => { pendingConfirm.action(); setPendingConfirm(null); }}
+                            className="px-3 py-1.5 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-colors"
+                        >
+                            Confirm
+                        </button>
+                        <button
+                            onClick={() => setPendingConfirm(null)}
+                            className="px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

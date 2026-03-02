@@ -14,51 +14,43 @@ function GuestDashboard() {
     const { t } = useTranslation();
 
     return (
-        <div className="max-w-4xl mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-1 text-gray-800 dark:text-gray-100">
+        <div>
+            <h1 className="text-3xl font-bold mb-1 text-slate-900 dark:text-slate-100 tracking-tight">
                 {t('guest.welcomeGuest')}
             </h1>
-            <p className="text-gray-500 dark:text-gray-400 mb-6">{t('guest.dashboardSubtitle')}</p>
+            <p className="text-slate-500 dark:text-slate-400 mb-6">{t('guest.dashboardSubtitle')}</p>
 
-            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-8 mb-6">
+            <div className="bg-[#161A22] border border-white/[0.06] rounded-lg p-10 mb-6 shadow-[0_1px_3px_0_rgb(0_0_0/0.07)]">
                 <div className="flex flex-col items-center text-center">
-                    <div className="w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-950 flex items-center justify-center mb-4">
-                        <Target size={32} className="text-blue-500" />
+                    <div className="w-16 h-16 rounded-lg bg-primary-50 dark:bg-primary-950 flex items-center justify-center mb-4">
+                        <Target size={32} className="text-primary-600 dark:text-primary-400" />
                     </div>
-                    <p className="text-gray-500 dark:text-gray-400 mb-4 max-w-md">
+                    <p className="text-slate-500 dark:text-slate-400 mb-6 max-w-md">
                         {t('guest.dashboardMessage')}
                     </p>
                     <SignInButton mode="modal">
-                        <button className="px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors">
+                        <button className="px-6 py-3 bg-primary-600 text-white rounded-[10px] font-semibold hover:bg-primary-700 transition-colors">
                             {t('guest.signUpCta')}
                         </button>
                     </SignInButton>
                 </div>
             </div>
 
-            {/* Quick Actions (limited for guests) */}
             <div className="grid grid-cols-3 gap-3">
-                <Link
-                    to="/learning"
-                    className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 transition-all"
-                >
-                    <BookOpen size={24} className="text-purple-500 mb-2" />
-                    <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{t('nav.techniques')}</p>
-                </Link>
-                <Link
-                    to="/plans"
-                    className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 transition-all"
-                >
-                    <FileText size={24} className="text-green-500 mb-2" />
-                    <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{t('nav.plans')}</p>
-                </Link>
-                <Link
-                    to="/settings"
-                    className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 transition-all"
-                >
-                    <Timer size={24} className="text-blue-500 mb-2" />
-                    <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{t('nav.settings')}</p>
-                </Link>
+                {[
+                    { to: '/learning', icon: BookOpen, label: t('nav.techniques'), color: 'text-primary-500' },
+                    { to: '/plans',    icon: FileText, label: t('nav.plans'),      color: 'text-success-500' },
+                    { to: '/settings', icon: Timer,    label: t('nav.settings'),   color: 'text-primary-600' },
+                ].map(({ to, icon: Icon, label, color }) => (
+                    <Link
+                        key={to}
+                        to={to}
+                        className="bg-[#161A22] border border-white/[0.06] rounded-lg p-5 hover:shadow-[0_4px_6px_-1px_rgb(0_0_0/0.08)] hover:-translate-y-0.5 hover:border-primary-200 dark:hover:border-primary-900 transition-all duration-150"
+                    >
+                        <Icon size={24} className={`${color} mb-2.5`} />
+                        <p className="text-sm font-medium text-slate-800 dark:text-slate-100">{label}</p>
+                    </Link>
+                ))}
             </div>
         </div>
     );
@@ -85,14 +77,11 @@ export default function Dashboard() {
         return { Authorization: `Bearer ${token}` };
     }, [getToken]);
 
-    // Check if user has completed onboarding (skip for guests)
     useEffect(() => {
         if (isGuest) return;
         const checkOnboarding = async () => {
             try {
                 const headers = await authHeaders();
-
-                // Sync any pending onboarding answers from pre-auth quiz
                 const pending = localStorage.getItem('pendingOnboardingAnswers');
                 if (pending) {
                     try {
@@ -104,36 +93,25 @@ export default function Dashboard() {
                         });
                         if (syncRes.ok) {
                             localStorage.removeItem('pendingOnboardingAnswers');
-                            return; // Preferences synced, no need to check onboarding
+                            return;
                         }
                     } catch (syncErr) {
                         console.error('Failed to sync pending preferences:', syncErr);
                     }
                 }
-
                 const res = await fetch('/api/preferences', { headers });
-                if (res.status === 404) {
-                    navigate('/onboarding', { replace: true });
-                    return;
-                }
+                if (res.status === 404) { navigate('/onboarding', { replace: true }); return; }
                 if (res.ok) {
                     const prefs = await res.json();
-                    if (!prefs.onboardingDone) {
-                        navigate('/onboarding', { replace: true });
-                    }
+                    if (!prefs.onboardingDone) navigate('/onboarding', { replace: true });
                 }
-            } catch (err) {
-                // If preferences check fails, don't block dashboard
-            }
+            } catch (err) { /* don't block dashboard */ }
         };
         checkOnboarding();
     }, [authHeaders, navigate, isGuest]);
 
     const fetchData = useCallback(async () => {
-        if (isGuest) {
-            setLoading(false);
-            return;
-        }
+        if (isGuest) { setLoading(false); return; }
         try {
             const headers = await authHeaders();
             const [todayRes, allRes, streakRes, goalsRes, decksRes] = await Promise.all([
@@ -143,24 +121,22 @@ export default function Dashboard() {
                 fetch('/api/goals', { headers }),
                 fetch('/api/decks', { headers }),
             ]);
-
-            if (todayRes.ok) setTodayHabits(await todayRes.json());
-            if (allRes.ok) setAllHabits(await allRes.json());
+            if (todayRes.ok)  setTodayHabits(await todayRes.json());
+            if (allRes.ok)    setAllHabits(await allRes.json());
             if (streakRes.ok) setStreaks(await streakRes.json());
 
-            let activeGoals = 0;
-            let dueCards = 0;
+            let activeGoalsCount = 0, dueCards = 0;
             if (goalsRes.ok) {
                 const goals = await goalsRes.json();
                 const active = goals.filter(g => g.status === 'active');
-                activeGoals = active.length;
+                activeGoalsCount = active.length;
                 setActiveGoals(active);
             }
             if (decksRes.ok) {
                 const decks = await decksRes.json();
                 dueCards = decks.reduce((sum, d) => sum + (d.dueCards || 0), 0);
             }
-            setStats({ activeGoals, dueCards });
+            setStats({ activeGoals: activeGoalsCount, dueCards });
         } catch (error) {
             console.error('Error fetching dashboard data:', error);
         } finally {
@@ -168,24 +144,15 @@ export default function Dashboard() {
         }
     }, [authHeaders, isGuest]);
 
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
+    useEffect(() => { fetchData(); }, [fetchData]);
 
     const handleToggleHabit = async (habitId, complete) => {
         try {
             const headers = await authHeaders();
-            if (complete) {
-                await fetch(`/api/habits/${habitId}/complete`, {
-                    method: 'POST',
-                    headers,
-                });
-            } else {
-                await fetch(`/api/habits/${habitId}/complete`, {
-                    method: 'DELETE',
-                    headers,
-                });
-            }
+            await fetch(`/api/habits/${habitId}/complete`, {
+                method: complete ? 'POST' : 'DELETE',
+                headers,
+            });
             fetchData();
         } catch (error) {
             console.error('Error toggling habit:', error);
@@ -200,10 +167,7 @@ export default function Dashboard() {
                 headers: { ...headers, 'Content-Type': 'application/json' },
                 body: JSON.stringify(habitData),
             });
-            if (res.ok) {
-                setShowCreate(false);
-                fetchData();
-            }
+            if (res.ok) { setShowCreate(false); fetchData(); }
         } catch (error) {
             console.error('Error creating habit:', error);
         }
@@ -212,10 +176,7 @@ export default function Dashboard() {
     const handleDeleteHabit = async (habitId) => {
         try {
             const headers = await authHeaders();
-            await fetch(`/api/habits/${habitId}`, {
-                method: 'DELETE',
-                headers,
-            });
+            await fetch(`/api/habits/${habitId}`, { method: 'DELETE', headers });
             fetchData();
         } catch (error) {
             console.error('Error deleting habit:', error);
@@ -228,65 +189,65 @@ export default function Dashboard() {
     const hasHabits = allHabits.length > 0;
 
     return (
-        <div className="max-w-4xl mx-auto p-6">
+        <div>
             {/* Header */}
-            <h1 className="text-3xl font-bold mb-1 text-gray-800 dark:text-gray-100">
+            <h1 className="text-3xl font-bold mb-1 text-slate-900 dark:text-slate-100 tracking-tight">
                 {t('dashboard.welcome', { name: user?.firstName })}
             </h1>
-            <p className="text-gray-500 dark:text-gray-400 mb-6">{t('dashboard.subtitle')}</p>
+            <p className="text-slate-500 dark:text-slate-400 mb-6">{t('dashboard.subtitle')}</p>
 
-            {/* Streak + Stats */}
+            {/* Stats row */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
                 <StreakDisplay
                     currentStreak={streaks.currentStreak}
                     longestStreak={streaks.longestStreak}
                 />
-                <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-4 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-950 flex items-center justify-center">
-                        <Target size={20} className="text-blue-500" />
+                <div className="bg-[#161A22] border border-white/[0.06] rounded-lg p-4 flex items-center gap-3 shadow-[0_1px_3px_0_rgb(0_0_0/0.07)]">
+                    <div className="w-10 h-10 rounded-xl bg-primary-50 dark:bg-primary-950 flex items-center justify-center shrink-0">
+                        <Target size={20} className="text-primary-600 dark:text-primary-400" />
                     </div>
                     <div>
-                        <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">{stats.activeGoals}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">{t('dashboard.activeGoals')}</p>
+                        <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{stats.activeGoals}</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">{t('dashboard.activeGoals')}</p>
                     </div>
                 </div>
-                <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-4 flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-950 flex items-center justify-center">
-                        <Layers size={20} className="text-purple-500" />
+                <div className="bg-[#161A22] border border-white/[0.06] rounded-lg p-4 flex items-center gap-3 shadow-[0_1px_3px_0_rgb(0_0_0/0.07)]">
+                    <div className="w-10 h-10 rounded-xl bg-primary-50 dark:bg-primary-950 flex items-center justify-center shrink-0">
+                        <Layers size={20} className="text-primary-600 dark:text-primary-400" />
                     </div>
                     <div>
-                        <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">{stats.dueCards}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">{t('dashboard.dueCards')}</p>
+                        <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{stats.dueCards}</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">{t('dashboard.dueCards')}</p>
                     </div>
                 </div>
             </div>
 
-            {/* Today's Habits or Empty State */}
+            {/* Today's Habits */}
             {loading ? (
-                <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-8 text-center">
-                    <p className="text-gray-500 dark:text-gray-400">{t('dashboard.loading')}</p>
+                <div className="bg-[#161A22] border border-white/[0.06] rounded-lg p-8 text-center mb-6">
+                    <p className="text-slate-500 dark:text-slate-400">{t('dashboard.loading')}</p>
                 </div>
             ) : hasHabits ? (
                 <div className="mb-6">
                     <div className="flex items-center justify-between mb-3">
-                        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
                             {t('habits.todayChecklist')}
                             {todayHabits.length > 0 && (
-                                <span className="ml-2 text-sm font-normal text-gray-500 dark:text-gray-400">
+                                <span className="ml-2 text-sm font-normal text-slate-500 dark:text-slate-400">
                                     {completed}/{todayHabits.length}
                                 </span>
                             )}
                         </h2>
-                        <div className="flex gap-2">
+                        <div className="flex gap-3">
                             <button
                                 onClick={() => setShowManage(!showManage)}
-                                className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                                className="text-sm text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
                             >
                                 {t('dashboard.manageHabits')}
                             </button>
                             <button
                                 onClick={() => setShowCreate(true)}
-                                className="flex items-center gap-1 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 transition-colors"
+                                className="flex items-center gap-1.5 text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 transition-colors"
                             >
                                 <Plus size={14} />
                                 {t('habits.createHabit')}
@@ -301,24 +262,24 @@ export default function Dashboard() {
                     )}
                 </div>
             ) : (
-                <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-8 mb-6">
+                <div className="bg-[#161A22] border border-white/[0.06] rounded-lg p-10 mb-6 shadow-[0_1px_3px_0_rgb(0_0_0/0.07)]">
                     <div className="flex flex-col items-center text-center">
-                        <div className="w-16 h-16 rounded-2xl bg-blue-50 dark:bg-blue-950 flex items-center justify-center mb-4">
-                            <Target size={32} className="text-blue-500" />
+                        <div className="w-16 h-16 rounded-lg bg-primary-50 dark:bg-primary-950 flex items-center justify-center mb-4">
+                            <Target size={32} className="text-primary-600 dark:text-primary-400" />
                         </div>
-                        <p className="text-gray-500 dark:text-gray-400 mb-4 max-w-md">
+                        <p className="text-slate-500 dark:text-slate-400 mb-6 max-w-md">
                             {t('dashboard.noHabitsYet')}
                         </p>
                         <div className="flex gap-3">
                             <Link
                                 to="/goals"
-                                className="px-5 py-2.5 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                                className="px-5 py-2.5 bg-primary-600 text-white rounded-[10px] font-medium hover:bg-primary-700 transition-colors"
                             >
                                 {t('dashboard.setupGoals')}
                             </Link>
                             <button
                                 onClick={() => setShowCreate(true)}
-                                className="px-5 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                                className="px-5 py-2.5 bg-white/[0.06] text-slate-300 rounded-[10px] font-medium hover:bg-white/[0.10] transition-colors"
                             >
                                 {t('habits.createHabit')}
                             </button>
@@ -329,30 +290,22 @@ export default function Dashboard() {
 
             {/* Quick Actions */}
             <div className="grid grid-cols-3 gap-3">
-                <Link
-                    to="/pomodoro"
-                    className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 transition-all"
-                >
-                    <Timer size={24} className="text-blue-500 mb-2" />
-                    <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{t('dashboard.startPomodoro')}</p>
-                </Link>
-                <Link
-                    to="/flashcards"
-                    className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 transition-all"
-                >
-                    <BookOpen size={24} className="text-purple-500 mb-2" />
-                    <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{t('dashboard.reviewFlashcards')}</p>
-                </Link>
-                <Link
-                    to="/tests"
-                    className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 transition-all"
-                >
-                    <FileText size={24} className="text-green-500 mb-2" />
-                    <p className="text-sm font-medium text-gray-800 dark:text-gray-100">{t('dashboard.takeTest')}</p>
-                </Link>
+                {[
+                    { to: '/pomodoro',   icon: Timer,     label: t('dashboard.startPomodoro'),    color: 'text-primary-600 dark:text-primary-400' },
+                    { to: '/flashcards', icon: BookOpen,  label: t('dashboard.reviewFlashcards'), color: 'text-primary-500' },
+                    { to: '/tests',      icon: FileText,  label: t('dashboard.takeTest'),         color: 'text-success-600 dark:text-success-400' },
+                ].map(({ to, icon: Icon, label, color }) => (
+                    <Link
+                        key={to}
+                        to={to}
+                        className="bg-[#161A22] border border-white/[0.06] rounded-lg p-5 hover:shadow-[0_4px_6px_-1px_rgb(0_0_0/0.08)] hover:-translate-y-0.5 hover:border-primary-200 dark:hover:border-primary-900 transition-all duration-150"
+                    >
+                        <Icon size={24} className={`${color} mb-2.5`} />
+                        <p className="text-sm font-medium text-slate-800 dark:text-slate-100">{label}</p>
+                    </Link>
+                ))}
             </div>
 
-            {/* Create Habit Modal */}
             {showCreate && (
                 <HabitCreateModal
                     onClose={() => setShowCreate(false)}

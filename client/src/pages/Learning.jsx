@@ -3,12 +3,12 @@ import { Layers, Timer, Brain, RefreshCw, MessageSquare, FileQuestion } from 'lu
 import TechniqueCard from '../components/Learning/TechniqueCard';
 
 const techniqueConfigs = [
-    { key: 'spacedRepetition', icon: Layers, linkTo: '/flashcards' },
-    { key: 'pomodoro', icon: Timer, linkTo: '/pomodoro' },
-    { key: 'memoryPalace', icon: Brain },
-    { key: 'activeRecall', icon: RefreshCw, linkTo: '/flashcards' },
-    { key: 'feynman', icon: MessageSquare },
-    { key: 'testing', icon: FileQuestion, linkTo: '/tests' },
+    { key: 'spacedRepetition', icon: Layers,         linkTo: '/flashcards' },
+    { key: 'pomodoro',         icon: Timer,           linkTo: '/pomodoro'   },
+    { key: 'memoryPalace',     icon: Brain                                  },
+    { key: 'activeRecall',     icon: RefreshCw,       linkTo: '/flashcards' },
+    { key: 'feynman',          icon: MessageSquare                          },
+    { key: 'testing',          icon: FileQuestion,    linkTo: '/tests'      },
 ];
 
 export default function Learning() {
@@ -24,15 +24,15 @@ export default function Learning() {
     }));
 
     return (
-        <div className="max-w-5xl mx-auto">
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">
+        <div className="max-w-3xl mx-auto">
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2 tracking-tight">
                 {t('learning.title')}
             </h1>
-            <p className="text-gray-500 dark:text-gray-400 mb-8">
+            <p className="text-slate-500 dark:text-slate-400 mb-6">
                 {t('learning.subtitle')}
             </p>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
                 {techniques.map((technique) => (
                     <TechniqueCard key={technique.title} {...technique} />
                 ))}

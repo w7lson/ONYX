@@ -1,15 +1,26 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 import { handleClerkWebhook } from './controllers/webhookController.js';
 import { requireAuth } from './middleware/auth.js';
-import { PrismaClient } from '@prisma/client';
 
 const app = express();
-const prisma = new PrismaClient();
 const port = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    credentials: true,
+}));
+
+// AI endpoint rate limiter: 10 requests per minute
+const aiLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 10,
+    message: { error: 'Too many requests. Please wait a moment before trying again.' },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
 
 // Webhook route needs raw body for signature verification
 app.post(
@@ -59,7 +70,7 @@ import { getOverview, getWeeklyActivity, getStudyTime, getTestScores } from './c
 
 // Plan Endpoints
 app.get('/api/plans', requireAuth, getUserPlans);
-app.post('/api/plans/generate', requireAuth, generatePlanFromGoal);
+app.post('/api/plans/generate', requireAuth, aiLimiter, generatePlanFromGoal);
 app.post('/api/plans', requireAuth, savePlan);
 app.put('/api/plans/:planId', requireAuth, updatePlan);
 app.delete('/api/plans/:planId', requireAuth, deletePlan);
@@ -81,7 +92,7 @@ app.get('/api/decks/:deckId/cards', requireAuth, getDeckCards);
 app.post('/api/decks/:deckId/cards', requireAuth, addCard);
 app.put('/api/cards/:cardId', requireAuth, updateCard);
 app.delete('/api/cards/:cardId', requireAuth, deleteCard);
-app.post('/api/decks/:deckId/generate', requireAuth, generateCards);
+app.post('/api/decks/:deckId/generate', requireAuth, aiLimiter, generateCards);
 app.post('/api/decks/:deckId/import', requireAuth, importCards);
 app.get('/api/decks/:deckId/review', requireAuth, getDueCards);
 app.post('/api/cards/:cardId/review', requireAuth, reviewCard);
@@ -95,7 +106,7 @@ app.post('/api/pomodoro/sessions', requireAuth, saveSession);
 app.get('/api/pomodoro/sessions', requireAuth, getSessions);
 
 // Test Endpoints
-app.post('/api/tests/generate', requireAuth, generateTest);
+app.post('/api/tests/generate', requireAuth, aiLimiter, generateTest);
 app.post('/api/tests/:testId/submit', requireAuth, submitTest);
 app.get('/api/tests', requireAuth, getUserTests);
 app.get('/api/tests/:testId', requireAuth, getTest);
@@ -120,7 +131,7 @@ app.put('/api/goals/:goalId/milestones', requireAuth, updateMilestones);
 app.patch('/api/milestones/:milestoneId/toggle', requireAuth, toggleMilestone);
 
 // Habit Endpoints
-app.post('/api/habits/generate', requireAuth, generateHabits);
+app.post('/api/habits/generate', requireAuth, aiLimiter, generateHabits);
 app.post('/api/habits', requireAuth, createHabit);
 app.get('/api/habits', requireAuth, getUserHabits);
 app.get('/api/habits/today', requireAuth, getTodayHabits);
@@ -143,6 +154,13 @@ app.get('/api/progress/overview', requireAuth, getOverview);
 app.get('/api/progress/weekly-activity', requireAuth, getWeeklyActivity);
 app.get('/api/progress/study-time', requireAuth, getStudyTime);
 app.get('/api/progress/test-scores', requireAuth, getTestScores);
+
+// Global error handler
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    const status = err.status || err.statusCode || 500;
+    res.status(status).json({ error: err.message || 'Internal server error' });
+});
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

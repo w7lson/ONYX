@@ -110,6 +110,8 @@ model Flashcard {
 
   deck    Deck              @relation(fields: [deckId], references: [id], onDelete: Cascade)
   reviews FlashcardReview[]
+
+  @@index([deckId, nextReviewAt])
 }
 
 model FlashcardReview {
@@ -132,6 +134,8 @@ model PomodoroSession {
   label        String?
 
   user UserProfile @relation(fields: [userId], references: [clerkId])
+
+  @@index([userId, completedAt])
 }
 
 // ===== AI TESTS =====
