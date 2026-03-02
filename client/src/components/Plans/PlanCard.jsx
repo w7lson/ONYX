@@ -117,30 +117,29 @@ export default function PlanCard({ plan, onToggleTask, onDelete, onRefresh }) {
     };
 
     return (
-        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 overflow-hidden transition-colors">
+        <div className="bg-[#161A22] rounded-lg border border-white/[0.06] overflow-hidden transition-colors">
             {/* Header */}
             <div className="p-5">
                 <div className="flex items-start justify-between mb-3">
                     <div className="flex-1 min-w-0">
-                        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">{plan.title}</h2>
+                        <h2 className="text-xl font-bold text-slate-100">{plan.title}</h2>
                         {plan.description && (
-                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{plan.description}</p>
+                            <p className="text-sm text-slate-400 mt-1">{plan.description}</p>
                         )}
                     </div>
 
                     <div className="flex items-center gap-2 shrink-0 ml-4">
-                        {/* Delete */}
                         {confirmDelete ? (
                             <div className="flex items-center gap-1">
                                 <button
                                     onClick={handleDeletePlan}
-                                    className="px-2 py-1 text-xs font-medium bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                                    className="px-2 py-1 text-xs font-medium bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
                                 >
                                     {t('plans.card.confirmDelete')}
                                 </button>
                                 <button
                                     onClick={() => setConfirmDelete(false)}
-                                    className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                                    className="p-1 text-slate-500 hover:text-slate-300"
                                 >
                                     <X size={14} />
                                 </button>
@@ -148,7 +147,7 @@ export default function PlanCard({ plan, onToggleTask, onDelete, onRefresh }) {
                         ) : (
                             <button
                                 onClick={() => setConfirmDelete(true)}
-                                className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+                                className="p-2 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-md transition-colors"
                                 title={t('plans.card.delete')}
                             >
                                 <Trash2 size={16} />
@@ -161,17 +160,17 @@ export default function PlanCard({ plan, onToggleTask, onDelete, onRefresh }) {
                 <div className="flex items-center justify-between gap-4">
                     <div className="flex items-center gap-2 flex-wrap">
                         {plan.goal && GoalIcon && (
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 rounded-full">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium bg-primary-500/10 text-primary-400 rounded-full">
                                 <GoalIcon size={12} />
                                 {plan.goal.title}
                             </span>
                         )}
                         <span className={`px-2.5 py-1 text-xs font-medium rounded-full ${
                             plan.status === 'completed'
-                                ? 'bg-green-100 dark:bg-green-900/40 text-green-600 dark:text-green-400'
+                                ? 'bg-green-500/20 text-green-400'
                                 : plan.status === 'failed'
-                                    ? 'bg-red-100 dark:bg-red-900/40 text-red-600 dark:text-red-400'
-                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400'
+                                    ? 'bg-red-500/20 text-red-400'
+                                    : 'bg-white/[0.06] text-slate-400'
                         }`}>
                             {plan.status}
                         </span>
@@ -179,20 +178,20 @@ export default function PlanCard({ plan, onToggleTask, onDelete, onRefresh }) {
 
                     <div className="flex items-center gap-3 shrink-0">
                         <div className="w-24">
-                            <div className="h-2 bg-gray-100 dark:bg-gray-800 rounded-full">
+                            <div className="h-2 bg-white/[0.08] rounded-full">
                                 <div
-                                    className="h-full bg-blue-500 rounded-full transition-all"
+                                    className="h-full bg-primary-500 rounded-full transition-all"
                                     style={{ width: `${progress}%` }}
                                 />
                             </div>
                         </div>
-                        <span className="text-xs font-medium text-gray-500 dark:text-gray-400 w-10 text-right">
+                        <span className="text-xs font-medium text-slate-400 w-10 text-right">
                             {progress}%
                         </span>
 
                         <button
                             onClick={() => setExpanded(!expanded)}
-                            className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                            className="p-1.5 text-slate-500 hover:text-slate-300 rounded-md hover:bg-white/[0.06] transition-colors"
                         >
                             <ChevronDown size={18} className={`transition-transform ${expanded ? 'rotate-180' : ''}`} />
                         </button>
@@ -202,13 +201,13 @@ export default function PlanCard({ plan, onToggleTask, onDelete, onRefresh }) {
 
             {/* Expanded modules */}
             {expanded && (
-                <div className="border-t border-gray-100 dark:border-gray-800 px-5 py-4 space-y-4">
+                <div className="border-t border-white/[0.06] px-5 py-4 space-y-4">
                     {plan.modules.map((module) => {
                         const modCompleted = module.tasks.filter(t => t.isCompleted).length;
                         const modTotal = module.tasks.length;
 
                         return (
-                            <div key={module.id} className="border border-gray-200 dark:border-gray-700 rounded-xl p-4">
+                            <div key={module.id} className="border border-white/[0.06] rounded-lg p-4 bg-white/[0.02]">
                                 <div className="flex justify-between items-center mb-2">
                                     {editingModuleId === module.id ? (
                                         <div className="flex items-center gap-2 flex-1">
@@ -216,27 +215,27 @@ export default function PlanCard({ plan, onToggleTask, onDelete, onRefresh }) {
                                                 value={moduleEditTitle}
                                                 onChange={e => setModuleEditTitle(e.target.value)}
                                                 onKeyDown={e => e.key === 'Enter' && handleUpdateModule(module.id)}
-                                                className="flex-1 px-2 py-1 text-sm font-semibold bg-white dark:bg-gray-800 border border-blue-300 dark:border-blue-600 rounded-lg focus:outline-none text-gray-700 dark:text-gray-200"
+                                                className="flex-1 px-2 py-1 text-sm font-semibold bg-white/[0.05] border border-primary-500/40 rounded-md focus:outline-none text-slate-200"
                                                 autoFocus
                                             />
-                                            <button onClick={() => handleUpdateModule(module.id)} className="p-1 text-green-500"><Check size={14} /></button>
-                                            <button onClick={() => setEditingModuleId(null)} className="p-1 text-gray-400"><X size={14} /></button>
+                                            <button onClick={() => handleUpdateModule(module.id)} className="p-1 text-green-400"><Check size={14} /></button>
+                                            <button onClick={() => setEditingModuleId(null)} className="p-1 text-slate-500"><X size={14} /></button>
                                         </div>
                                     ) : (
-                                        <h3 className="font-semibold text-gray-700 dark:text-gray-200">{module.title}</h3>
+                                        <h3 className="font-semibold text-slate-200">{module.title}</h3>
                                     )}
                                     <div className="flex items-center gap-2 shrink-0 ml-3">
                                         {editingModuleId !== module.id && (
                                             <>
                                                 <button
                                                     onClick={() => { setEditingModuleId(module.id); setModuleEditTitle(module.title); }}
-                                                    className="p-1 text-gray-400 hover:text-blue-500 rounded transition-colors"
+                                                    className="p-1 text-slate-500 hover:text-primary-400 rounded transition-colors"
                                                 >
                                                     <Pencil size={12} />
                                                 </button>
                                                 <button
                                                     onClick={() => handleDeleteModule(module.id)}
-                                                    className="p-1 text-gray-400 hover:text-red-500 rounded transition-colors"
+                                                    className="p-1 text-slate-500 hover:text-red-400 rounded transition-colors"
                                                 >
                                                     <Trash2 size={12} />
                                                 </button>
@@ -246,9 +245,9 @@ export default function PlanCard({ plan, onToggleTask, onDelete, onRefresh }) {
                                 </div>
 
                                 {/* Progress bar */}
-                                <div className="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full mb-3">
+                                <div className="h-1.5 bg-white/[0.08] rounded-full mb-3">
                                     <div
-                                        className="h-full bg-blue-500 rounded-full transition-all"
+                                        className="h-full bg-primary-500 rounded-full transition-all"
                                         style={{ width: `${modTotal > 0 ? (modCompleted / modTotal) * 100 : 0}%` }}
                                     />
                                 </div>
@@ -258,14 +257,14 @@ export default function PlanCard({ plan, onToggleTask, onDelete, onRefresh }) {
                                     {module.tasks.map((task) => (
                                         <li
                                             key={task.id}
-                                            className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 group"
+                                            className="flex items-center gap-2 text-sm text-slate-400 group"
                                         >
                                             <button
                                                 onClick={() => onToggleTask(task.id)}
                                                 className={`flex-shrink-0 w-4 h-4 rounded border flex items-center justify-center transition-colors ${
                                                     task.isCompleted
-                                                        ? 'bg-blue-500 border-blue-500 text-white'
-                                                        : 'border-gray-300 dark:border-gray-600 hover:border-blue-400'
+                                                        ? 'bg-primary-500 border-primary-500 text-white'
+                                                        : 'border-white/20 hover:border-primary-400'
                                                 }`}
                                             >
                                                 {task.isCompleted && <span className="text-xs">✓</span>}
@@ -277,17 +276,17 @@ export default function PlanCard({ plan, onToggleTask, onDelete, onRefresh }) {
                                                         value={taskEditContent}
                                                         onChange={e => setTaskEditContent(e.target.value)}
                                                         onKeyDown={e => e.key === 'Enter' && handleUpdateTask(task.id)}
-                                                        className="flex-1 px-2 py-0.5 text-sm bg-white dark:bg-gray-800 border border-blue-300 dark:border-blue-600 rounded focus:outline-none text-gray-700 dark:text-gray-300"
+                                                        className="flex-1 px-2 py-0.5 text-sm bg-white/[0.05] border border-primary-500/40 rounded focus:outline-none text-slate-200"
                                                         autoFocus
                                                     />
-                                                    <button onClick={() => handleUpdateTask(task.id)} className="p-0.5 text-green-500"><Check size={12} /></button>
-                                                    <button onClick={() => setEditingTaskId(null)} className="p-0.5 text-gray-400"><X size={12} /></button>
+                                                    <button onClick={() => handleUpdateTask(task.id)} className="p-0.5 text-green-400"><Check size={12} /></button>
+                                                    <button onClick={() => setEditingTaskId(null)} className="p-0.5 text-slate-500"><X size={12} /></button>
                                                 </div>
                                             ) : (
                                                 <>
                                                     <span
-                                                        className={`flex-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 rounded px-1 py-0.5 transition-colors ${
-                                                            task.isCompleted ? 'line-through text-gray-400 dark:text-gray-600' : ''
+                                                        className={`flex-1 cursor-pointer hover:bg-white/[0.04] rounded px-1 py-0.5 transition-colors ${
+                                                            task.isCompleted ? 'line-through text-slate-600' : ''
                                                         }`}
                                                         onClick={() => onToggleTask(task.id)}
                                                     >
@@ -296,13 +295,13 @@ export default function PlanCard({ plan, onToggleTask, onDelete, onRefresh }) {
                                                     <div className="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
                                                         <button
                                                             onClick={() => { setEditingTaskId(task.id); setTaskEditContent(task.content); }}
-                                                            className="p-0.5 text-gray-400 hover:text-blue-500"
+                                                            className="p-0.5 text-slate-500 hover:text-primary-400"
                                                         >
                                                             <Pencil size={11} />
                                                         </button>
                                                         <button
                                                             onClick={() => handleDeleteTask(task.id)}
-                                                            className="p-0.5 text-gray-400 hover:text-red-500"
+                                                            className="p-0.5 text-slate-500 hover:text-red-400"
                                                         >
                                                             <Trash2 size={11} />
                                                         </button>
@@ -324,16 +323,16 @@ export default function PlanCard({ plan, onToggleTask, onDelete, onRefresh }) {
                                                 if (e.key === 'Escape') { setAddingTaskModuleId(null); setNewTaskContent(''); }
                                             }}
                                             placeholder={t('plans.generator.taskPlaceholder')}
-                                            className="flex-1 px-2 py-1 text-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-700 dark:text-gray-300 placeholder-gray-400"
+                                            className="flex-1 px-2 py-1 text-sm bg-white/[0.05] border border-white/[0.08] rounded-md focus:outline-none focus:ring-1 focus:ring-primary-500 text-slate-300 placeholder-slate-600"
                                             autoFocus
                                         />
-                                        <button onClick={() => handleAddTask(module.id)} className="p-1 text-green-500"><Check size={14} /></button>
-                                        <button onClick={() => { setAddingTaskModuleId(null); setNewTaskContent(''); }} className="p-1 text-gray-400"><X size={14} /></button>
+                                        <button onClick={() => handleAddTask(module.id)} className="p-1 text-green-400"><Check size={14} /></button>
+                                        <button onClick={() => { setAddingTaskModuleId(null); setNewTaskContent(''); }} className="p-1 text-slate-500"><X size={14} /></button>
                                     </div>
                                 ) : (
                                     <button
                                         onClick={() => setAddingTaskModuleId(module.id)}
-                                        className="flex items-center gap-1 text-xs text-gray-400 hover:text-blue-500 transition-colors mt-2"
+                                        className="flex items-center gap-1 text-xs text-slate-500 hover:text-primary-400 transition-colors mt-2"
                                     >
                                         <Plus size={12} />
                                         {t('plans.generator.addTask')}

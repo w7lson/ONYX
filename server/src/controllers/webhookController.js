@@ -1,7 +1,5 @@
 import { Webhook } from 'svix';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../utils/prisma.js';
 
 export const handleClerkWebhook = async (req, res) => {
     const SIGNING_SECRET = process.env.CLERK_WEBHOOK_SECRET;

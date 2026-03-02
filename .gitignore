@@ -8,7 +8,6 @@ dist-ssr/
 # Environment variables (secrets!)
 .env
 .env.local
-.md
 
 # OS files
 .DS_Store
@@ -25,3 +24,6 @@ npm-debug.log*
 
 # Prisma
 server/prisma/migrations/**/migration_lock.toml
+
+# AI
+CLAUDE.md

@@ -7,6 +7,15 @@ import {
     XAxis, YAxis, Tooltip, CartesianGrid,
 } from 'recharts';
 
+/* Chart tooltip style — adapts to theme */
+const tooltipStyle = {
+    backgroundColor: 'var(--color-slate-900, #0F172A)',
+    border: 'none',
+    borderRadius: '10px',
+    color: '#F8FAFC',
+    fontSize: 13,
+};
+
 export default function Progress() {
     const { getToken } = useAuth();
     const { t } = useTranslation();
@@ -21,18 +30,16 @@ export default function Progress() {
         try {
             const token = await getToken();
             const headers = { Authorization: `Bearer ${token}` };
-
             const [overviewRes, weeklyRes, studyRes, scoresRes] = await Promise.all([
                 fetch('/api/progress/overview', { headers }),
                 fetch('/api/progress/weekly-activity', { headers }),
                 fetch('/api/progress/study-time', { headers }),
                 fetch('/api/progress/test-scores', { headers }),
             ]);
-
             if (overviewRes.ok) setOverview(await overviewRes.json());
-            if (weeklyRes.ok) setWeeklyActivity(await weeklyRes.json());
-            if (studyRes.ok) setStudyTime(await studyRes.json());
-            if (scoresRes.ok) setTestScores(await scoresRes.json());
+            if (weeklyRes.ok)   setWeeklyActivity(await weeklyRes.json());
+            if (studyRes.ok)    setStudyTime(await studyRes.json());
+            if (scoresRes.ok)   setTestScores(await scoresRes.json());
         } catch (error) {
             console.error('Error fetching progress data:', error);
         } finally {
@@ -40,9 +47,7 @@ export default function Progress() {
         }
     }, [getToken]);
 
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
+    useEffect(() => { fetchData(); }, [fetchData]);
 
     const formatMinutes = (min) => {
         if (min >= 60) return `${Math.round(min / 60)}h ${min % 60}m`;
@@ -51,8 +56,8 @@ export default function Progress() {
 
     if (loading) {
         return (
-            <div className="max-w-5xl mx-auto p-6">
-                <p className="text-gray-500 dark:text-gray-400">{t('dashboard.loading')}</p>
+            <div>
+                <p className="text-slate-500 dark:text-slate-400">{t('dashboard.loading')}</p>
             </div>
         );
     }
@@ -65,129 +70,98 @@ export default function Progress() {
     );
 
     return (
-        <div className="max-w-5xl mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-1 text-gray-800 dark:text-gray-100">
+        <div>
+            <h1 className="text-3xl font-bold mb-1 text-slate-900 dark:text-slate-100 tracking-tight">
                 {t('progress.title')}
             </h1>
-            <p className="text-gray-500 dark:text-gray-400 mb-6">{t('progress.subtitle')}</p>
+            <p className="text-slate-500 dark:text-slate-400 mb-6">{t('progress.subtitle')}</p>
 
             {!hasData ? (
-                <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-8 text-center">
-                    <p className="text-gray-500 dark:text-gray-400">{t('progress.noData')}</p>
+                <div className="bg-[#161A22] border border-white/[0.06] rounded-2xl p-10 text-center">
+                    <p className="text-slate-500 dark:text-slate-400">{t('progress.noData')}</p>
                 </div>
             ) : (
                 <>
                     {/* Overview Cards */}
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
-                        <StatCard
-                            icon={Timer}
-                            color="blue"
-                            value={formatMinutes(overview.pomodoro.totalMinutes)}
-                            label={t('progress.totalStudyTime')}
-                        />
-                        <StatCard
-                            icon={FileText}
-                            color="green"
-                            value={overview.tests.totalTaken > 0 ? `${overview.tests.avgScore}%` : '—'}
-                            label={t('progress.testsAvgScore')}
-                        />
-                        <StatCard
-                            icon={Layers}
-                            color="purple"
-                            value={overview.flashcards.totalReviews}
-                            label={t('progress.flashcardReviews')}
-                        />
-                        <StatCard
-                            icon={Target}
-                            color="amber"
-                            value={`${overview.goals.completed}/${overview.goals.total}`}
-                            label={t('progress.goalsCompleted')}
-                        />
+                        {[
+                            { icon: Timer,     color: 'primary', value: formatMinutes(overview.pomodoro.totalMinutes),                    label: t('progress.totalStudyTime') },
+                            { icon: FileText,  color: 'success', value: overview.tests.totalTaken > 0 ? `${overview.tests.avgScore}%` : '—', label: t('progress.testsAvgScore') },
+                            { icon: Layers,    color: 'info',    value: overview.flashcards.totalReviews,                                 label: t('progress.flashcardReviews') },
+                            { icon: Target,    color: 'warning', value: `${overview.goals.completed}/${overview.goals.total}`,             label: t('progress.goalsCompleted') },
+                        ].map(({ icon: Icon, color, value, label }) => {
+                            const colorMap = {
+                                primary: 'bg-primary-50 dark:bg-primary-950 text-primary-600 dark:text-primary-400',
+                                success: 'bg-success-50 dark:bg-success-900/30 text-success-600 dark:text-success-400',
+                                info:    'bg-info-50 dark:bg-info-900/30 text-info-600 dark:text-info-400',
+                                warning: 'bg-warning-50 dark:bg-warning-900/30 text-warning-600 dark:text-warning-400',
+                            };
+                            return (
+                                <div key={label} className="bg-[#161A22] border border-white/[0.06] rounded-2xl p-4 flex items-center gap-3 shadow-[0_1px_3px_0_rgb(0_0_0/0.07)]">
+                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${colorMap[color]}`}>
+                                        <Icon size={20} />
+                                    </div>
+                                    <div>
+                                        <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">{value}</p>
+                                        <p className="text-xs text-slate-500 dark:text-slate-400">{label}</p>
+                                    </div>
+                                </div>
+                            );
+                        })}
                     </div>
 
-                    {/* Weekly Activity Chart */}
+                    {/* Weekly Activity */}
                     {weeklyActivity.length > 0 && (
-                        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-5 mb-6">
-                            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">
+                        <div className="bg-[#161A22] border border-white/[0.06] rounded-2xl p-5 mb-6 shadow-[0_1px_3px_0_rgb(0_0_0/0.07)]">
+                            <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4">
                                 {t('progress.weeklyActivity')}
                             </h2>
                             <ResponsiveContainer width="100%" height={250}>
                                 <AreaChart data={weeklyActivity}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
-                                    <XAxis dataKey="day" tick={{ fontSize: 12, fill: '#9CA3AF' }} />
-                                    <YAxis tick={{ fontSize: 12, fill: '#9CA3AF' }} />
-                                    <Tooltip
-                                        contentStyle={{
-                                            backgroundColor: '#1F2937',
-                                            border: 'none',
-                                            borderRadius: '8px',
-                                            color: '#F3F4F6',
-                                        }}
-                                    />
-                                    <Area type="monotone" dataKey="pomodoroMinutes" name={t('progress.pomodoroMinutes')} stackId="1" stroke="#3B82F6" fill="#3B82F6" fillOpacity={0.3} />
-                                    <Area type="monotone" dataKey="habits" name={t('progress.habits')} stackId="1" stroke="#10B981" fill="#10B981" fillOpacity={0.3} />
-                                    <Area type="monotone" dataKey="reviews" name={t('progress.reviews')} stackId="1" stroke="#8B5CF6" fill="#8B5CF6" fillOpacity={0.3} />
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" opacity={0.5} />
+                                    <XAxis dataKey="day" tick={{ fontSize: 12, fill: '#94A3B8' }} />
+                                    <YAxis tick={{ fontSize: 12, fill: '#94A3B8' }} />
+                                    <Tooltip contentStyle={tooltipStyle} />
+                                    <Area type="monotone" dataKey="pomodoroMinutes" name={t('progress.pomodoroMinutes')} stackId="1" stroke="#0D9488" fill="#0D9488" fillOpacity={0.25} />
+                                    <Area type="monotone" dataKey="habits"          name={t('progress.habits')}          stackId="1" stroke="#10B981" fill="#10B981" fillOpacity={0.2} />
+                                    <Area type="monotone" dataKey="reviews"         name={t('progress.reviews')}         stackId="1" stroke="#2DD4BF" fill="#2DD4BF" fillOpacity={0.2} />
                                 </AreaChart>
                             </ResponsiveContainer>
                         </div>
                     )}
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        {/* Study Time Chart */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                        {/* Study Time */}
                         {studyTime.length > 0 && (
-                            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-5">
-                                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">
+                            <div className="bg-[#161A22] border border-white/[0.06] rounded-2xl p-5 shadow-[0_1px_3px_0_rgb(0_0_0/0.07)]">
+                                <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4">
                                     {t('progress.studyTime')}
                                 </h2>
                                 <ResponsiveContainer width="100%" height={200}>
                                     <BarChart data={studyTime}>
-                                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
-                                        <XAxis
-                                            dataKey="date"
-                                            tick={{ fontSize: 10, fill: '#9CA3AF' }}
-                                            tickFormatter={(d) => d.slice(5)}
-                                        />
-                                        <YAxis tick={{ fontSize: 12, fill: '#9CA3AF' }} />
-                                        <Tooltip
-                                            contentStyle={{
-                                                backgroundColor: '#1F2937',
-                                                border: 'none',
-                                                borderRadius: '8px',
-                                                color: '#F3F4F6',
-                                            }}
-                                            formatter={(value) => [`${value} min`, t('progress.pomodoroMinutes')]}
-                                        />
-                                        <Bar dataKey="minutes" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                                        <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" opacity={0.5} />
+                                        <XAxis dataKey="date" tick={{ fontSize: 10, fill: '#94A3B8' }} tickFormatter={(d) => d.slice(5)} />
+                                        <YAxis tick={{ fontSize: 12, fill: '#94A3B8' }} />
+                                        <Tooltip contentStyle={tooltipStyle} formatter={(value) => [`${value} min`, t('progress.pomodoroMinutes')]} />
+                                        <Bar dataKey="minutes" fill="#0D9488" radius={[6, 6, 0, 0]} />
                                     </BarChart>
                                 </ResponsiveContainer>
                             </div>
                         )}
 
-                        {/* Test Score Trend */}
+                        {/* Test Scores */}
                         {testScores.length > 0 && (
-                            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-5">
-                                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">
+                            <div className="bg-[#161A22] border border-white/[0.06] rounded-2xl p-5 shadow-[0_1px_3px_0_rgb(0_0_0/0.07)]">
+                                <h2 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-4">
                                     {t('progress.testScores')}
                                 </h2>
                                 <ResponsiveContainer width="100%" height={200}>
                                     <LineChart data={testScores}>
-                                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" opacity={0.3} />
-                                        <XAxis
-                                            dataKey="date"
-                                            tick={{ fontSize: 10, fill: '#9CA3AF' }}
-                                            tickFormatter={(d) => d.slice(5)}
-                                        />
-                                        <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: '#9CA3AF' }} />
-                                        <Tooltip
-                                            contentStyle={{
-                                                backgroundColor: '#1F2937',
-                                                border: 'none',
-                                                borderRadius: '8px',
-                                                color: '#F3F4F6',
-                                            }}
-                                            formatter={(value) => [`${value}%`, 'Score']}
-                                        />
-                                        <Line type="monotone" dataKey="score" stroke="#10B981" strokeWidth={2} dot={{ fill: '#10B981', r: 4 }} />
+                                        <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" opacity={0.5} />
+                                        <XAxis dataKey="date" tick={{ fontSize: 10, fill: '#94A3B8' }} tickFormatter={(d) => d.slice(5)} />
+                                        <YAxis domain={[0, 100]} tick={{ fontSize: 12, fill: '#94A3B8' }} />
+                                        <Tooltip contentStyle={tooltipStyle} formatter={(value) => [`${value}%`, 'Score']} />
+                                        <Line type="monotone" dataKey="score" stroke="#10B981" strokeWidth={2} dot={{ fill: '#10B981', r: 4 }} activeDot={{ r: 6 }} />
                                     </LineChart>
                                 </ResponsiveContainer>
                             </div>
@@ -195,27 +169,6 @@ export default function Progress() {
                     </div>
                 </>
             )}
-        </div>
-    );
-}
-
-function StatCard({ icon: Icon, color, value, label }) {
-    const colorMap = {
-        blue: 'bg-blue-50 dark:bg-blue-950 text-blue-500',
-        green: 'bg-green-50 dark:bg-green-950 text-green-500',
-        purple: 'bg-purple-50 dark:bg-purple-950 text-purple-500',
-        amber: 'bg-amber-50 dark:bg-amber-950 text-amber-500',
-    };
-
-    return (
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-4 flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${colorMap[color]}`}>
-                <Icon size={20} />
-            </div>
-            <div>
-                <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">{value}</p>
-                <p className="text-xs text-gray-500 dark:text-gray-400">{label}</p>
-            </div>
         </div>
     );
 }

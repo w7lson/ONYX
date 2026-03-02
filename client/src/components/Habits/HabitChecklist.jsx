@@ -7,9 +7,9 @@ export default function HabitChecklist({ habits, onToggle }) {
 
     if (habits.length === 0) {
         return (
-            <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-6 text-center">
-                <Circle size={32} className="text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-                <p className="text-gray-500 dark:text-gray-400">{t('habits.noHabits')}</p>
+            <div className="bg-[#161A22] border border-white/[0.06] rounded-lg p-6 text-center">
+                <Circle size={32} className="text-slate-600 mx-auto mb-3" />
+                <p className="text-slate-400">{t('habits.noHabits')}</p>
             </div>
         );
     }
@@ -18,12 +18,12 @@ export default function HabitChecklist({ habits, onToggle }) {
     const allDone = completed === habits.length;
 
     return (
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-5">
+        <div className="bg-[#161A22] border border-white/[0.06] rounded-lg p-5">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-gray-800 dark:text-gray-100">
+                <h3 className="font-semibold text-slate-100">
                     {t('habits.todayChecklist')}
                 </h3>
-                <span className="text-sm text-gray-500 dark:text-gray-400">
+                <span className="text-sm text-slate-400">
                     {completed}/{habits.length}
                 </span>
             </div>
@@ -45,17 +45,17 @@ export default function HabitChecklist({ habits, onToggle }) {
                     <motion.button
                         key={habit.id}
                         onClick={() => onToggle(habit.id, !habit.completedToday)}
-                        className={`w-full flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
+                        className={`w-full flex items-center gap-3 p-3 rounded-md text-left transition-colors ${
                             habit.completedToday
-                                ? 'bg-green-50 dark:bg-green-950/50'
-                                : 'hover:bg-gray-50 dark:hover:bg-gray-800'
+                                ? 'bg-green-500/10'
+                                : 'hover:bg-white/[0.04]'
                         }`}
                         whileTap={{ scale: 0.98 }}
                     >
                         <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
                             habit.completedToday
                                 ? 'bg-green-500 border-green-500'
-                                : 'border-gray-300 dark:border-gray-600'
+                                : 'border-white/20'
                         }`}>
                             {habit.completedToday && <Check size={12} className="text-white" />}
                         </div>
@@ -63,20 +63,20 @@ export default function HabitChecklist({ habits, onToggle }) {
                         <div className="flex-1 min-w-0">
                             <p className={`text-sm font-medium transition-colors ${
                                 habit.completedToday
-                                    ? 'text-green-700 dark:text-green-300 line-through'
-                                    : 'text-gray-800 dark:text-gray-100'
+                                    ? 'text-green-400 line-through'
+                                    : 'text-slate-100'
                             }`}>
                                 {habit.title}
                             </p>
                             {habit.goal && (
-                                <p className="text-xs text-gray-400 dark:text-gray-500 flex items-center gap-1 mt-0.5">
+                                <p className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
                                     <Target size={10} />
                                     {habit.goal.title}
                                 </p>
                             )}
                         </div>
 
-                        <span className="text-xs text-gray-400 dark:text-gray-500 flex-shrink-0">
+                        <span className="text-xs text-slate-500 flex-shrink-0">
                             {habit.frequency === 'daily' ? t('habits.daily') : t('habits.weekly')}
                         </span>
                     </motion.button>

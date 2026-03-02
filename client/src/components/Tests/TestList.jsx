@@ -21,14 +21,14 @@ export default function TestList({ tests, onCreateTest, generating, onSelectTest
         <div>
             <div className="flex items-center justify-between mb-6">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-100">
+                    <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
                         {t('tests.title')}
                     </h1>
-                    <p className="text-gray-500 dark:text-gray-400 mt-1">{t('tests.subtitle')}</p>
+                    <p className="text-slate-500 dark:text-slate-400 mt-1">{t('tests.subtitle')}</p>
                 </div>
                 <button
                     onClick={() => setShowCreate(!showCreate)}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-md font-medium hover:bg-primary-700 transition-colors"
                 >
                     <Plus size={18} />
                     {t('tests.createTest')}
@@ -36,33 +36,33 @@ export default function TestList({ tests, onCreateTest, generating, onSelectTest
             </div>
 
             {showCreate && (
-                <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-5 mb-6">
+                <div className="bg-[#161A22] rounded-lg border border-white/[0.06] p-5 mb-6">
                     <input
                         type="text"
                         value={topic}
                         onChange={(e) => setTopic(e.target.value)}
                         placeholder={t('tests.topicPlaceholder')}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 rounded-md border border-white/[0.08] bg-white/[0.05] text-slate-100 placeholder-slate-500 mb-3 focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
 
-                    <label className="text-sm text-gray-600 dark:text-gray-400 block mb-1">{t('tests.pasteContent')}</label>
+                    <label className="text-sm text-slate-400 block mb-1">{t('tests.pasteContent')}</label>
                     <textarea
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         placeholder={t('tests.contentPlaceholder')}
                         rows={4}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                        className="w-full px-4 py-2 rounded-md border border-white/[0.08] bg-white/[0.05] text-slate-100 placeholder-slate-500 mb-3 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
                     />
 
                     <div className="mb-3">
-                        <label className="text-sm text-gray-600 dark:text-gray-400 block mb-1">{t('tests.questionCount')}</label>
+                        <label className="text-sm text-slate-400 block mb-1">{t('tests.questionCount')}</label>
                         <input
                             type="number"
                             value={questionCount}
                             onChange={(e) => setQuestionCount(Math.max(1, Math.min(20, parseInt(e.target.value) || 1)))}
                             min={1}
                             max={20}
-                            className="w-20 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-20 px-3 py-1.5 rounded-md border border-white/[0.08] bg-white/[0.05] text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
                     </div>
 
@@ -70,13 +70,13 @@ export default function TestList({ tests, onCreateTest, generating, onSelectTest
                         <button
                             onClick={handleCreate}
                             disabled={generating}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50"
+                            className="px-4 py-2 bg-primary-600 text-white rounded-md font-medium hover:bg-primary-700 transition-colors disabled:opacity-50"
                         >
                             {generating ? t('tests.generating') : t('tests.generate')}
                         </button>
                         <button
                             onClick={() => setShowCreate(false)}
-                            className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                            className="px-4 py-2 bg-white/[0.06] text-slate-300 rounded-md font-medium hover:bg-white/[0.10] transition-colors"
                         >
                             {t('tests.cancel')}
                         </button>
@@ -85,9 +85,9 @@ export default function TestList({ tests, onCreateTest, generating, onSelectTest
             )}
 
             {tests.length === 0 ? (
-                <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-xl p-6 text-center">
-                    <FileQuestion size={40} className="text-blue-400 mx-auto mb-3" />
-                    <p className="text-gray-600 dark:text-gray-300">{t('tests.noTests')}</p>
+                <div className="bg-[#161A22] border border-white/[0.06] rounded-lg p-6 text-center">
+                    <FileQuestion size={40} className="text-primary-500 mx-auto mb-3" />
+                    <p className="text-slate-400">{t('tests.noTests')}</p>
                 </div>
             ) : (
                 <div className="space-y-3">
@@ -95,12 +95,12 @@ export default function TestList({ tests, onCreateTest, generating, onSelectTest
                         <div
                             key={test.id}
                             onClick={() => onSelectTest(test)}
-                            className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-4 hover:shadow-md transition-all cursor-pointer"
+                            className="bg-[#161A22] rounded-lg border border-white/[0.06] p-4 hover:border-primary-900 hover:shadow-[0_4px_6px_-1px_rgb(0_0_0/0.12)] transition-all cursor-pointer"
                         >
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <h3 className="font-semibold text-gray-800 dark:text-gray-100">{test.topic}</h3>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+                                    <h3 className="font-semibold text-slate-100">{test.topic}</h3>
+                                    <p className="text-sm text-slate-400 mt-0.5">
                                         {test.questions?.length || 0} {t('tests.questionCount').toLowerCase()} &middot; {new Date(test.createdAt).toLocaleDateString()}
                                     </p>
                                 </div>
@@ -108,15 +108,15 @@ export default function TestList({ tests, onCreateTest, generating, onSelectTest
                                     {test.completedAt ? (
                                         <span className={`px-3 py-1 text-sm rounded-full font-medium ${
                                             test.score >= 80
-                                                ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300'
+                                                ? 'bg-green-500/20 text-green-400'
                                                 : test.score >= 60
-                                                    ? 'bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300'
-                                                    : 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300'
+                                                    ? 'bg-yellow-500/20 text-yellow-400'
+                                                    : 'bg-red-500/20 text-red-400'
                                         }`}>
                                             {t('tests.score')}: {test.score}%
                                         </span>
                                     ) : (
-                                        <span className="px-3 py-1 text-sm rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                                        <span className="px-3 py-1 text-sm rounded-full bg-white/[0.06] text-slate-400">
                                             {t('tests.notCompleted')}
                                         </span>
                                     )}
@@ -125,7 +125,7 @@ export default function TestList({ tests, onCreateTest, generating, onSelectTest
                                             e.stopPropagation();
                                             setDeleteConfirmId(test.id);
                                         }}
-                                        className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950 transition-colors ml-2"
+                                        className="p-1.5 rounded-md text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors ml-2"
                                         title={t('tests.deleteTest')}
                                     >
                                         <Trash2 size={16} />
@@ -140,12 +140,12 @@ export default function TestList({ tests, onCreateTest, generating, onSelectTest
             {/* Delete confirmation modal */}
             {deleteConfirmId && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white dark:bg-gray-900 rounded-xl p-6 max-w-sm w-full shadow-xl">
-                        <p className="text-gray-800 dark:text-gray-100 mb-4">{t('tests.confirmDeleteTest')}</p>
+                    <div className="bg-[#161A22] border border-white/[0.08] rounded-lg p-6 max-w-sm w-full shadow-xl">
+                        <p className="text-slate-100 mb-4">{t('tests.confirmDeleteTest')}</p>
                         <div className="flex gap-3 justify-end">
                             <button
                                 onClick={() => setDeleteConfirmId(null)}
-                                className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                                className="px-4 py-2 bg-white/[0.06] text-slate-300 rounded-md font-medium hover:bg-white/[0.10] transition-colors"
                             >
                                 {t('tests.cancel')}
                             </button>
@@ -154,7 +154,7 @@ export default function TestList({ tests, onCreateTest, generating, onSelectTest
                                     onDeleteTest(deleteConfirmId);
                                     setDeleteConfirmId(null);
                                 }}
-                                className="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors"
+                                className="px-4 py-2 bg-red-600 text-white rounded-md font-medium hover:bg-red-700 transition-colors"
                             >
                                 {t('tests.delete')}
                             </button>

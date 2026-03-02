@@ -29,7 +29,7 @@ export default function TestTaking({ test, onSubmit, onBack }) {
         <div>
             <button
                 onClick={onBack}
-                className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 mb-6 transition-colors"
+                className="flex items-center gap-2 text-slate-400 hover:text-slate-200 mb-6 transition-colors"
             >
                 <ArrowLeft size={18} />
                 {t('tests.backToTests')}
@@ -38,22 +38,22 @@ export default function TestTaking({ test, onSubmit, onBack }) {
             {/* Progress bar */}
             <div className="mb-6">
                 <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                    <span className="text-sm text-slate-400">
                         {t('tests.questionOf', { current: currentIndex + 1, total: questions.length })}
                     </span>
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{test.topic}</span>
+                    <span className="text-sm font-medium text-slate-300">{test.topic}</span>
                 </div>
-                <div className="h-2 bg-gray-200 dark:bg-gray-800 rounded-full">
+                <div className="h-2 bg-white/[0.08] rounded-full">
                     <div
-                        className="h-full bg-blue-500 rounded-full transition-all"
+                        className="h-full bg-primary-500 rounded-full transition-all"
                         style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}
                     />
                 </div>
             </div>
 
             {/* Question */}
-            <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-6">
-                <p className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-6">
+            <div className="bg-[#161A22] rounded-lg border border-white/[0.06] p-6 mb-6">
+                <p className="text-lg font-semibold text-slate-100 mb-6">
                     {currentQ.questionText}
                 </p>
 
@@ -63,10 +63,10 @@ export default function TestTaking({ test, onSubmit, onBack }) {
                             <button
                                 key={key}
                                 onClick={() => setAnswer(currentQ.id, key)}
-                                className={`w-full text-left px-4 py-3 rounded-xl border transition-all ${
+                                className={`w-full text-left px-4 py-3 rounded-lg border transition-all ${
                                     answers[currentQ.id] === key
-                                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300'
-                                        : 'border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600'
+                                        ? 'border-primary-500 bg-primary-500/10 text-primary-300'
+                                        : 'border-white/[0.08] text-slate-300 hover:border-white/20 hover:bg-white/[0.04]'
                                 }`}
                             >
                                 <span className="font-semibold mr-2">{key.toUpperCase()}.</span>
@@ -82,7 +82,7 @@ export default function TestTaking({ test, onSubmit, onBack }) {
                 <button
                     onClick={() => setCurrentIndex(prev => Math.max(0, prev - 1))}
                     disabled={currentIndex === 0}
-                    className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors disabled:opacity-40"
+                    className="px-4 py-2 bg-white/[0.06] text-slate-300 rounded-md font-medium hover:bg-white/[0.10] transition-colors disabled:opacity-40"
                 >
                     {t('tests.previous')}
                 </button>
@@ -90,14 +90,14 @@ export default function TestTaking({ test, onSubmit, onBack }) {
                 {currentIndex < questions.length - 1 ? (
                     <button
                         onClick={() => setCurrentIndex(prev => prev + 1)}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                        className="px-4 py-2 bg-primary-600 text-white rounded-md font-medium hover:bg-primary-700 transition-colors"
                     >
                         {t('tests.next')}
                     </button>
                 ) : (
                     <button
                         onClick={() => setShowConfirm(true)}
-                        className="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
+                        className="px-4 py-2 bg-success-600 text-white rounded-md font-medium hover:bg-success-700 transition-colors"
                     >
                         {t('tests.submitTest')}
                     </button>
@@ -107,18 +107,18 @@ export default function TestTaking({ test, onSubmit, onBack }) {
             {/* Confirm modal */}
             {showConfirm && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white dark:bg-gray-900 rounded-xl p-6 max-w-sm w-full shadow-xl">
-                        <p className="text-gray-800 dark:text-gray-100 mb-4">{t('tests.confirmSubmit')}</p>
+                    <div className="bg-[#161A22] border border-white/[0.08] rounded-lg p-6 max-w-sm w-full shadow-xl">
+                        <p className="text-slate-100 mb-4">{t('tests.confirmSubmit')}</p>
                         <div className="flex gap-3 justify-end">
                             <button
                                 onClick={() => setShowConfirm(false)}
-                                className="px-4 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                                className="px-4 py-2 bg-white/[0.06] text-slate-300 rounded-md font-medium hover:bg-white/[0.10] transition-colors"
                             >
                                 {t('tests.cancel')}
                             </button>
                             <button
                                 onClick={() => { setShowConfirm(false); handleSubmit(); }}
-                                className="px-4 py-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
+                                className="px-4 py-2 bg-success-600 text-white rounded-md font-medium hover:bg-success-700 transition-colors"
                             >
                                 {t('tests.submit')}
                             </button>

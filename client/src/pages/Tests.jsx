@@ -7,7 +7,7 @@ import TestResults from '../components/Tests/TestResults';
 
 export default function Tests() {
     const { getToken } = useAuth();
-    const [view, setView] = useState('list'); // 'list' | 'taking' | 'results'
+    const [view, setView] = useState('list');
     const [tests, setTests] = useState([]);
     const [activeTest, setActiveTest] = useState(null);
     const [generating, setGenerating] = useState(false);
@@ -27,17 +27,13 @@ export default function Tests() {
         }
     }, [authHeaders]);
 
-    useEffect(() => {
-        fetchTests();
-    }, [fetchTests]);
+    useEffect(() => { fetchTests(); }, [fetchTests]);
 
     const handleCreateTest = async ({ topic, content, questionCount }) => {
         setGenerating(true);
         try {
             const config = await authHeaders();
-            const res = await axios.post('/api/tests/generate', {
-                topic, content, questionCount
-            }, config);
+            const res = await axios.post('/api/tests/generate', { topic, content, questionCount }, config);
             setActiveTest(res.data);
             setView('taking');
             fetchTests();
@@ -53,11 +49,7 @@ export default function Tests() {
             const config = await authHeaders();
             const res = await axios.get(`/api/tests/${test.id}`, config);
             setActiveTest(res.data);
-            if (res.data.completedAt) {
-                setView('results');
-            } else {
-                setView('taking');
-            }
+            setView(res.data.completedAt ? 'results' : 'taking');
         } catch (error) {
             console.error('Failed to fetch test:', error);
         }
@@ -93,30 +85,20 @@ export default function Tests() {
     };
 
     if (view === 'results' && activeTest) {
-        return (
-            <div className="max-w-5xl mx-auto p-6">
-                <TestResults test={activeTest} onBack={handleBackToList} />
-            </div>
-        );
+        return <TestResults test={activeTest} onBack={handleBackToList} />;
     }
 
     if (view === 'taking' && activeTest) {
-        return (
-            <div className="max-w-5xl mx-auto p-6">
-                <TestTaking test={activeTest} onSubmit={handleSubmit} onBack={handleBackToList} />
-            </div>
-        );
+        return <TestTaking test={activeTest} onSubmit={handleSubmit} onBack={handleBackToList} />;
     }
 
     return (
-        <div className="max-w-5xl mx-auto p-6">
-            <TestList
-                tests={tests}
-                onCreateTest={handleCreateTest}
-                generating={generating}
-                onSelectTest={handleSelectTest}
-                onDeleteTest={handleDeleteTest}
-            />
-        </div>
+        <TestList
+            tests={tests}
+            onCreateTest={handleCreateTest}
+            generating={generating}
+            onSelectTest={handleSelectTest}
+            onDeleteTest={handleDeleteTest}
+        />
     );
 }

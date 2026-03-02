@@ -1,6 +1,5 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../utils/prisma.js';
+import { asyncHandler } from '../middleware/asyncHandler.js';
 
 // Internal helper — used by other controllers to create notifications
 export const createNotification = async (userId, { type, title, message, link }) => {
@@ -9,99 +8,74 @@ export const createNotification = async (userId, { type, title, message, link })
     });
 };
 
-export const getNotifications = async (req, res) => {
+export const getNotifications = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
     const { limit = 50, unreadOnly } = req.query;
 
-    try {
-        const where = { userId };
-        if (unreadOnly === 'true') where.isRead = false;
+    const where = { userId };
+    if (unreadOnly === 'true') where.isRead = false;
 
-        const notifications = await prisma.notification.findMany({
-            where,
-            orderBy: { createdAt: 'desc' },
-            take: parseInt(limit),
-        });
+    const notifications = await prisma.notification.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        take: parseInt(limit),
+    });
 
-        res.json(notifications);
-    } catch (error) {
-        console.error('Error fetching notifications:', error);
-        res.status(500).json({ error: 'Failed to fetch notifications' });
-    }
-};
+    res.json(notifications);
+});
 
-export const getUnreadCount = async (req, res) => {
+export const getUnreadCount = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
 
-    try {
-        const count = await prisma.notification.count({
-            where: { userId, isRead: false },
-        });
+    const count = await prisma.notification.count({
+        where: { userId, isRead: false },
+    });
 
-        res.json({ count });
-    } catch (error) {
-        console.error('Error fetching unread count:', error);
-        res.status(500).json({ error: 'Failed to fetch unread count' });
-    }
-};
+    res.json({ count });
+});
 
-export const markAsRead = async (req, res) => {
+export const markAsRead = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
     const { notificationId } = req.params;
 
-    try {
-        const notification = await prisma.notification.findUnique({
-            where: { id: notificationId },
-        });
+    const notification = await prisma.notification.findUnique({
+        where: { id: notificationId },
+    });
 
-        if (!notification) return res.status(404).json({ error: 'Notification not found' });
-        if (notification.userId !== userId) return res.status(403).json({ error: 'Unauthorized' });
+    if (!notification) return res.status(404).json({ error: 'Notification not found' });
+    if (notification.userId !== userId) return res.status(403).json({ error: 'Unauthorized' });
 
-        const updated = await prisma.notification.update({
-            where: { id: notificationId },
-            data: { isRead: true },
-        });
+    const updated = await prisma.notification.update({
+        where: { id: notificationId },
+        data: { isRead: true },
+    });
 
-        res.json(updated);
-    } catch (error) {
-        console.error('Error marking notification as read:', error);
-        res.status(500).json({ error: 'Failed to mark notification as read' });
-    }
-};
+    res.json(updated);
+});
 
-export const markAllAsRead = async (req, res) => {
+export const markAllAsRead = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
 
-    try {
-        await prisma.notification.updateMany({
-            where: { userId, isRead: false },
-            data: { isRead: true },
-        });
+    await prisma.notification.updateMany({
+        where: { userId, isRead: false },
+        data: { isRead: true },
+    });
 
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Error marking all as read:', error);
-        res.status(500).json({ error: 'Failed to mark all as read' });
-    }
-};
+    res.json({ success: true });
+});
 
-export const deleteNotification = async (req, res) => {
+export const deleteNotification = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
     const { notificationId } = req.params;
 
-    try {
-        const notification = await prisma.notification.findUnique({
-            where: { id: notificationId },
-        });
+    const notification = await prisma.notification.findUnique({
+        where: { id: notificationId },
+    });
 
-        if (!notification) return res.status(404).json({ error: 'Notification not found' });
-        if (notification.userId !== userId) return res.status(403).json({ error: 'Unauthorized' });
+    if (!notification) return res.status(404).json({ error: 'Notification not found' });
+    if (notification.userId !== userId) return res.status(403).json({ error: 'Unauthorized' });
 
-        await prisma.notification.delete({ where: { id: notificationId } });
+    await prisma.notification.delete({ where: { id: notificationId } });
 
-        res.json({ success: true });
-    } catch (error) {
-        console.error('Error deleting notification:', error);
-        res.status(500).json({ error: 'Failed to delete notification' });
-    }
-};
+    res.json({ success: true });
+});
