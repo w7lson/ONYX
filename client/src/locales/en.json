@@ -794,6 +794,7 @@
   "welcomeGuide": {
     "title": "Welcome Guide",
     "getStarted": "Get Started",
+    "taskPreferences": "Take a quick quiz to personalise your plans",
     "taskGoal": "Create your first goal",
     "taskHabit": "Add a habit",
     "taskPlan": "Generate a learning plan",
@@ -815,7 +816,8 @@
     "preferredContent": "Preferred Content",
     "pace": "Learning Pace",
     "reviewFrequency": "Review Frequency",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "manageAccount": "Manage Account"
   },
   "notifications": {
     "title": "Notifications",

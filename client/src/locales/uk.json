@@ -794,6 +794,7 @@
   "welcomeGuide": {
     "title": "Гід початку роботи",
     "getStarted": "Почати",
+    "taskPreferences": "Пройдіть короткий тест для персоналізації планів",
     "taskGoal": "Створіть першу ціль",
     "taskHabit": "Додайте звичку",
     "taskPlan": "Створіть навчальний план",
@@ -815,7 +816,8 @@
     "preferredContent": "Бажаний контент",
     "pace": "Темп навчання",
     "reviewFrequency": "Частота повторення",
-    "signOut": "Вийти"
+    "signOut": "Вийти",
+    "manageAccount": "Керувати обліковим записом"
   },
   "notifications": {
     "title": "Сповіщення",

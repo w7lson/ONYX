@@ -5,12 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle, Target, Timer, BookOpen, FileText, BarChart3, ArrowRight, Sparkles, UserPlus } from 'lucide-react';
 import { SignInButton, useAuth } from '@clerk/clerk-react';
 import Quiz from '../components/Onboarding/Quiz';
-import { useGuest } from '../contexts/GuestContext';
 
 export default function Onboarding() {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { isGuest } = useGuest();
     const { isSignedIn, getToken } = useAuth();
     const [phase, setPhase] = useState('quiz');
     const [answers, setAnswers] = useState({});
@@ -68,11 +66,10 @@ export default function Onboarding() {
                             key="results"
                             answers={answers}
                             onNext={() => {
-                                if (!isSignedIn && !isGuest) setPhase('signup');
-                                else if (isGuest) setPhase('tour');
+                                if (!isSignedIn) setPhase('signup');
                                 else setPhase('goalPrompt');
                             }}
-                            showSignupHint={!isSignedIn && !isGuest}
+                            showSignupHint={!isSignedIn}
                         />
                     )}
                     {phase === 'signup' && !isSignedIn && <SignUpScreen key="signup" />}

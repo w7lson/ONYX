@@ -794,6 +794,7 @@
   "welcomeGuide": {
     "title": "Willkommens-Guide",
     "getStarted": "Loslegen",
+    "taskPreferences": "Kurzes Quiz für personalisierte Pläne",
     "taskGoal": "Erstelle dein erstes Ziel",
     "taskHabit": "Füge eine Gewohnheit hinzu",
     "taskPlan": "Erstelle einen Lernplan",
@@ -815,7 +816,8 @@
     "preferredContent": "Bevorzugte Inhalte",
     "pace": "Lerntempo",
     "reviewFrequency": "Wiederholungshäufigkeit",
-    "signOut": "Abmelden"
+    "signOut": "Abmelden",
+    "manageAccount": "Konto verwalten"
   },
   "notifications": {
     "title": "Benachrichtigungen",

@@ -3,61 +3,12 @@ import { useUser, useAuth } from '@clerk/clerk-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Target, Plus, Timer, BookOpen, FileText, Layers } from 'lucide-react';
-import { SignInButton } from '@clerk/clerk-react';
 import HabitChecklist from '../components/Habits/HabitChecklist';
 import HabitCreateModal from '../components/Habits/HabitCreateModal';
 import HabitList from '../components/Habits/HabitList';
 import StreakDisplay from '../components/Habits/StreakDisplay';
-import { useGuest } from '../contexts/GuestContext';
-
-function GuestDashboard() {
-    const { t } = useTranslation();
-
-    return (
-        <div>
-            <h1 className="text-3xl font-bold mb-1 text-slate-900 dark:text-slate-100 tracking-tight">
-                {t('guest.welcomeGuest')}
-            </h1>
-            <p className="text-slate-500 dark:text-slate-400 mb-6">{t('guest.dashboardSubtitle')}</p>
-
-            <div className="bg-[#161A22] border border-white/[0.06] rounded-lg p-10 mb-6 shadow-[0_1px_3px_0_rgb(0_0_0/0.07)]">
-                <div className="flex flex-col items-center text-center">
-                    <div className="w-16 h-16 rounded-lg bg-primary-50 dark:bg-primary-950 flex items-center justify-center mb-4">
-                        <Target size={32} className="text-primary-600 dark:text-primary-400" />
-                    </div>
-                    <p className="text-slate-500 dark:text-slate-400 mb-6 max-w-md">
-                        {t('guest.dashboardMessage')}
-                    </p>
-                    <SignInButton mode="modal">
-                        <button className="px-6 py-3 bg-primary-600 text-white rounded-[10px] font-semibold hover:bg-primary-700 transition-colors">
-                            {t('guest.signUpCta')}
-                        </button>
-                    </SignInButton>
-                </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-3">
-                {[
-                    { to: '/learning', icon: BookOpen, label: t('nav.techniques'), color: 'text-primary-500' },
-                    { to: '/plans',    icon: FileText, label: t('nav.plans'),      color: 'text-success-500' },
-                    { to: '/settings', icon: Timer,    label: t('nav.settings'),   color: 'text-primary-600' },
-                ].map(({ to, icon: Icon, label, color }) => (
-                    <Link
-                        key={to}
-                        to={to}
-                        className="bg-[#161A22] border border-white/[0.06] rounded-lg p-5 hover:shadow-[0_4px_6px_-1px_rgb(0_0_0/0.08)] hover:-translate-y-0.5 hover:border-primary-200 dark:hover:border-primary-900 transition-all duration-150"
-                    >
-                        <Icon size={24} className={`${color} mb-2.5`} />
-                        <p className="text-sm font-medium text-slate-800 dark:text-slate-100">{label}</p>
-                    </Link>
-                ))}
-            </div>
-        </div>
-    );
-}
 
 export default function Dashboard() {
-    const { isGuest } = useGuest();
     const { user } = useUser();
     const { getToken } = useAuth();
     const { t } = useTranslation();
@@ -78,7 +29,6 @@ export default function Dashboard() {
     }, [getToken]);
 
     useEffect(() => {
-        if (isGuest) return;
         const checkOnboarding = async () => {
             try {
                 const headers = await authHeaders();
@@ -108,10 +58,9 @@ export default function Dashboard() {
             } catch (err) { /* don't block dashboard */ }
         };
         checkOnboarding();
-    }, [authHeaders, navigate, isGuest]);
+    }, [authHeaders, navigate]);
 
     const fetchData = useCallback(async () => {
-        if (isGuest) { setLoading(false); return; }
         try {
             const headers = await authHeaders();
             const [todayRes, allRes, streakRes, goalsRes, decksRes] = await Promise.all([
@@ -142,7 +91,7 @@ export default function Dashboard() {
         } finally {
             setLoading(false);
         }
-    }, [authHeaders, isGuest]);
+    }, [authHeaders]);
 
     useEffect(() => { fetchData(); }, [fetchData]);
 
@@ -182,8 +131,6 @@ export default function Dashboard() {
             console.error('Error deleting habit:', error);
         }
     };
-
-    if (isGuest) return <GuestDashboard />;
 
     const completed = todayHabits.filter(h => h.completedToday).length;
     const hasHabits = allHabits.length > 0;

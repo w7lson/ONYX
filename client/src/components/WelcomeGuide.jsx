@@ -3,9 +3,10 @@ import { useAuth } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronUp, ChevronDown, CheckCircle2, Circle, Sparkles, Target, Zap, BookOpen, ListChecks } from 'lucide-react';
+import { ChevronUp, ChevronDown, CheckCircle2, Circle, Sparkles, Target, Zap, BookOpen, ListChecks, SlidersHorizontal } from 'lucide-react';
 
 const TASKS = [
+    { key: 'hasPreferences', i18nKey: 'welcomeGuide.taskPreferences', icon: SlidersHorizontal, link: '/onboarding' },
     { key: 'hasGoal', i18nKey: 'welcomeGuide.taskGoal', icon: Target, link: '/goals' },
     { key: 'hasHabit', i18nKey: 'welcomeGuide.taskHabit', icon: ListChecks, link: '/dashboard' },
     { key: 'hasPlan', i18nKey: 'welcomeGuide.taskPlan', icon: Zap, link: '/plans' },
@@ -20,6 +21,7 @@ export default function WelcomeGuide() {
 
     const [isExpanded, setIsExpanded] = useState(false);
     const [tasks, setTasks] = useState({
+        hasPreferences: false,
         hasGoal: false,
         hasHabit: false,
         hasPlan: false,
@@ -45,6 +47,7 @@ export default function WelcomeGuide() {
             const visitedTechniques = localStorage.getItem('onyx_visited_techniques') === 'true';
 
             setTasks({
+                hasPreferences: data.tasks.hasPreferences || false,
                 hasGoal: data.tasks.hasGoal || false,
                 hasHabit: data.tasks.hasHabit || false,
                 hasPlan: data.tasks.hasPlan || false,

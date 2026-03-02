@@ -1,10 +1,8 @@
 import { lazy, Suspense } from 'react';
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "./layouts/AppLayout";
-import GuestRestrictionOverlay from "./components/GuestRestrictionOverlay";
 import ErrorBoundary from "./components/ErrorBoundary";
-import { useGuest } from "./contexts/GuestContext";
 import { ToastProvider } from "./contexts/ToastContext";
 import './App.css';
 
@@ -30,29 +28,10 @@ function PageLoader() {
     );
 }
 
-function AuthOrGuest({ children, guestAllowed = false, publicAllowed = false }) {
-  const { isGuest } = useGuest();
-
-  if (isGuest && guestAllowed) return children;
-  if (isGuest && !guestAllowed) return <GuestRestrictionOverlay />;
-  if (publicAllowed) return children;
-
+function RequireAuth({ children }) {
   return (
     <>
       <SignedIn>{children}</SignedIn>
-      <SignedOut><Navigate to="/" /></SignedOut>
-    </>
-  );
-}
-
-function LayoutGuard() {
-  const { isGuest } = useGuest();
-
-  if (isGuest) return <AppLayout />;
-
-  return (
-    <>
-      <SignedIn><AppLayout /></SignedIn>
       <SignedOut><Navigate to="/" /></SignedOut>
     </>
   );
@@ -66,34 +45,24 @@ function App() {
           <Suspense fallback={<PageLoader />}>
             <Routes>
               {/* Public route: Landing page */}
-              <Route
-                path="/"
-                element={<HomeRoute />}
-              />
+              <Route path="/" element={<HomeRoute />} />
 
-              {/* Onboarding (no sidebar) — allowed for guests */}
-              <Route
-                path="/onboarding"
-                element={
-                  <AuthOrGuest guestAllowed publicAllowed>
-                    <Onboarding />
-                  </AuthOrGuest>
-                }
-              />
+              {/* Onboarding (no sidebar) */}
+              <Route path="/onboarding" element={<Onboarding />} />
 
               {/* Routes with sidebar layout */}
-              <Route element={<LayoutGuard />}>
-                <Route path="/dashboard"     element={<AuthOrGuest guestAllowed><Dashboard /></AuthOrGuest>} />
-                <Route path="/plans"         element={<AuthOrGuest guestAllowed><Plans /></AuthOrGuest>} />
-                <Route path="/learning"      element={<AuthOrGuest guestAllowed><Learning /></AuthOrGuest>} />
-                <Route path="/flashcards"    element={<AuthOrGuest><Flashcards /></AuthOrGuest>} />
-                <Route path="/pomodoro"      element={<AuthOrGuest><Pomodoro /></AuthOrGuest>} />
-                <Route path="/tests"         element={<AuthOrGuest><Tests /></AuthOrGuest>} />
-                <Route path="/goals"         element={<AuthOrGuest><Goals /></AuthOrGuest>} />
-                <Route path="/progress"      element={<AuthOrGuest><Progress /></AuthOrGuest>} />
-                <Route path="/profile"       element={<AuthOrGuest><Profile /></AuthOrGuest>} />
-                <Route path="/notifications" element={<AuthOrGuest><Notifications /></AuthOrGuest>} />
-                <Route path="/settings"      element={<AuthOrGuest guestAllowed><Settings /></AuthOrGuest>} />
+              <Route element={<RequireAuth><AppLayout /></RequireAuth>}>
+                <Route path="/dashboard"     element={<Dashboard />} />
+                <Route path="/plans"         element={<Plans />} />
+                <Route path="/learning"      element={<Learning />} />
+                <Route path="/flashcards"    element={<Flashcards />} />
+                <Route path="/pomodoro"      element={<Pomodoro />} />
+                <Route path="/tests"         element={<Tests />} />
+                <Route path="/goals"         element={<Goals />} />
+                <Route path="/progress"      element={<Progress />} />
+                <Route path="/profile"       element={<Profile />} />
+                <Route path="/notifications" element={<Notifications />} />
+                <Route path="/settings"      element={<Settings />} />
               </Route>
             </Routes>
           </Suspense>
@@ -104,15 +73,7 @@ function App() {
 }
 
 function HomeRoute() {
-  const { isGuest } = useGuest();
-  if (isGuest) return <Navigate to="/dashboard" />;
-
-  return (
-    <>
-      <SignedIn><Navigate to="/dashboard" /></SignedIn>
-      <SignedOut><Landing /></SignedOut>
-    </>
-  );
+  return <Landing />;
 }
 
 export default App;

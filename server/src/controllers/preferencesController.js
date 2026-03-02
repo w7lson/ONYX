@@ -97,7 +97,7 @@ export const getWelcomeGuideStatus = asyncHandler(async (req, res) => {
 
     const profile = await prisma.userProfile.findUnique({
         where: { clerkId: userId },
-        select: { welcomeGuideCompleted: true },
+        select: { welcomeGuideCompleted: true, currentLevel: true },
     });
 
     if (profile?.welcomeGuideCompleted) {
@@ -113,6 +113,7 @@ export const getWelcomeGuideStatus = asyncHandler(async (req, res) => {
     res.json({
         completed: false,
         tasks: {
+            hasPreferences: !!profile?.currentLevel,
             hasGoal: goalCount > 0,
             hasHabit: habitCount > 0,
             hasPlan: planCount > 0,

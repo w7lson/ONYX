@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useUser, useAuth, useClerk } from '@clerk/clerk-react';
-import { User, BarChart3, Eye, BookOpen, Gauge, CalendarClock, LogOut, Pencil, Check, X } from 'lucide-react';
+import { useUser, useAuth } from '@clerk/clerk-react';
+import { User, BarChart3, Eye, BookOpen, Gauge, CalendarClock, Pencil, Check, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const PREFERENCE_OPTIONS = {
@@ -26,7 +26,6 @@ export default function Profile() {
     const { t } = useTranslation();
     const { user } = useUser();
     const { getToken } = useAuth();
-    const { signOut } = useClerk();
 
     const [preferences, setPreferences] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -184,16 +183,8 @@ export default function Profile() {
                         })}
                     </div>
                 )}
-            </div>
 
-            {/* Sign Out */}
-            <button
-                onClick={() => signOut()}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-error-200 dark:border-error-900 bg-error-50 dark:bg-error-950/30 text-error-600 dark:text-error-400 rounded-2xl font-semibold hover:bg-error-100 dark:hover:bg-error-950/50 transition-colors"
-            >
-                <LogOut size={17} />
-                {t('profile.signOut')}
-            </button>
+            </div>
         </div>
     );
 }

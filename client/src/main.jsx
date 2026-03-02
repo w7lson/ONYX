@@ -7,7 +7,6 @@ import { ClerkProvider } from '@clerk/clerk-react'
 import { ThemeProvider } from './contexts/ThemeContext.jsx'
 import { PomodoroProvider } from './contexts/PomodoroContext.jsx'
 import { NotificationProvider } from './contexts/NotificationContext.jsx'
-import { GuestProvider } from './contexts/GuestContext.jsx'
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -21,9 +20,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <ThemeProvider>
         <PomodoroProvider>
           <NotificationProvider>
-            <GuestProvider>
-              <App />
-            </GuestProvider>
+            <App />
           </NotificationProvider>
         </PomodoroProvider>
       </ThemeProvider>

@@ -12,6 +12,5 @@ export default defineConfig({
         changeOrigin: true,
       }
     }
-  },
-  base: process.env.VITE_BASE_PATH || '/ONYX',
+  }
 })
