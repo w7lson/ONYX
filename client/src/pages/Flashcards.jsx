@@ -5,6 +5,8 @@ import DeckList from '../components/Flashcards/DeckList';
 import DeckDetail from '../components/Flashcards/DeckDetail';
 import ReviewMode from '../components/Flashcards/ReviewMode';
 import DeckSettings from '../components/Flashcards/DeckSettings';
+import AddCards from '../components/Flashcards/AddCards';
+import GenerateAI from '../components/Flashcards/GenerateAI';
 
 export default function Flashcards() {
     const { getToken } = useAuth();
@@ -14,6 +16,9 @@ export default function Flashcards() {
     const [cards, setCards] = useState([]);
     const [dueCards, setDueCards] = useState([]);
     const [generating, setGenerating] = useState(false);
+    const [cardsLoading, setCardsLoading] = useState(false);
+    const [showArchived, setShowArchived] = useState(false);
+    const [archivedDecks, setArchivedDecks] = useState([]);
 
     const authHeaders = useCallback(async () => {
         const token = await getToken();
@@ -52,6 +57,31 @@ export default function Flashcards() {
         }
     }, [authHeaders]);
 
+    const fetchArchivedDecks = useCallback(async () => {
+        try {
+            const config = await authHeaders();
+            const res = await axios.get('/api/decks?archived=true', config);
+            setArchivedDecks(res.data);
+        } catch (error) {
+            console.error('Failed to fetch archived decks:', error);
+        }
+    }, [authHeaders]);
+
+    const handleToggleArchived = useCallback(async () => {
+        const next = !showArchived;
+        setShowArchived(next);
+        if (next) fetchArchivedDecks();
+    }, [showArchived, fetchArchivedDecks]);
+
+    const handleUnarchiveDeck = async (deckId) => {
+        try {
+            const config = await authHeaders();
+            await axios.patch(`/api/decks/${deckId}/settings`, { isArchived: false }, config);
+            fetchDecks();
+            fetchArchivedDecks();
+        } catch (error) { console.error('Failed to unarchive deck:', error); }
+    };
+
     const handleCreateDeck = async ({ title, description }) => {
         try {
             const config = await authHeaders();
@@ -68,10 +98,14 @@ export default function Flashcards() {
         } catch (error) { console.error('Failed to delete deck:', error); }
     };
 
-    const handleSelectDeck = async (deck) => {
+    const handleSelectDeck = (deck) => {
         setSelectedDeck(deck);
-        await Promise.all([fetchCards(deck.id), fetchDueCards(deck.id)]);
+        setCards([]);
+        setDueCards([]);
+        setCardsLoading(true);
         setView('detail');
+        Promise.all([fetchCards(deck.id), fetchDueCards(deck.id)])
+            .finally(() => setCardsLoading(false));
     };
 
     const handleReviewDeck = (deck) => {
@@ -97,12 +131,12 @@ export default function Flashcards() {
         } catch (error) { console.error('Failed to delete card:', error); }
     };
 
-    const handleGenerate = async ({ topic, count }) => {
+    const handleGenerate = async ({ topic, count, format }) => {
         if (!selectedDeck) return;
         setGenerating(true);
         try {
             const config = await authHeaders();
-            await axios.post(`/api/decks/${selectedDeck.id}/generate`, { topic, count }, config);
+            await axios.post(`/api/decks/${selectedDeck.id}/generate`, { topic, count, format }, config);
             fetchCards(selectedDeck.id);
         } catch (error) { console.error('Failed to generate cards:', error); }
         finally { setGenerating(false); }
@@ -143,6 +177,9 @@ export default function Flashcards() {
         }
         await axios.post(`/api/decks/${deckId}/import`, { cards: importCards }, config);
         fetchDecks();
+        if (selectedDeck && deckId === selectedDeck.id) {
+            fetchCards(selectedDeck.id);
+        }
     };
 
     const handleBackToList = () => {
@@ -236,6 +273,20 @@ export default function Flashcards() {
         setView('detail');
     };
 
+    const handleBackFromAddCards = async () => {
+        if (selectedDeck) {
+            await fetchCards(selectedDeck.id);
+        }
+        setView('detail');
+    };
+
+    const handleBackFromGenerateAI = async () => {
+        if (selectedDeck) {
+            await fetchCards(selectedDeck.id);
+        }
+        setView('detail');
+    };
+
     if (view === 'review' && dueCards.length > 0) {
         return (
             <ReviewMode
@@ -265,21 +316,44 @@ export default function Flashcards() {
         );
     }
 
+    if (view === 'add-cards' && selectedDeck) {
+        return (
+            <AddCards
+                deck={selectedDeck}
+                onAddCard={handleAddCard}
+                onBack={handleBackFromAddCards}
+            />
+        );
+    }
+
+    if (view === 'generate-ai' && selectedDeck) {
+        return (
+            <GenerateAI
+                deck={selectedDeck}
+                onGenerate={handleGenerate}
+                onBack={handleBackFromGenerateAI}
+                generating={generating}
+            />
+        );
+    }
+
     if (view === 'detail' && selectedDeck) {
         return (
             <DeckDetail
                 deck={selectedDeck}
                 cards={cards}
+                decks={decks}
                 dueCards={dueCards.length}
+                cardsLoading={cardsLoading}
                 onBack={handleBackToList}
                 onDeleteCard={handleDeleteCard}
                 onEditCard={handleEditCard}
                 onEditDeck={handleEditDeck}
                 onStudy={() => setView('review')}
                 onOpenSettings={() => setView('settings')}
-                onAddCard={handleAddCard}
-                onGenerate={handleGenerate}
-                generating={generating}
+                onAddCards={() => setView('add-cards')}
+                onGenerateAI={() => setView('generate-ai')}
+                onImport={handleImport}
             />
         );
     }
@@ -292,6 +366,10 @@ export default function Flashcards() {
             onSelectDeck={handleSelectDeck}
             onReview={handleReviewDeck}
             onImport={handleImport}
+            showArchived={showArchived}
+            archivedDecks={archivedDecks}
+            onToggleArchived={handleToggleArchived}
+            onUnarchiveDeck={handleUnarchiveDeck}
         />
     );
 }

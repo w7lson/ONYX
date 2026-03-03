@@ -124,18 +124,24 @@ export const submitTest = asyncHandler(async (req, res) => {
         ? Math.round((correctCount / test.questions.length) * 100)
         : 0;
 
+    const isFirstAttempt = !test.completedAt;
+
+    await prisma.testAttempt.create({ data: { testId, score } });
+
     const updatedTest = await prisma.test.update({
         where: { id: testId },
         data: { score, completedAt: new Date() },
-        include: { questions: true }
+        include: { questions: true, attempts: { orderBy: { completedAt: 'asc' } } }
     });
 
-    createNotification(userId, {
-        type: 'test_result',
-        title: `Test completed: ${score}%`,
-        message: `You scored ${score}% on "${test.topic}".`,
-        link: '/tests',
-    }).catch(e => console.error('Test notification error:', e));
+    if (isFirstAttempt) {
+        createNotification(userId, {
+            type: 'test_result',
+            title: `Test completed: ${score}%`,
+            message: `You scored ${score}% on "${test.topic}".`,
+            link: '/tests',
+        }).catch(e => console.error('Test notification error:', e));
+    }
 
     res.json(updatedTest);
 });
@@ -162,7 +168,7 @@ export const getTest = asyncHandler(async (req, res) => {
 
     const test = await prisma.test.findFirst({
         where: { id: testId, userId },
-        include: { questions: true }
+        include: { questions: true, attempts: { orderBy: { completedAt: 'asc' } } }
     });
 
     if (!test) {

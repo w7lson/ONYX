@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@clerk/clerk-react';
 import {
@@ -132,6 +132,18 @@ export default function Goals() {
     const [focusFilter, setFocusFilter] = useState('all');
     const [statusFilter, setStatusFilter] = useState('active');
     const [sortOrder, setSortOrder] = useState('dreamFirst'); // 'dreamFirst' | 'monthlyFirst'
+    const [filterMenuOpen, setFilterMenuOpen] = useState(false);
+    const filterRef = useRef(null);
+
+    useEffect(() => {
+        const handler = (e) => {
+            if (filterRef.current && !filterRef.current.contains(e.target)) {
+                setFilterMenuOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handler);
+        return () => document.removeEventListener('mousedown', handler);
+    }, []);
 
     const authHeaders = useCallback(async () => {
         const token = await getToken();
@@ -346,9 +358,9 @@ export default function Goals() {
             <p className="text-slate-500 dark:text-slate-400 mb-6">{t('goals.subtitle')}</p>
 
             {/* Filter & Sort Bar */}
-            <div className="flex flex-wrap items-center gap-2 mb-6">
+            <div className="flex items-center gap-2 mb-6 flex-wrap">
                 {/* Status filter */}
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1">
                     {['active', 'all', 'completed', 'failed'].map(s => (
                         <button
                             key={s}
@@ -366,50 +378,91 @@ export default function Goals() {
                     ))}
                 </div>
 
-                <div className="h-5 w-px bg-slate-200 dark:bg-slate-700 mx-1" />
+                <div className="h-5 w-px bg-slate-200 dark:bg-slate-700" />
 
-                {/* Focus filter */}
-                <div className="flex items-center gap-1.5 flex-wrap">
-                    <Filter size={14} className="text-slate-400" />
+                {/* Focus filter — dropdown */}
+                <div className="relative" ref={filterRef}>
                     <button
-                        onClick={() => setFocusFilter('all')}
-                        className={`px-3 py-1.5 rounded-[10px] text-xs font-medium transition-colors ${
-                            focusFilter === 'all'
+                        onClick={() => setFilterMenuOpen(o => !o)}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[10px] text-xs font-medium transition-colors ${
+                            focusFilter !== 'all'
                                 ? 'bg-primary-600 text-white'
                                 : 'bg-white/[0.05] text-slate-400 hover:bg-white/[0.08]'
                         }`}
                     >
-                        {t('goals.filterAll')}
+                        <Filter size={13} />
+                        {focusFilter === 'all'
+                            ? t('goals.filterAll')
+                            : focusFilter === 'Uncategorized'
+                                ? t('goals.specify.uncategorizedFocus')
+                                : t(`goals.specify.focuses.${focusFilter}`)
+                        }
+                        <ChevronDown size={12} className={`transition-transform ${filterMenuOpen ? 'rotate-180' : ''}`} />
                     </button>
-                    {focusCategories.map(f => {
-                        const FocusIcon = FOCUS_ICONS[f] || Target;
-                        return (
+
+                    {filterMenuOpen && (
+                        <div className="absolute top-full left-0 mt-1 bg-[#1E2330] border border-white/[0.08] rounded-xl shadow-xl z-50 min-w-[170px] py-1 overflow-hidden">
+                            {/* Focus section */}
+                            <p className="px-3 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+                                {t('goals.filterFocus')}
+                            </p>
                             <button
-                                key={f}
-                                onClick={() => setFocusFilter(f)}
-                                className={`px-3 py-1.5 rounded-[10px] text-xs font-medium transition-colors flex items-center gap-1 ${
-                                    focusFilter === f
-                                        ? 'bg-primary-600 text-white'
-                                        : 'bg-white/[0.05] text-slate-400 hover:bg-white/[0.08]'
+                                onClick={() => { setFocusFilter('all'); setFilterMenuOpen(false); }}
+                                className={`w-full flex items-center gap-2 px-3 py-2 text-xs font-medium transition-colors ${
+                                    focusFilter === 'all'
+                                        ? 'text-primary-400 bg-primary-950/40'
+                                        : 'text-slate-400 hover:bg-white/[0.05] hover:text-slate-200'
                                 }`}
                             >
-                                <FocusIcon size={12} />
-                                {f === 'Uncategorized' ? t('goals.specify.uncategorizedFocus') : t(`goals.specify.focuses.${f}`)}
+                                <Target size={13} />
+                                {t('goals.filterAll')}
+                                {focusFilter === 'all' && <Check size={12} className="ml-auto" />}
                             </button>
-                        );
-                    })}
+                            {focusCategories.map(f => {
+                                const FocusIcon = FOCUS_ICONS[f] || Target;
+                                return (
+                                    <button
+                                        key={f}
+                                        onClick={() => { setFocusFilter(f); setFilterMenuOpen(false); }}
+                                        className={`w-full flex items-center gap-2 px-3 py-2 text-xs font-medium transition-colors ${
+                                            focusFilter === f
+                                                ? 'text-primary-400 bg-primary-950/40'
+                                                : 'text-slate-400 hover:bg-white/[0.05] hover:text-slate-200'
+                                        }`}
+                                    >
+                                        <FocusIcon size={13} />
+                                        {f === 'Uncategorized' ? t('goals.specify.uncategorizedFocus') : t(`goals.specify.focuses.${f}`)}
+                                        {focusFilter === f && <Check size={12} className="ml-auto" />}
+                                    </button>
+                                );
+                            })}
+
+                            {/* Sort section */}
+                            <div className="border-t border-white/[0.06] mt-1" />
+                            <p className="px-3 pt-2 pb-1 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
+                                {t('goals.sort')}
+                            </p>
+                            {[
+                                { value: 'dreamFirst', Icon: ArrowDownAZ, label: t('goals.sortDreamFirst') },
+                                { value: 'monthlyFirst', Icon: ArrowUpAZ, label: t('goals.sortMonthlyFirst') },
+                            ].map(({ value, Icon, label }) => (
+                                <button
+                                    key={value}
+                                    onClick={() => { setSortOrder(value); setFilterMenuOpen(false); }}
+                                    className={`w-full flex items-center gap-2 px-3 py-2 text-xs font-medium transition-colors ${
+                                        sortOrder === value
+                                            ? 'text-primary-400 bg-primary-950/40'
+                                            : 'text-slate-400 hover:bg-white/[0.05] hover:text-slate-200'
+                                    }`}
+                                >
+                                    <Icon size={13} />
+                                    {label}
+                                    {sortOrder === value && <Check size={12} className="ml-auto" />}
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
-
-                <div className="h-5 w-px bg-slate-200 dark:bg-slate-700 mx-1" />
-
-                {/* Sort order */}
-                <button
-                    onClick={() => setSortOrder(sortOrder === 'dreamFirst' ? 'monthlyFirst' : 'dreamFirst')}
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-[10px] text-xs font-medium bg-white/[0.05] text-slate-400 hover:bg-white/[0.08] transition-colors"
-                >
-                    {sortOrder === 'dreamFirst' ? <ArrowDownAZ size={14} /> : <ArrowUpAZ size={14} />}
-                    {sortOrder === 'dreamFirst' ? t('goals.sortDreamFirst') : t('goals.sortMonthlyFirst')}
-                </button>
             </div>
 
             {/* Goals List */}

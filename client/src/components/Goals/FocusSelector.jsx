@@ -33,14 +33,14 @@ export default function FocusSelector({ focus, onFocusChange }) {
         : t(`goals.specify.focuses.${focus}`);
 
     return (
-        <div ref={ref} className="relative w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-5 py-3 mb-6">
+        <div ref={ref} className="relative w-full bg-[#161A22] border border-white/[0.06] rounded-xl px-5 py-3 mb-6">
             <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                <span className="text-sm font-medium text-slate-400">
                     {currentLabel}
                 </span>
                 <button
                     onClick={() => setOpen(!open)}
-                    className="flex items-center gap-1 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                    className="flex items-center gap-1 text-sm font-medium text-primary-400 hover:text-primary-300 transition-colors"
                 >
                     {t('goals.specify.changeFocus')}
                     <ChevronDown size={16} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
@@ -48,7 +48,7 @@ export default function FocusSelector({ focus, onFocusChange }) {
             </div>
 
             {open && (
-                <div className="absolute left-0 right-0 top-full mt-2 z-20 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg p-4">
+                <div className="absolute left-0 right-0 top-full mt-2 z-20 bg-[#1A1D24] border border-white/[0.08] rounded-xl shadow-lg p-4">
                     <div className="grid grid-cols-2 gap-2">
                         {FOCUS_CATEGORIES.map(({ key, icon: Icon }) => (
                             <button
@@ -59,8 +59,8 @@ export default function FocusSelector({ focus, onFocusChange }) {
                                 }}
                                 className={`flex items-center gap-3 p-3 rounded-lg text-left transition-colors ${
                                     focus === key
-                                        ? 'bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300'
-                                        : 'hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300'
+                                        ? 'bg-primary-950/40 border border-primary-500/40 text-primary-300'
+                                        : 'hover:bg-white/[0.04] text-slate-300'
                                 }`}
                             >
                                 <Icon size={18} />

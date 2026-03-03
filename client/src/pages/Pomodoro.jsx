@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@clerk/clerk-react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
@@ -25,6 +25,20 @@ export default function Pomodoro() {
     } = usePomodoro();
 
     const [sessions, setSessions] = useState([]);
+    const [rawDurations, setRawDurations] = useState({
+        focus: String(durations.focus),
+        shortBreak: String(durations.shortBreak),
+    });
+    const prevDurations = useRef(durations);
+    useEffect(() => {
+        if (
+            prevDurations.current.focus !== durations.focus ||
+            prevDurations.current.shortBreak !== durations.shortBreak
+        ) {
+            setRawDurations({ focus: String(durations.focus), shortBreak: String(durations.shortBreak) });
+            prevDurations.current = durations;
+        }
+    }, [durations]);
 
     const authHeaders = useCallback(async () => {
         const token = await getToken();
@@ -184,8 +198,9 @@ export default function Pomodoro() {
                                 <label className="text-xs text-slate-500 dark:text-slate-400 block mb-1">{dLabel}</label>
                                 <input
                                     type="number"
-                                    value={durations[key]}
-                                    onChange={(e) => handleDurationChange(key, e.target.value)}
+                                    value={rawDurations[key]}
+                                    onChange={(e) => setRawDurations(prev => ({ ...prev, [key]: e.target.value }))}
+                                    onBlur={(e) => handleDurationChange(key, e.target.value)}
                                     min={1}
                                     max={120}
                                     className="w-full px-3 py-1.5 rounded-[10px] border border-white/[0.08] bg-white/[0.04] text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-primary-600/20 focus:border-primary-600 transition-all"

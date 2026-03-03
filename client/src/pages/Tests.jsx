@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@clerk/clerk-react';
 import axios from 'axios';
-import TestList from '../components/Tests/TestList';
+import TestList, { EXAMPLE_TEST } from '../components/Tests/TestList';
 import TestTaking from '../components/Tests/TestTaking';
 import TestResults from '../components/Tests/TestResults';
 
@@ -45,6 +45,11 @@ export default function Tests() {
     };
 
     const handleSelectTest = async (test) => {
+        if (test.id === '__example__') {
+            setActiveTest(EXAMPLE_TEST);
+            setView('taking');
+            return;
+        }
         try {
             const config = await authHeaders();
             const res = await axios.get(`/api/tests/${test.id}`, config);
@@ -55,8 +60,32 @@ export default function Tests() {
         }
     };
 
+    const handleSubmitExample = (answers) => {
+        const questions = activeTest.questions;
+        const graded = questions.map(q => ({
+            ...q,
+            userAnswer: answers.find(a => a.questionId === q.id)?.userAnswer || null,
+            isCorrect: (answers.find(a => a.questionId === q.id)?.userAnswer || null) === q.correctAnswer,
+        }));
+        const score = Math.round((graded.filter(q => q.isCorrect).length / graded.length) * 100);
+        const prevAttempts = activeTest.attempts || [];
+        const newAttempt = { id: `ex-${Date.now()}`, score, completedAt: new Date().toISOString() };
+        setActiveTest({
+            ...EXAMPLE_TEST,
+            questions: graded,
+            score,
+            completedAt: new Date().toISOString(),
+            attempts: [...prevAttempts, newAttempt],
+        });
+        setView('results');
+    };
+
     const handleSubmit = async (answers) => {
         if (!activeTest) return;
+        if (activeTest.id === '__example__') {
+            handleSubmitExample(answers);
+            return;
+        }
         try {
             const config = await authHeaders();
             const res = await axios.post(`/api/tests/${activeTest.id}/submit`, { answers }, config);
@@ -66,6 +95,10 @@ export default function Tests() {
         } catch (error) {
             console.error('Failed to submit test:', error);
         }
+    };
+
+    const handleRetake = () => {
+        setView('taking');
     };
 
     const handleDeleteTest = async (testId) => {
@@ -85,7 +118,7 @@ export default function Tests() {
     };
 
     if (view === 'results' && activeTest) {
-        return <TestResults test={activeTest} onBack={handleBackToList} />;
+        return <TestResults test={activeTest} onBack={handleBackToList} onRetake={handleRetake} />;
     }
 
     if (view === 'taking' && activeTest) {

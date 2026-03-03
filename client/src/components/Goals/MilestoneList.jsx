@@ -21,38 +21,38 @@ function MilestoneMenu({ milestone, onEdit, onDelete, onEditDescription, onEditT
         <div ref={ref} className="relative">
             <button
                 onClick={() => setOpen(!open)}
-                className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded"
+                className="p-1 text-slate-400 hover:text-slate-200 transition-colors rounded"
             >
                 <MoreVertical size={16} />
             </button>
 
             {open && (
-                <div className="absolute right-0 top-full mt-1 z-20 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-1 min-w-[180px]">
+                <div className="absolute right-0 top-full mt-1 z-20 bg-[#1A1D24] border border-white/[0.08] rounded-lg shadow-lg py-1 min-w-[180px]">
                     <button
                         onClick={() => { onEditDescription(milestone); setOpen(false); }}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:bg-white/[0.04]"
                     >
                         <FileText size={14} />
                         {t('goals.specify.editDescription')}
                     </button>
                     <button
                         onClick={() => { onEditTargetDate(milestone); setOpen(false); }}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:bg-white/[0.04]"
                     >
                         <Calendar size={14} />
                         {t('goals.specify.editTargetDate')}
                     </button>
                     <button
                         onClick={() => { onEditReward(milestone); setOpen(false); }}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:bg-white/[0.04]"
                     >
                         <Gift size={14} />
                         {t('goals.specify.editReward')}
                     </button>
-                    <hr className="my-1 border-gray-100 dark:border-gray-800" />
+                    <hr className="my-1 border-white/[0.06]" />
                     <button
                         onClick={() => { onDelete(milestone.id); setOpen(false); }}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950"
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-400 hover:bg-red-950/30"
                     >
                         <Trash2 size={14} />
                         {t('goals.specify.deleteMilestone')}
@@ -75,40 +75,40 @@ function MilestoneEditModal({ milestone, field, onSave, onClose }) {
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={onClose}>
-            <div className="bg-white dark:bg-gray-900 rounded-xl p-6 w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">{labels[field]}</h3>
+            <div className="bg-[#1A1D24] border border-white/[0.08] rounded-xl p-6 w-full max-w-md mx-4" onClick={e => e.stopPropagation()}>
+                <h3 className="text-lg font-semibold text-slate-100 mb-4">{labels[field]}</h3>
                 {field === 'targetDate' ? (
                     <input
                         type="date"
                         value={value}
                         onChange={(e) => setValue(e.target.value)}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 rounded-lg border border-white/[0.08] bg-white/[0.05] text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 ) : field === 'description' ? (
                     <textarea
                         value={value}
                         onChange={(e) => setValue(e.target.value)}
                         rows={3}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                        className="w-full px-4 py-2 rounded-lg border border-white/[0.08] bg-white/[0.05] text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
                     />
                 ) : (
                     <input
                         type="text"
                         value={value}
                         onChange={(e) => setValue(e.target.value)}
-                        className="w-full px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-4 py-2 rounded-lg border border-white/[0.08] bg-white/[0.05] text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
                     />
                 )}
                 <div className="flex gap-2 mt-4 justify-end">
                     <button
                         onClick={onClose}
-                        className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                        className="px-4 py-2 text-sm font-medium text-slate-300 bg-white/[0.06] rounded-lg hover:bg-white/[0.10] transition-colors"
                     >
                         {t('goals.specify.cancel')}
                     </button>
                     <button
                         onClick={() => onSave(milestone.id, field, value)}
-                        className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+                        className="px-4 py-2 text-sm font-medium text-white bg-primary-600 rounded-lg hover:bg-primary-700 transition-colors"
                     >
                         {t('goals.specify.save')}
                     </button>
@@ -188,10 +188,10 @@ export default function MilestoneList({ milestones, onChange }) {
 
     return (
         <div>
-            <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4">
+            <h2 className="text-lg font-semibold text-slate-100 mb-4">
                 {t('goals.specify.milestonesTitle')}
             </h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <p className="text-sm text-slate-400 mb-4">
                 {t('goals.specify.milestonesSubtitle')}
             </p>
 
@@ -199,28 +199,28 @@ export default function MilestoneList({ milestones, onChange }) {
                 {milestones.map((milestone, index) => (
                     <div
                         key={milestone.id}
-                        className="flex items-center gap-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2.5"
+                        className="flex items-center gap-2 bg-[#111318] border border-white/[0.06] rounded-lg px-3 py-2.5"
                     >
                         {/* Reorder arrows */}
                         <div className="flex flex-col">
                             <button
                                 onClick={() => moveUp(index)}
                                 disabled={index === 0}
-                                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
+                                className="text-slate-500 hover:text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed"
                             >
                                 <ChevronUp size={14} />
                             </button>
                             <button
                                 onClick={() => moveDown(index)}
                                 disabled={index === milestones.length - 1}
-                                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
+                                className="text-slate-500 hover:text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed"
                             >
                                 <ChevronDown size={14} />
                             </button>
                         </div>
 
                         {/* Order number */}
-                        <span className="text-xs font-medium text-gray-400 dark:text-gray-500 w-5 text-center">
+                        <span className="text-xs font-medium text-slate-500 w-5 text-center">
                             {index + 1}
                         </span>
 
@@ -239,12 +239,12 @@ export default function MilestoneList({ milestones, onChange }) {
                                 />
                             ) : (
                                 <>
-                                    <span className="text-sm text-gray-800 dark:text-gray-100 truncate">
+                                    <span className="text-sm text-slate-100 truncate">
                                         {milestone.title || t('goals.specify.milestonePlaceholder')}
                                     </span>
                                     <button
                                         onClick={() => startEditing(milestone)}
-                                        className="flex-shrink-0 p-0.5 text-gray-400 hover:text-blue-500 transition-colors"
+                                        className="flex-shrink-0 p-0.5 text-slate-500 hover:text-primary-400 transition-colors"
                                     >
                                         <Pencil size={13} />
                                     </button>
@@ -266,7 +266,7 @@ export default function MilestoneList({ milestones, onChange }) {
 
             <button
                 onClick={addMilestone}
-                className="flex items-center gap-2 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+                className="flex items-center gap-2 text-sm font-medium text-primary-400 hover:text-primary-300 transition-colors"
             >
                 <Plus size={16} />
                 {t('goals.specify.addMilestone')}

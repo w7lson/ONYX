@@ -1,17 +1,62 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus, FileQuestion, Trash2 } from 'lucide-react';
+import { Plus, FileQuestion, Trash2, FlaskConical } from 'lucide-react';
+
+export const EXAMPLE_TEST = {
+    id: '__example__',
+    topic: 'Study Techniques',
+    completedAt: null,
+    attempts: [],
+    questions: [
+        {
+            id: 'ex-1',
+            type: 'mc',
+            questionText: 'What does the Pomodoro Technique primarily aim to improve?',
+            options: { a: 'Reading speed', b: 'Focus and time management', c: 'Memory retention', d: 'Note-taking skills' },
+            correctAnswer: 'b',
+        },
+        {
+            id: 'ex-2',
+            type: 'mc',
+            questionText: 'In spaced repetition, when should you review a card you found easy?',
+            options: { a: 'Immediately', b: 'After 1 day', c: 'After a longer interval', d: 'Never again' },
+            correctAnswer: 'c',
+        },
+        {
+            id: 'ex-3',
+            type: 'mc',
+            questionText: 'The Feynman Technique involves explaining a concept as if you are:',
+            options: { a: 'An expert presenter', b: 'A student yourself', c: 'Teaching a beginner', d: 'Writing a textbook' },
+            correctAnswer: 'c',
+        },
+        {
+            id: 'ex-4',
+            type: 'mc',
+            questionText: 'Active recall is most effective because it:',
+            options: { a: 'Reduces study time', b: 'Strengthens memory through retrieval practice', c: 'Eliminates the need for repetition', d: 'Improves reading speed' },
+            correctAnswer: 'b',
+        },
+        {
+            id: 'ex-5',
+            type: 'mc',
+            questionText: 'How long is a standard Pomodoro work interval?',
+            options: { a: '15 minutes', b: '20 minutes', c: '25 minutes', d: '30 minutes' },
+            correctAnswer: 'c',
+        },
+    ],
+};
 
 export default function TestList({ tests, onCreateTest, generating, onSelectTest, onDeleteTest }) {
     const { t } = useTranslation();
     const [showCreate, setShowCreate] = useState(false);
     const [topic, setTopic] = useState('');
     const [content, setContent] = useState('');
-    const [questionCount, setQuestionCount] = useState(10);
+    const [questionCount, setQuestionCount] = useState('10');
     const [deleteConfirmId, setDeleteConfirmId] = useState(null);
     const handleCreate = () => {
         if (!topic.trim() && !content.trim()) return;
-        onCreateTest({ topic: topic.trim(), content: content.trim(), questionCount });
+        const validCount = Math.max(1, Math.min(20, parseInt(questionCount) || 10));
+        onCreateTest({ topic: topic.trim(), content: content.trim(), questionCount: validCount });
         setTopic('');
         setContent('');
         setShowCreate(false);
@@ -59,7 +104,7 @@ export default function TestList({ tests, onCreateTest, generating, onSelectTest
                         <input
                             type="number"
                             value={questionCount}
-                            onChange={(e) => setQuestionCount(Math.max(1, Math.min(20, parseInt(e.target.value) || 1)))}
+                            onChange={(e) => setQuestionCount(e.target.value)}
                             min={1}
                             max={20}
                             className="w-20 px-3 py-1.5 rounded-md border border-white/[0.08] bg-white/[0.05] text-slate-100 focus:outline-none focus:ring-2 focus:ring-primary-500"
@@ -83,6 +128,30 @@ export default function TestList({ tests, onCreateTest, generating, onSelectTest
                     </div>
                 </div>
             )}
+
+            {/* Example test card — always visible */}
+            <div className="mb-4">
+                <div
+                    onClick={() => onSelectTest(EXAMPLE_TEST)}
+                    className="bg-[#161A22] rounded-lg border border-primary-900/60 p-4 hover:border-primary-700 hover:shadow-[0_4px_6px_-1px_rgb(0_0_0/0.12)] transition-all cursor-pointer"
+                >
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <FlaskConical size={18} className="text-primary-400 shrink-0" />
+                            <div>
+                                <div className="flex items-center gap-2">
+                                    <h3 className="font-semibold text-slate-100">{t('tests.exampleTest')}</h3>
+                                    <span className="px-2 py-0.5 text-xs rounded-full bg-primary-900/50 text-primary-300 font-medium">
+                                        {t('tests.exampleBadge')}
+                                    </span>
+                                </div>
+                                <p className="text-sm text-slate-400 mt-0.5">{t('tests.exampleDesc')}</p>
+                            </div>
+                        </div>
+                        <span className="text-xs text-slate-500">{EXAMPLE_TEST.questions.length} {t('tests.questionCount').toLowerCase()}</span>
+                    </div>
+                </div>
+            </div>
 
             {tests.length === 0 ? (
                 <div className="bg-[#161A22] border border-white/[0.06] rounded-lg p-6 text-center">

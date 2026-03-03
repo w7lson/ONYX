@@ -128,8 +128,8 @@ export default function DeckSettings({
     // Algorithm settings local state
     const [algorithm, setAlgorithm] = useState(deck.algorithm ?? 'sm2');
     const [desiredRetention, setDesiredRetention] = useState(deck.desiredRetention ?? 0.9);
-    const [newCardsPerDay, setNewCardsPerDay] = useState(deck.newCardsPerDay ?? 20);
-    const [maxCardsPerDay, setMaxCardsPerDay] = useState(deck.maxCardsPerDay ?? 100);
+    const [newCardsPerDay, setNewCardsPerDay] = useState(String(deck.newCardsPerDay ?? 20));
+    const [maxCardsPerDay, setMaxCardsPerDay] = useState(String(deck.maxCardsPerDay ?? 100));
     const [shuffleCards, setShuffleCards] = useState(deck.shuffleCards ?? false);
 
     // Rename local state
@@ -137,7 +137,13 @@ export default function DeckSettings({
     const [moveSoonVisible, setMoveSoonVisible] = useState(false);
 
     const handleSaveAlgorithm = () => {
-        onSaveAlgorithmSettings({ algorithm, desiredRetention, newCardsPerDay, maxCardsPerDay, shuffleCards });
+        onSaveAlgorithmSettings({
+            algorithm,
+            desiredRetention,
+            newCardsPerDay: Math.max(1, parseInt(newCardsPerDay) || 20),
+            maxCardsPerDay: Math.max(1, parseInt(maxCardsPerDay) || 100),
+            shuffleCards,
+        });
         setSubView(null);
     };
 
@@ -249,7 +255,7 @@ export default function DeckSettings({
                         <input
                             type="number"
                             value={newCardsPerDay}
-                            onChange={(e) => setNewCardsPerDay(Math.max(1, parseInt(e.target.value) || 1))}
+                            onChange={(e) => setNewCardsPerDay(e.target.value)}
                             min={1}
                             className="w-20 px-3 py-1.5 rounded-lg border border-white/[0.08] bg-white/[0.05] text-slate-100 text-sm text-right focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
@@ -261,7 +267,7 @@ export default function DeckSettings({
                         <input
                             type="number"
                             value={maxCardsPerDay}
-                            onChange={(e) => setMaxCardsPerDay(Math.max(1, parseInt(e.target.value) || 1))}
+                            onChange={(e) => setMaxCardsPerDay(e.target.value)}
                             min={1}
                             className="w-20 px-3 py-1.5 rounded-lg border border-white/[0.08] bg-white/[0.05] text-slate-100 text-sm text-right focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />

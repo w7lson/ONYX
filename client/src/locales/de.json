@@ -315,6 +315,10 @@
     "todayDue": "Karten heute fällig",
     "noCardsDue": "Heute keine Karten fällig",
     "undo": "Rückgängig",
+    "viewArchived": "Archiviert",
+    "archivedDecks": "Archivierte Decks",
+    "noArchivedDecks": "Keine archivierten Decks",
+    "unarchive": "Dearchivieren",
     "import": {
       "button": "CSV importieren",
       "title": "Karteikarten aus CSV importieren",
@@ -389,7 +393,13 @@
     "selectAnswer": "Wähle eine Antwort",
     "deleteTest": "Test löschen",
     "confirmDeleteTest": "Bist du sicher, dass du diesen Test löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
-    "delete": "Löschen"
+    "delete": "Löschen",
+    "retakeTest": "Test wiederholen",
+    "attemptHistory": "Versuchsverlauf",
+    "attempt": "Versuch {{n}}",
+    "exampleTest": "Beispieltest",
+    "exampleBadge": "Demo",
+    "exampleDesc": "Mache diesen Beispieltest, um die Funktion zu erkunden."
   },
   "goals": {
     "title": "Ziele",
@@ -411,6 +421,8 @@
     "filterActive": "Aktiv",
     "filterCompleted": "Abgeschlossen",
     "filterFailed": "Gescheitert",
+    "filterFocus": "Fokus",
+    "sort": "Sortieren",
     "sortDreamFirst": "Traumziele zuerst",
     "sortMonthlyFirst": "Monatsziele zuerst",
     "specifyTitle": "Ziel spezifizieren",

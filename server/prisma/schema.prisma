@@ -151,6 +151,16 @@ model Test {
 
   user      UserProfile    @relation(fields: [userId], references: [clerkId])
   questions TestQuestion[]
+  attempts  TestAttempt[]
+}
+
+model TestAttempt {
+  id          String   @id @default(uuid())
+  testId      String
+  score       Float
+  completedAt DateTime @default(now())
+
+  test Test @relation(fields: [testId], references: [id], onDelete: Cascade)
 }
 
 model TestQuestion {

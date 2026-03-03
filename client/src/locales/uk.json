@@ -315,6 +315,10 @@
     "todayDue": "карток на сьогодні",
     "noCardsDue": "Сьогодні немає карток до повторення",
     "undo": "Скасувати",
+    "viewArchived": "Архів",
+    "archivedDecks": "Архівовані колоди",
+    "noArchivedDecks": "Немає архівованих колод",
+    "unarchive": "Розархівувати",
     "import": {
       "button": "Імпорт CSV",
       "title": "Імпортувати картки з CSV",
@@ -389,7 +393,13 @@
     "selectAnswer": "Оберіть відповідь",
     "deleteTest": "Видалити тест",
     "confirmDeleteTest": "Ви впевнені, що хочете видалити цей тест? Цю дію не можна скасувати.",
-    "delete": "Видалити"
+    "delete": "Видалити",
+    "retakeTest": "Пройти тест знову",
+    "attemptHistory": "Історія спроб",
+    "attempt": "Спроба {{n}}",
+    "exampleTest": "Приклад тесту",
+    "exampleBadge": "Демо",
+    "exampleDesc": "Пройдіть цей зразковий тест, щоб ознайомитися з функцією."
   },
   "goals": {
     "title": "Цілі",
@@ -411,6 +421,8 @@
     "filterActive": "Активні",
     "filterCompleted": "Завершені",
     "filterFailed": "Невдалі",
+    "filterFocus": "Фокус",
+    "sort": "Сортування",
     "sortDreamFirst": "Спочатку мрії",
     "sortMonthlyFirst": "Спочатку місячні",
     "specifyTitle": "Уточніть вашу ціль",

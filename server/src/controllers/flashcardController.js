@@ -10,9 +10,10 @@ const openai = new OpenAI({
 
 export const getDecks = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
+    const isArchived = req.query.archived === 'true';
 
     const decks = await prisma.deck.findMany({
-        where: { userId, isArchived: false },
+        where: { userId, isArchived },
         include: {
             cards: {
                 select: { id: true, nextReviewAt: true }
@@ -190,7 +191,7 @@ export const deleteCard = asyncHandler(async (req, res) => {
 export const generateCards = asyncHandler(async (req, res) => {
     const { userId } = req.auth;
     const { deckId } = req.params;
-    const { topic, count = 10 } = req.body;
+    const { topic, count = 10, format } = req.body;
 
     if (!topic) {
         return res.status(400).json({ error: "Topic is required" });
@@ -204,13 +205,17 @@ export const generateCards = asyncHandler(async (req, res) => {
         return res.status(404).json({ error: "Deck not found" });
     }
 
+    const formatInstruction = format === 'translation'
+        ? 'Create word/translation pairs. Front = the word in the source language. Back = its translation.'
+        : 'Create term/definition pairs. Front = the term or concept. Back = its definition or explanation.';
+
     const completion = await openai.chat.completions.create({
         model: "llama-3.3-70b-versatile",
         messages: [
-            { role: "system", content: "You are a flashcard generator. Create concise, clear flashcards for studying." },
+            { role: "system", content: `You are a flashcard generator. Create concise, clear flashcards for studying. ${formatInstruction}` },
             {
                 role: "user",
-                content: `Generate ${count} flashcards for studying: "${topic}". Return valid JSON: { "cards": [{ "front": "question or term", "back": "answer or definition" }] }`
+                content: `Generate ${count} flashcards for studying: "${topic}". Return valid JSON: { "cards": [{ "front": "...", "back": "..." }] }`
             }
         ],
         response_format: { type: "json_object" },

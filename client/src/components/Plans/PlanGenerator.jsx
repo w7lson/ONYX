@@ -275,41 +275,41 @@ export default function PlanGenerator({ preSelectedGoalId, onBack, onPlanSaved }
 
             {/* SECTION 2: Goal Details (shown when selected) */}
             {selectedGoal && (
-                <section className="mb-8 p-5 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-200 dark:border-gray-700">
-                    <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3">
+                <section className="mb-8 p-5 bg-[#161A22] rounded-xl border border-white/[0.06]">
+                    <h2 className="text-lg font-semibold text-slate-100 mb-3">
                         {t('plans.generator.goalDetails')}
                     </h2>
 
                     <div className="flex flex-wrap items-center gap-2 mb-4">
-                        <span className="px-3 py-1 text-xs font-medium bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-full">
+                        <span className="px-3 py-1 text-xs font-medium bg-blue-900/40 text-blue-400 rounded-full">
                             {selectedGoal.focus === 'Uncategorized' ? t('goals.specify.uncategorizedFocus') : t(`goals.specify.focuses.${selectedGoal.focus}`)}
                         </span>
-                        <span className="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-full">
+                        <span className="px-3 py-1 text-xs font-medium bg-white/[0.06] text-slate-400 rounded-full">
                             {t(`goals.specify.durations.${selectedGoal.duration}`)}
                         </span>
                         {selectedGoal.targetDate && (
-                            <span className="px-3 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded-full">
+                            <span className="px-3 py-1 text-xs font-medium bg-white/[0.06] text-slate-400 rounded-full">
                                 {t('plans.generator.targetDate')}: {new Date(selectedGoal.targetDate).toLocaleDateString()}
                             </span>
                         )}
                     </div>
 
                     {selectedGoal.description && (
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{selectedGoal.description}</p>
+                        <p className="text-sm text-slate-400 mb-4">{selectedGoal.description}</p>
                     )}
 
                     {selectedGoal.milestones?.length > 0 && (
                         <div>
-                            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <h3 className="text-sm font-medium text-slate-300 mb-2">
                                 {t('plans.generator.milestones')}
                             </h3>
                             <ol className="space-y-1.5">
                                 {selectedGoal.milestones.map((m, i) => (
                                     <li key={m.id} className="flex items-start gap-2 text-sm">
-                                        <span className="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-medium shrink-0 mt-0.5">
+                                        <span className="w-5 h-5 rounded-full bg-blue-900/40 text-blue-400 flex items-center justify-center text-xs font-medium shrink-0 mt-0.5">
                                             {i + 1}
                                         </span>
-                                        <span className={`text-gray-700 dark:text-gray-300 ${m.isCompleted ? 'line-through text-gray-400 dark:text-gray-600' : ''}`}>
+                                        <span className={`text-slate-300 ${m.isCompleted ? 'line-through text-slate-500' : ''}`}>
                                             {m.title}
                                         </span>
                                     </li>
@@ -367,7 +367,7 @@ export default function PlanGenerator({ preSelectedGoalId, onBack, onPlanSaved }
                                 onChange={e => setCustomInstructions(e.target.value)}
                                 placeholder={t('plans.generator.customPlaceholder')}
                                 rows={3}
-                                className="w-full px-4 py-3 text-sm bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-700 dark:text-gray-300 placeholder-gray-400 resize-none"
+                                className="w-full px-4 py-3 text-sm bg-white/[0.05] border border-white/[0.08] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-300 placeholder-slate-500 resize-none"
                             />
                         </div>
                     )}
@@ -379,7 +379,7 @@ export default function PlanGenerator({ preSelectedGoalId, onBack, onPlanSaved }
                 <button
                     onClick={handleGenerate}
                     disabled={!selectedGoalId || phase === 'generating'}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg mb-8"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-primary-700 text-white rounded-xl font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-lg mb-8"
                 >
                     {phase === 'generating' ? (
                         <>
@@ -408,7 +408,7 @@ export default function PlanGenerator({ preSelectedGoalId, onBack, onPlanSaved }
                         <input
                             value={generatedPlan.title}
                             onChange={e => updatePlanField('title', e.target.value)}
-                            className="w-full px-4 py-2.5 text-lg font-bold bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-800 dark:text-gray-100"
+                            className="w-full px-4 py-2.5 text-lg font-bold bg-white/[0.05] border border-white/[0.08] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-100"
                         />
                     </div>
 
@@ -421,7 +421,7 @@ export default function PlanGenerator({ preSelectedGoalId, onBack, onPlanSaved }
                             value={generatedPlan.description || ''}
                             onChange={e => updatePlanField('description', e.target.value)}
                             rows={2}
-                            className="w-full px-4 py-2.5 text-sm bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 dark:text-gray-300 resize-none"
+                            className="w-full px-4 py-2.5 text-sm bg-white/[0.05] border border-white/[0.08] rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-300 resize-none"
                         />
                     </div>
 

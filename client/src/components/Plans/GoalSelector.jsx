@@ -21,7 +21,7 @@ export default function GoalSelector({ goals, selectedGoalId, onSelect }) {
 
     if (goals.length === 0) {
         return (
-            <div className="text-center py-8 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-dashed border-gray-300 dark:border-gray-600">
+            <div className="text-center py-8 bg-[#161A22] rounded-xl border border-dashed border-white/[0.10]">
                 <Target size={32} className="mx-auto text-gray-400 mb-3" />
                 <p className="text-gray-500 dark:text-gray-400 text-sm">
                     {t('plans.generator.noActiveGoals')}
@@ -44,8 +44,8 @@ export default function GoalSelector({ goals, selectedGoalId, onSelect }) {
                         onClick={() => onSelect(goal.id)}
                         className={`relative text-left p-4 rounded-xl border-2 transition-all ${
                             isSelected
-                                ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30 shadow-md'
-                                : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-sm'
+                                ? 'border-blue-500 bg-[#161A22] shadow-md'
+                                : 'border-white/[0.06] bg-[#161A22] hover:border-blue-900'
                         }`}
                     >
                         {isSelected && (
@@ -55,7 +55,7 @@ export default function GoalSelector({ goals, selectedGoalId, onSelect }) {
                         )}
 
                         <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${
-                            isSelected ? 'bg-blue-100 dark:bg-blue-900' : 'bg-gray-100 dark:bg-gray-800'
+                            isSelected ? 'bg-blue-900/40' : 'bg-white/[0.06]'
                         }`}>
                             <FocusIcon size={20} className={isSelected ? 'text-blue-500' : 'text-gray-500 dark:text-gray-400'} />
                         </div>

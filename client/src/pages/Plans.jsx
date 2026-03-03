@@ -87,7 +87,7 @@ export default function Plans() {
                 </h1>
                 <button
                     onClick={() => setView('generate')}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-[10px] font-medium text-sm hover:bg-primary-700 transition-colors shrink-0"
+                    className="flex items-center gap-2 px-4 py-2 bg-primary-700 text-white rounded-[10px] font-medium text-sm hover:bg-primary-700 transition-colors shrink-0"
                 >
                     <Plus size={16} />
                     {t('plans.generatePlan')}
@@ -105,7 +105,7 @@ export default function Plans() {
                     </p>
                     <button
                         onClick={() => setView('generate')}
-                        className="px-6 py-3 bg-primary-600 text-white rounded-[10px] font-semibold hover:bg-primary-700 transition-colors shadow-sm"
+                        className="px-6 py-3 bg-primary-700 text-white rounded-[10px] font-semibold hover:bg-primary-700 transition-colors shadow-sm"
                     >
                         {t('plans.generatePlan')}
                     </button>

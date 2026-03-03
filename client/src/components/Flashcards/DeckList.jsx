@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus, Trash2, Layers, Upload } from 'lucide-react';
+import { Plus, Trash2, Layers, Upload, Archive, ArchiveRestore } from 'lucide-react';
 import ImportCSV from './ImportCSV';
 
-export default function DeckList({ decks, onCreateDeck, onDeleteDeck, onSelectDeck, onReview, onImport }) {
+export default function DeckList({
+    decks, onCreateDeck, onDeleteDeck, onSelectDeck, onReview, onImport,
+    showArchived, archivedDecks, onToggleArchived, onUnarchiveDeck,
+}) {
     const { t } = useTranslation();
     const [showCreate, setShowCreate] = useState(false);
     const [showImport, setShowImport] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
     const handleCreate = () => {
         if (!title.trim()) return;
@@ -28,6 +32,18 @@ export default function DeckList({ decks, onCreateDeck, onDeleteDeck, onSelectDe
                     <p className="text-slate-500 dark:text-slate-400 mt-1">{t('flashcards.subtitle')}</p>
                 </div>
                 <div className="flex gap-2 shrink-0">
+                    <button
+                        onClick={() => { onToggleArchived(); setShowCreate(false); setShowImport(false); }}
+                        className={`flex items-center gap-2 px-3 sm:px-4 py-2 rounded-md font-medium transition-colors text-sm ${
+                            showArchived
+                                ? 'bg-slate-600 text-white hover:bg-slate-700'
+                                : 'bg-white/[0.06] text-slate-300 hover:bg-white/[0.10]'
+                        }`}
+                    >
+                        <Archive size={16} />
+                        <span className="hidden sm:inline">{t('flashcards.viewArchived')}</span>
+                        <span className="sm:hidden">{t('flashcards.viewArchived')}</span>
+                    </button>
                     <button
                         onClick={() => { setShowImport(!showImport); setShowCreate(false); }}
                         className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-teal-600 text-white rounded-md font-medium hover:bg-teal-700 transition-colors text-sm"
@@ -120,23 +136,82 @@ export default function DeckList({ decks, onCreateDeck, onDeleteDeck, onSelectDe
                                 </div>
                             </div>
                             <div className="flex items-center gap-2 mt-4 pt-3 border-t border-white/[0.06]">
-                                {deck.dueCards > 0 && (
-                                    <button
-                                        onClick={() => onReview(deck)}
-                                        className="px-3 py-1.5 bg-primary-600 text-white text-sm rounded-md font-medium hover:bg-primary-700 transition-colors"
-                                    >
-                                        {t('flashcards.review')}
-                                    </button>
+                                {confirmDeleteId === deck.id ? (
+                                    <div className="flex items-center gap-2 ml-auto" onClick={(e) => e.stopPropagation()}>
+                                        <span className="text-xs text-slate-400">Delete deck?</span>
+                                        <button
+                                            onClick={() => { onDeleteDeck(deck.id); setConfirmDeleteId(null); }}
+                                            className="px-2.5 py-1 text-xs bg-red-600 text-white rounded-md font-medium hover:bg-red-700 transition-colors"
+                                        >
+                                            Delete
+                                        </button>
+                                        <button
+                                            onClick={() => setConfirmDeleteId(null)}
+                                            className="px-2.5 py-1 text-xs bg-white/[0.06] text-slate-300 rounded-md font-medium hover:bg-white/[0.10] transition-colors"
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <>
+                                        {deck.dueCards > 0 && (
+                                            <button
+                                                onClick={() => onReview(deck)}
+                                                className="px-3 py-1.5 bg-primary-600 text-white text-sm rounded-md font-medium hover:bg-primary-700 transition-colors"
+                                            >
+                                                {t('flashcards.review')}
+                                            </button>
+                                        )}
+                                        <button
+                                            onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(deck.id); }}
+                                            className="ml-auto p-1.5 text-slate-500 hover:text-red-400 transition-colors"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
+                                    </>
                                 )}
-                                <button
-                                    onClick={() => onDeleteDeck(deck.id)}
-                                    className="ml-auto p-1.5 text-slate-500 hover:text-red-400 transition-colors"
-                                >
-                                    <Trash2 size={16} />
-                                </button>
                             </div>
                         </div>
                     ))}
+                </div>
+            )}
+
+            {/* Archived Decks Section */}
+            {showArchived && (
+                <div className="mt-8">
+                    <h2 className="text-lg font-semibold text-slate-300 mb-4 flex items-center gap-2">
+                        <Archive size={18} className="text-slate-400" />
+                        {t('flashcards.archivedDecks')}
+                    </h2>
+                    {archivedDecks.length === 0 ? (
+                        <div className="bg-[#161A22] border border-white/[0.06] rounded-lg p-5 text-center">
+                            <p className="text-slate-400 text-sm">{t('flashcards.noArchivedDecks')}</p>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {archivedDecks.map((deck) => (
+                                <div
+                                    key={deck.id}
+                                    className="bg-[#161A22] rounded-lg border border-white/[0.06] p-5 flex flex-col opacity-80"
+                                >
+                                    <div className="flex-1 mb-3">
+                                        <h3 className="font-semibold text-slate-300 text-base mb-1">{deck.title}</h3>
+                                        {deck.description && (
+                                            <p className="text-sm text-slate-500 mb-2">{deck.description}</p>
+                                        )}
+                                        <p className="text-xs text-slate-500">{t('flashcards.cards', { count: deck.totalCards })}</p>
+                                    </div>
+                                    <button
+                                        onClick={() => onUnarchiveDeck(deck.id)}
+                                        className="flex items-center gap-2 px-3 py-1.5 bg-white/[0.06] text-slate-300 text-sm rounded-md font-medium hover:bg-white/[0.10] transition-colors self-start"
+                                    >
+                                        <ArchiveRestore size={14} />
+                                        {t('flashcards.unarchive')}
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             )}
         </div>
