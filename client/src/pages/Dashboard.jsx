@@ -138,7 +138,7 @@ export default function Dashboard() {
     return (
         <div>
             {/* Header */}
-            <h1 className="text-3xl font-bold mb-1 text-slate-900 dark:text-slate-100 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-1 text-slate-900 dark:text-slate-100 tracking-tight">
                 {t('dashboard.welcome', { name: user?.firstName })}
             </h1>
             <p className="text-slate-500 dark:text-slate-400 mb-6">{t('dashboard.subtitle')}</p>
@@ -236,7 +236,7 @@ export default function Dashboard() {
             )}
 
             {/* Quick Actions */}
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 {[
                     { to: '/pomodoro',   icon: Timer,     label: t('dashboard.startPomodoro'),    color: 'text-primary-600 dark:text-primary-400' },
                     { to: '/flashcards', icon: BookOpen,  label: t('dashboard.reviewFlashcards'), color: 'text-primary-500' },
@@ -245,10 +245,10 @@ export default function Dashboard() {
                     <Link
                         key={to}
                         to={to}
-                        className="bg-[#161A22] border border-white/[0.06] rounded-lg p-5 hover:shadow-[0_4px_6px_-1px_rgb(0_0_0/0.08)] hover:-translate-y-0.5 hover:border-primary-200 dark:hover:border-primary-900 transition-all duration-150"
+                        className="bg-[#161A22] border border-white/[0.06] rounded-lg p-3 sm:p-5 hover:shadow-[0_4px_6px_-1px_rgb(0_0_0/0.08)] hover:-translate-y-0.5 hover:border-primary-200 dark:hover:border-primary-900 transition-all duration-150"
                     >
-                        <Icon size={24} className={`${color} mb-2.5`} />
-                        <p className="text-sm font-medium text-slate-800 dark:text-slate-100">{label}</p>
+                        <Icon size={20} className={`${color} mb-1.5 sm:mb-2.5`} />
+                        <p className="text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-100 leading-tight">{label}</p>
                     </Link>
                 ))}
             </div>

@@ -70,7 +70,7 @@ export default function DeckDetail({
             {/* Title row with 3-dots */}
             <div className="flex items-start justify-between mb-6">
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-100">{deck.title}</h1>
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-100">{deck.title}</h1>
                     {deck.description && (
                         <p className="text-slate-400 mt-1">{deck.description}</p>
                     )}

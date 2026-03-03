@@ -71,7 +71,7 @@ export default function Progress() {
 
     return (
         <div>
-            <h1 className="text-3xl font-bold mb-1 text-slate-900 dark:text-slate-100 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold mb-1 text-slate-900 dark:text-slate-100 tracking-tight">
                 {t('progress.title')}
             </h1>
             <p className="text-slate-500 dark:text-slate-400 mb-6">{t('progress.subtitle')}</p>

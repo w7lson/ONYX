@@ -80,7 +80,7 @@ export default function Profile() {
 
     return (
         <div className="max-w-2xl mx-auto">
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1 tracking-tight">
                 {t('profile.title')}
             </h1>
             <p className="text-slate-500 dark:text-slate-400 mb-8">{t('profile.subtitle')}</p>
@@ -137,7 +137,7 @@ export default function Profile() {
                                     className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.04]"
                                 >
                                     <Icon size={16} className="text-slate-400 dark:text-slate-500 shrink-0" />
-                                    <span className="text-sm font-medium text-slate-600 dark:text-slate-400 w-36 shrink-0">
+                                    <span className="text-sm font-medium text-slate-600 dark:text-slate-400 w-24 sm:w-36 shrink-0">
                                         {t(`profile.${field}`)}
                                     </span>
 

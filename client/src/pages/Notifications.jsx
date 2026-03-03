@@ -121,7 +121,7 @@ export default function Notifications() {
         <div className="max-w-2xl mx-auto">
             <div className="flex items-center justify-between mb-6">
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                         {t('notifications.title')}
                     </h1>
                     <p className="text-slate-500 dark:text-slate-400">{t('notifications.subtitle')}</p>

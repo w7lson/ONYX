@@ -235,7 +235,7 @@ export default function Goals() {
     if (step === 'loading') {
         return (
             <div>
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1 tracking-tight">{t('goals.title')}</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1 tracking-tight">{t('goals.title')}</h1>
                 <p className="text-slate-500 dark:text-slate-400 mb-8">{t('goals.subtitle')}</p>
                 <div className="text-center py-16 text-slate-400">{t('dashboard.loading')}</div>
             </div>
@@ -246,7 +246,7 @@ export default function Goals() {
     if (step === 'empty') {
         return (
             <div>
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1 tracking-tight">{t('goals.title')}</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1 tracking-tight">{t('goals.title')}</h1>
                 <p className="text-slate-500 dark:text-slate-400 mb-12">{t('goals.subtitle')}</p>
 
                 <div className="flex flex-col items-center justify-center py-16">
@@ -279,7 +279,7 @@ export default function Goals() {
                     {t('goals.back')}
                 </button>
 
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1 tracking-tight">{t('goals.templates')}</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1 tracking-tight">{t('goals.templates')}</h1>
                 <p className="text-slate-500 dark:text-slate-400 mb-8">{t('goals.subtitle')}</p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
@@ -334,10 +334,10 @@ export default function Goals() {
     return (
         <div>
             <div className="flex items-center justify-between mb-1">
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">{t('goals.title')}</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">{t('goals.title')}</h1>
                 <button
                     onClick={() => setStep('templates')}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-[10px] font-medium text-sm hover:bg-primary-700 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-[10px] font-medium text-sm hover:bg-primary-700 transition-colors shrink-0"
                 >
                     <Plus size={16} />
                     {t('goals.addGoal')}
@@ -467,18 +467,18 @@ function GoalRow({ goal, isExpanded, onToggleExpand, onEdit, onDelete, onReactiv
                     : 'bg-[#161A22] border-white/[0.06]'
         }`}>
             {/* Goal header row */}
-            <div className="flex items-center gap-4 px-5 py-4">
+            <div className="flex items-center gap-3 px-4 sm:px-5 py-4">
                 {/* Focus icon */}
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center shrink-0 ${
                     isCompleted ? 'bg-success-100 dark:bg-success-900' : isFailed ? 'bg-error-100 dark:bg-error-900' : 'bg-primary-50 dark:bg-primary-950'
                 }`}>
-                    <FocusIcon size={20} className={isCompleted ? 'text-success-500' : isFailed ? 'text-error-500' : 'text-primary-500'} />
+                    <FocusIcon size={18} className={isCompleted ? 'text-success-500' : isFailed ? 'text-error-500' : 'text-primary-500'} />
                 </div>
 
                 {/* Title + meta */}
                 <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-slate-800 dark:text-slate-100 truncate">{goal.title}</h3>
-                    <div className="flex items-center gap-3 mt-0.5">
+                    <h3 className="font-semibold text-slate-800 dark:text-slate-100 truncate text-sm sm:text-base">{goal.title}</h3>
+                    <div className="flex items-center gap-2 mt-0.5 flex-wrap">
                         <span className="text-xs text-slate-500 dark:text-slate-400">
                             {t(`goals.specify.durations.${goal.duration}`)}
                         </span>
@@ -487,12 +487,16 @@ function GoalRow({ goal, isExpanded, onToggleExpand, onEdit, onDelete, onReactiv
                                 {completedMilestones}/{totalMilestones} {t('goals.milestones')}
                             </span>
                         )}
+                        {/* Progress % inline on mobile */}
+                        {totalMilestones > 0 && (
+                            <span className="sm:hidden text-xs font-medium text-primary-400">{progress}%</span>
+                        )}
                     </div>
                 </div>
 
-                {/* Progress bar */}
+                {/* Progress bar — desktop only */}
                 {totalMilestones > 0 && (
-                    <div className="w-24 shrink-0">
+                    <div className="w-20 shrink-0 hidden sm:block">
                         <div className="h-1.5 bg-white/[0.08] rounded-full overflow-hidden">
                             <div
                                 className="h-full bg-primary-500 rounded-full transition-all"
@@ -504,44 +508,46 @@ function GoalRow({ goal, isExpanded, onToggleExpand, onEdit, onDelete, onReactiv
                 )}
 
                 {/* Actions */}
-                {(isCompleted || isFailed) && (
+                <div className="flex items-center gap-0.5 shrink-0">
+                    {(isCompleted || isFailed) && (
+                        <button
+                            onClick={onReactivate}
+                            className="flex items-center gap-1 p-2 sm:px-3 sm:py-1.5 text-xs font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-950/40 rounded-[10px] hover:bg-primary-100 dark:hover:bg-primary-900/40 transition-colors"
+                            title={t('goals.reactivate')}
+                        >
+                            <RotateCcw size={13} />
+                            <span className="hidden sm:inline">{t('goals.reactivate')}</span>
+                        </button>
+                    )}
+
+                    {!isCompleted && !isFailed && (
+                        <Link
+                            to={`/plans?goalId=${goal.id}`}
+                            className="p-2 text-slate-400 hover:text-success-500 transition-colors rounded-lg hover:bg-white/[0.04]"
+                            title={t('goals.generatePlan')}
+                        >
+                            <Sparkles size={15} />
+                        </Link>
+                    )}
+
                     <button
-                        onClick={onReactivate}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-950/40 rounded-[10px] hover:bg-primary-100 dark:hover:bg-primary-900/40 transition-colors"
-                        title={t('goals.reactivate')}
+                        onClick={onEdit}
+                        className="p-2 text-slate-400 hover:text-primary-500 transition-colors rounded-lg hover:bg-white/[0.04]"
+                        title={t('goals.editGoal')}
                     >
-                        <RotateCcw size={13} />
-                        {t('goals.reactivate')}
+                        <Pencil size={15} />
                     </button>
-                )}
 
-                {!isCompleted && !isFailed && (
-                    <Link
-                        to={`/plans?goalId=${goal.id}`}
-                        className="p-2 text-slate-400 hover:text-success-500 transition-colors rounded-lg hover:bg-white/[0.04]"
-                        title={t('goals.generatePlan')}
-                    >
-                        <Sparkles size={16} />
-                    </Link>
-                )}
-
-                <button
-                    onClick={onEdit}
-                    className="p-2 text-slate-400 hover:text-primary-500 transition-colors rounded-lg hover:bg-white/[0.04]"
-                    title={t('goals.editGoal')}
-                >
-                    <Pencil size={16} />
-                </button>
-
-                {totalMilestones > 0 && (
-                    <button
-                        onClick={onToggleExpand}
-                        className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-slate-400 hover:text-white bg-white/[0.05] rounded-[10px] hover:bg-white/[0.08] transition-colors"
-                    >
-                        {t('goals.open')}
-                        <ChevronDown size={14} className={`transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
-                    </button>
-                )}
+                    {totalMilestones > 0 && (
+                        <button
+                            onClick={onToggleExpand}
+                            className="flex items-center gap-0.5 p-2 sm:px-3 sm:py-1.5 text-sm font-medium text-slate-400 hover:text-white bg-white/[0.05] rounded-[10px] hover:bg-white/[0.08] transition-colors"
+                        >
+                            <span className="hidden sm:inline">{t('goals.open')}</span>
+                            <ChevronDown size={14} className={`transition-transform ${isExpanded ? 'rotate-180' : ''}`} />
+                        </button>
+                    )}
+                </div>
             </div>
 
             {/* Expanded milestones */}

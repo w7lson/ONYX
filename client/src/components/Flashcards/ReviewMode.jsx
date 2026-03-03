@@ -328,25 +328,25 @@ export default function ReviewMode({ cards, onReview, onBack, onEditCard, algori
     return (
         <div className="max-w-3xl mx-auto">
             {/* Top bar */}
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-4 gap-2">
                 <button
                     onClick={onBack}
-                    className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+                    className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors shrink-0"
                 >
                     <ArrowLeft size={18} />
-                    {t('flashcards.backToDecks')}
+                    <span className="hidden sm:inline">{t('flashcards.backToDecks')}</span>
                 </button>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
                     {t('flashcards.cardOf', { current: currentIndex + 1, total: sessionCards.length })}
                     {pendingCards.length > 0 && (
                         <span className="ml-2 text-xs text-red-400">+{pendingCards.length} again</span>
                     )}
                 </p>
-                <div className="w-28" />
+                <div className="w-8 sm:w-28 shrink-0" />
             </div>
 
             {/* Card */}
-            <div className="relative flex flex-col bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm min-h-[58vh]">
+            <div className="relative flex flex-col bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm min-h-[44vh] sm:min-h-[58vh]">
                 {/* 3-dots on card */}
                 <div className="absolute top-3 right-3" ref={cardMenuRef}>
                     <button

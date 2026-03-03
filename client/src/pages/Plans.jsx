@@ -82,12 +82,12 @@ export default function Plans() {
     return (
         <div>
             <div className="flex items-center justify-between mb-2">
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                     {t('plans.title')}
                 </h1>
                 <button
                     onClick={() => setView('generate')}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-[10px] font-medium text-sm hover:bg-primary-700 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-[10px] font-medium text-sm hover:bg-primary-700 transition-colors shrink-0"
                 >
                     <Plus size={16} />
                     {t('plans.generatePlan')}

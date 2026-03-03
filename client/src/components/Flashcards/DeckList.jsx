@@ -20,27 +20,29 @@ export default function DeckList({ decks, onCreateDeck, onDeleteDeck, onSelectDe
 
     return (
         <div>
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-wrap items-start justify-between gap-3 mb-6">
                 <div>
-                    <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-slate-100">
                         {t('flashcards.title')}
                     </h1>
                     <p className="text-slate-500 dark:text-slate-400 mt-1">{t('flashcards.subtitle')}</p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 shrink-0">
                     <button
                         onClick={() => { setShowImport(!showImport); setShowCreate(false); }}
-                        className="flex items-center gap-2 px-4 py-2 bg-teal-600 text-white rounded-md font-medium hover:bg-teal-700 transition-colors"
+                        className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-teal-600 text-white rounded-md font-medium hover:bg-teal-700 transition-colors text-sm"
                     >
-                        <Upload size={18} />
-                        {t('flashcards.import.button')}
+                        <Upload size={16} />
+                        <span className="hidden sm:inline">{t('flashcards.import.button')}</span>
+                        <span className="sm:hidden">Import</span>
                     </button>
                     <button
                         onClick={() => { setShowCreate(!showCreate); setShowImport(false); }}
-                        className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-md font-medium hover:bg-primary-700 transition-colors"
+                        className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-primary-600 text-white rounded-md font-medium hover:bg-primary-700 transition-colors text-sm"
                     >
-                        <Plus size={18} />
-                        {t('flashcards.createDeck')}
+                        <Plus size={16} />
+                        <span className="hidden sm:inline">{t('flashcards.createDeck')}</span>
+                        <span className="sm:hidden">New</span>
                     </button>
                 </div>
             </div>
