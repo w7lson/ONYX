@@ -10,7 +10,7 @@ function ToggleSwitch({ enabled, onToggle }) {
     return (
         <button
             onClick={onToggle}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${enabled ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-600'}`}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none ${enabled ? 'bg-primary-600' : 'bg-white/[0.12]'}`}
         >
             <span
                 className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${enabled ? 'translate-x-6' : 'translate-x-1'}`}
@@ -33,12 +33,12 @@ const ALGORITHMS = [
             'Familiar 4-button rating system',
             'Simple and predictable scheduling',
         ],
-        gradient: 'from-blue-500/20 to-cyan-500/10',
-        border: 'border-blue-200 dark:border-blue-800',
+        gradient: 'from-blue-500/10 to-cyan-500/5',
+        border: 'border-blue-800/50',
         selectedBorder: 'ring-2 ring-blue-500',
-        selectedBg: 'bg-blue-50 dark:bg-blue-950/40',
+        selectedBg: 'bg-blue-950/40',
         checkColor: 'text-blue-500',
-        tagBg: 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300',
+        tagBg: 'bg-blue-900/50 text-blue-300',
         dotColor: 'bg-blue-400',
     },
     {
@@ -52,12 +52,12 @@ const ALGORITHMS = [
             'Customizable retention target',
             'Optimised for long-term memory',
         ],
-        gradient: 'from-violet-500/20 to-purple-500/10',
-        border: 'border-violet-200 dark:border-violet-800',
+        gradient: 'from-violet-500/10 to-purple-500/5',
+        border: 'border-violet-800/50',
         selectedBorder: 'ring-2 ring-violet-500',
-        selectedBg: 'bg-violet-50 dark:bg-violet-950/40',
+        selectedBg: 'bg-violet-950/40',
         checkColor: 'text-violet-500',
-        tagBg: 'bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300',
+        tagBg: 'bg-violet-900/50 text-violet-300',
         dotColor: 'bg-violet-400',
     },
 ];
@@ -68,7 +68,7 @@ function AlgorithmCard({ algo, selected, onSelect }) {
             onClick={() => onSelect(algo.id)}
             className={`w-full text-left rounded-2xl border p-4 transition-all duration-200 relative overflow-hidden
                 ${algo.border}
-                ${selected ? `${algo.selectedBorder} ${algo.selectedBg} shadow-md` : 'bg-white dark:bg-gray-900 hover:shadow-sm'}`}
+                ${selected ? `${algo.selectedBorder} ${algo.selectedBg} shadow-md` : 'bg-[#111318] hover:bg-[#161A22]'}`}
         >
             {/* Gradient wash */}
             <div className={`absolute inset-0 bg-gradient-to-br ${algo.gradient} pointer-events-none`} />
@@ -80,15 +80,15 @@ function AlgorithmCard({ algo, selected, onSelect }) {
                         <span className={`inline-block text-xs font-semibold px-2 py-0.5 rounded-full mb-1 ${algo.tagBg}`}>
                             {algo.subtitle}
                         </span>
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-white leading-none">
+                        <h3 className="text-xl font-bold text-slate-100 leading-none">
                             {algo.name}
                         </h3>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{algo.tagline}</p>
+                        <p className="text-xs text-slate-400 mt-0.5">{algo.tagline}</p>
                     </div>
                     <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 ml-3 mt-0.5 transition-all
                         ${selected
                             ? `border-current bg-current ${algo.checkColor}`
-                            : 'border-gray-300 dark:border-gray-600'}`}
+                            : 'border-white/[0.20]'}`}
                     >
                         {selected && <Check size={12} className="text-white" />}
                     </div>
@@ -97,7 +97,7 @@ function AlgorithmCard({ algo, selected, onSelect }) {
                 {/* Feature list */}
                 <ul className="space-y-1 mt-3">
                     {algo.features.map((f, i) => (
-                        <li key={i} className="flex items-start gap-2 text-xs text-gray-600 dark:text-gray-300">
+                        <li key={i} className="flex items-start gap-2 text-xs text-slate-400">
                             <span className={`w-1.5 h-1.5 rounded-full mt-1 shrink-0 ${algo.dotColor}`} />
                             {f}
                         </li>
@@ -158,23 +158,23 @@ export default function DeckSettings({
         }
 
         return (
-            <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 mb-6 flex-wrap">
+            <div className="flex items-center gap-1 text-sm text-slate-500 mb-6 flex-wrap">
                 {crumbs.map((crumb, i) => (
                     <span key={i} className="flex items-center gap-1">
-                        {i > 0 && <ChevronRight size={14} className="text-gray-400" />}
+                        {i > 0 && <ChevronRight size={14} className="text-slate-600" />}
                         {crumb.onClick ? (
-                            <button onClick={crumb.onClick} className="hover:text-blue-500 transition-colors">
+                            <button onClick={crumb.onClick} className="hover:text-primary-400 transition-colors">
                                 {crumb.label}
                             </button>
                         ) : (
-                            <span className="text-gray-700 dark:text-gray-200 font-medium">{crumb.label}</span>
+                            <span className="text-slate-300 font-medium">{crumb.label}</span>
                         )}
                     </span>
                 ))}
                 {!subView && (
                     <>
-                        <ChevronRight size={14} className="text-gray-400" />
-                        <span className="text-gray-700 dark:text-gray-200 font-medium">{t('flashcards.settings')}</span>
+                        <ChevronRight size={14} className="text-slate-600" />
+                        <span className="text-slate-300 font-medium">{t('flashcards.settings')}</span>
                     </>
                 )}
             </div>
@@ -188,10 +188,10 @@ export default function DeckSettings({
         return (
             <div>
                 {renderBreadcrumb()}
-                <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-1">
+                <h2 className="text-xl font-bold text-slate-100 mb-1">
                     {t('flashcards.algorithmSettings')}
                 </h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                <p className="text-sm text-slate-400 mb-6">
                     Choose how your cards are scheduled for review
                 </p>
 
@@ -209,16 +209,16 @@ export default function DeckSettings({
 
                 {/* FSRS: desired retention slider */}
                 {algorithm === 'fsrs' && (
-                    <div className="bg-white dark:bg-gray-900 rounded-xl border border-violet-200 dark:border-violet-800 p-4 mb-5">
+                    <div className="bg-[#161A22] rounded-xl border border-violet-800/40 p-4 mb-5">
                         <div className="flex items-center justify-between mb-1">
-                            <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
+                            <p className="text-sm font-medium text-slate-100">
                                 {t('flashcards.desiredRetention')}
                             </p>
-                            <span className="text-lg font-bold text-violet-600 dark:text-violet-400 tabular-nums">
+                            <span className="text-lg font-bold text-violet-400 tabular-nums">
                                 {retentionPct}%
                             </span>
                         </div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                        <p className="text-xs text-slate-500 mb-3">
                             Target recall rate when a card comes up for review
                         </p>
                         <input
@@ -230,7 +230,7 @@ export default function DeckSettings({
                             onChange={(e) => setDesiredRetention(Number(e.target.value) / 100)}
                             className="w-full accent-violet-500"
                         />
-                        <div className="flex justify-between text-xs text-gray-400 mt-1">
+                        <div className="flex justify-between text-xs text-slate-500 mt-1">
                             <span>70% (fewer reviews)</span>
                             <span>99% (more reviews)</span>
                         </div>
@@ -238,12 +238,12 @@ export default function DeckSettings({
                 )}
 
                 {/* Daily limits */}
-                <p className="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-2 px-1">
+                <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2 px-1">
                     Daily Limits
                 </p>
-                <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 divide-y divide-gray-100 dark:divide-gray-800 mb-4">
+                <div className="bg-[#161A22] rounded-xl border border-white/[0.06] divide-y divide-white/[0.06] mb-4">
                     <div className="p-4 flex items-center justify-between">
-                        <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
+                        <p className="text-sm font-medium text-slate-200">
                             {t('flashcards.newCardsPerDay')}
                         </p>
                         <input
@@ -251,11 +251,11 @@ export default function DeckSettings({
                             value={newCardsPerDay}
                             onChange={(e) => setNewCardsPerDay(Math.max(1, parseInt(e.target.value) || 1))}
                             min={1}
-                            className="w-20 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 text-sm text-right focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-20 px-3 py-1.5 rounded-lg border border-white/[0.08] bg-white/[0.05] text-slate-100 text-sm text-right focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
                     </div>
                     <div className="p-4 flex items-center justify-between">
-                        <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
+                        <p className="text-sm font-medium text-slate-200">
                             {t('flashcards.maxCardsPerDay')}
                         </p>
                         <input
@@ -263,11 +263,11 @@ export default function DeckSettings({
                             value={maxCardsPerDay}
                             onChange={(e) => setMaxCardsPerDay(Math.max(1, parseInt(e.target.value) || 1))}
                             min={1}
-                            className="w-20 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 text-sm text-right focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-20 px-3 py-1.5 rounded-lg border border-white/[0.08] bg-white/[0.05] text-slate-100 text-sm text-right focus:outline-none focus:ring-2 focus:ring-primary-500"
                         />
                     </div>
                     <div className="p-4 flex items-center justify-between">
-                        <p className="text-sm font-medium text-gray-800 dark:text-gray-100">
+                        <p className="text-sm font-medium text-slate-200">
                             {t('flashcards.shuffleCards')}
                         </p>
                         <ToggleSwitch enabled={shuffleCards} onToggle={() => setShuffleCards(v => !v)} />
@@ -276,7 +276,7 @@ export default function DeckSettings({
 
                 <button
                     onClick={handleSaveAlgorithm}
-                    className="w-full py-2.5 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors"
+                    className="w-full py-2.5 bg-primary-600 text-white rounded-xl font-medium hover:bg-primary-700 transition-colors"
                 >
                     {t('flashcards.save')}
                 </button>
@@ -311,7 +311,7 @@ export default function DeckSettings({
             onClick: () => setMoveSoonVisible(true),
             arrow: false,
             badge: moveSoonVisible ? (
-                <span className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-500 px-2 py-0.5 rounded-full">
+                <span className="text-xs bg-white/[0.06] text-slate-400 px-2 py-0.5 rounded-full">
                     {t('flashcards.moveDeckSoon')}
                 </span>
             ) : null,
@@ -354,14 +354,14 @@ export default function DeckSettings({
     return (
         <div>
             {renderBreadcrumb()}
-            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+            <h2 className="text-xl font-bold text-slate-100 mb-6">
                 {t('flashcards.settings')}
             </h2>
 
             {/* Rename inline form */}
             {subView === 'rename' && (
-                <div className="bg-white dark:bg-gray-900 rounded-xl border border-blue-200 dark:border-blue-800 p-4 mb-4">
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">
+                <div className="bg-[#161A22] rounded-xl border border-primary-700/50 p-4 mb-4">
+                    <p className="text-sm font-medium text-slate-400 mb-2">
                         {t('flashcards.renameDeck')}
                     </p>
                     <input
@@ -369,20 +369,20 @@ export default function DeckSettings({
                         value={renameValue}
                         onChange={(e) => setRenameValue(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleRename()}
-                        className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3"
+                        className="w-full px-3 py-2 rounded-lg border border-white/[0.08] bg-white/[0.05] text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary-500 mb-3"
                         autoFocus
                     />
                     <div className="flex gap-2">
                         <button
                             onClick={handleRename}
-                            className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                            className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-600 text-white rounded-lg text-sm font-medium hover:bg-primary-700 transition-colors"
                         >
                             <Check size={14} />
                             {t('flashcards.save')}
                         </button>
                         <button
                             onClick={() => { setSubView(null); setRenameValue(deck.title); }}
-                            className="px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                            className="px-3 py-1.5 bg-white/[0.06] text-slate-300 rounded-lg text-sm font-medium hover:bg-white/[0.10] transition-colors"
                         >
                             {t('flashcards.cancel')}
                         </button>
@@ -391,35 +391,35 @@ export default function DeckSettings({
             )}
 
             {/* Main settings rows */}
-            <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 divide-y divide-gray-100 dark:divide-gray-800 mb-3 overflow-hidden">
+            <div className="bg-[#161A22] rounded-xl border border-white/[0.06] divide-y divide-white/[0.06] mb-3 overflow-hidden">
                 {settingRows.map((row, i) => (
                     <button
                         key={i}
                         onClick={row.onClick}
-                        className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left"
+                        className="w-full flex items-center justify-between px-4 py-3.5 hover:bg-white/[0.04] transition-colors text-left"
                     >
-                        <div className="flex items-center gap-3 text-gray-700 dark:text-gray-200">
-                            <span className="text-gray-500 dark:text-gray-400">{row.icon}</span>
+                        <div className="flex items-center gap-3 text-slate-200">
+                            <span className="text-slate-400">{row.icon}</span>
                             <span className="text-sm font-medium">{row.label}</span>
                             {row.badge}
                         </div>
                         <div className="flex items-center gap-2">
                             {row.detail}
-                            {row.arrow && <ChevronRight size={16} className="text-gray-400" />}
+                            {row.arrow && <ChevronRight size={16} className="text-slate-500" />}
                         </div>
                     </button>
                 ))}
             </div>
 
             {/* Destructive rows */}
-            <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 divide-y divide-gray-100 dark:divide-gray-800 overflow-hidden">
+            <div className="bg-[#161A22] rounded-xl border border-white/[0.06] divide-y divide-white/[0.06] overflow-hidden">
                 {destructiveRows.map((row, i) => (
                     <button
                         key={i}
                         onClick={row.onClick}
-                        className={`w-full flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left ${row.danger ? 'text-red-500' : 'text-gray-700 dark:text-gray-200'}`}
+                        className={`w-full flex items-center gap-3 px-4 py-3.5 hover:bg-white/[0.04] transition-colors text-left ${row.danger ? 'text-red-400' : 'text-slate-200'}`}
                     >
-                        <span className={row.danger ? 'text-red-400' : 'text-gray-500 dark:text-gray-400'}>
+                        <span className={row.danger ? 'text-red-400' : 'text-slate-400'}>
                             {row.icon}
                         </span>
                         <span className="text-sm font-medium">{row.label}</span>
@@ -429,8 +429,8 @@ export default function DeckSettings({
 
             {/* Inline confirmation dialog */}
             {pendingConfirm && (
-                <div className="mt-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
-                    <p className="text-sm text-amber-800 dark:text-amber-200 mb-3">{pendingConfirm.message}</p>
+                <div className="mt-3 bg-amber-950/30 border border-amber-800/50 rounded-xl p-4">
+                    <p className="text-sm text-amber-200 mb-3">{pendingConfirm.message}</p>
                     <div className="flex gap-2">
                         <button
                             onClick={() => { pendingConfirm.action(); setPendingConfirm(null); }}
@@ -440,7 +440,7 @@ export default function DeckSettings({
                         </button>
                         <button
                             onClick={() => setPendingConfirm(null)}
-                            className="px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg text-sm font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                            className="px-3 py-1.5 bg-white/[0.06] text-slate-300 rounded-lg text-sm font-medium hover:bg-white/[0.10] transition-colors"
                         >
                             Cancel
                         </button>

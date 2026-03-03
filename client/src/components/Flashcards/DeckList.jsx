@@ -98,10 +98,10 @@ export default function DeckList({ decks, onCreateDeck, onDeleteDeck, onSelectDe
                     {decks.map((deck) => (
                         <div
                             key={deck.id}
-                            className="bg-[#161A22] rounded-lg border border-white/[0.06] p-5 hover:border-primary-900 hover:shadow-[0_4px_6px_-1px_rgb(0_0_0/0.12)] transition-all cursor-pointer"
+                            className="bg-[#161A22] rounded-lg border border-white/[0.06] p-6 min-h-[11rem] flex flex-col hover:border-primary-900 hover:shadow-[0_4px_6px_-1px_rgb(0_0_0/0.12)] transition-all cursor-pointer"
                         >
                             <div
-                                className="cursor-pointer"
+                                className="cursor-pointer flex-1"
                                 onClick={() => onSelectDeck(deck)}
                             >
                                 <h3 className="font-semibold text-slate-100 text-lg mb-1">

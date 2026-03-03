@@ -283,19 +283,19 @@ export default function ReviewMode({ cards, onReview, onBack, onEditCard, algori
     if (phase === 'waiting') {
         return (
             <div className="max-w-xl mx-auto text-center py-16">
-                <div className="w-16 h-16 rounded-full bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center mx-auto mb-5">
-                    <Clock size={32} className="text-blue-500 animate-pulse" />
+                <div className="w-16 h-16 rounded-full bg-blue-900/30 flex items-center justify-center mx-auto mb-5">
+                    <Clock size={32} className="text-blue-400 animate-pulse" />
                 </div>
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-1">
+                <h2 className="text-xl font-semibold text-slate-100 mb-1">
                     {pendingCards.length} card{pendingCards.length !== 1 ? 's' : ''} coming back...
                 </h2>
-                <p className="text-4xl font-mono font-bold text-blue-500 mb-2">{waitSeconds}s</p>
-                <p className="text-sm text-gray-400 dark:text-gray-500 mb-8">
+                <p className="text-4xl font-mono font-bold text-blue-400 mb-2">{waitSeconds}s</p>
+                <p className="text-sm text-slate-500 mb-8">
                     Cards rated Again will reappear automatically
                 </p>
                 <button
                     onClick={onBack}
-                    className="px-5 py-2 text-sm text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                    className="px-5 py-2 text-sm text-slate-400 border border-white/[0.08] rounded-lg hover:bg-white/[0.04] transition-colors"
                 >
                     End Session
                 </button>
@@ -308,15 +308,15 @@ export default function ReviewMode({ cards, onReview, onBack, onEditCard, algori
         return (
             <div className="max-w-xl mx-auto text-center py-12">
                 <CheckCircle size={64} className="text-green-500 mx-auto mb-4" />
-                <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">
+                <h2 className="text-2xl font-bold text-slate-100 mb-2">
                     {t('flashcards.reviewComplete')}
                 </h2>
-                <p className="text-gray-500 dark:text-gray-400 mb-6">
+                <p className="text-slate-400 mb-6">
                     {t('flashcards.cardsReviewed', { count: reviewedCount })}
                 </p>
                 <button
                     onClick={onBack}
-                    className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                    className="px-6 py-2 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors"
                 >
                     {t('flashcards.backToDecks')}
                 </button>
@@ -331,12 +331,12 @@ export default function ReviewMode({ cards, onReview, onBack, onEditCard, algori
             <div className="flex items-center justify-between mb-4 gap-2">
                 <button
                     onClick={onBack}
-                    className="flex items-center gap-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors shrink-0"
+                    className="flex items-center gap-2 text-slate-400 hover:text-slate-200 transition-colors shrink-0"
                 >
                     <ArrowLeft size={18} />
                     <span className="hidden sm:inline">{t('flashcards.backToDecks')}</span>
                 </button>
-                <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                <p className="text-sm text-slate-500 text-center">
                     {t('flashcards.cardOf', { current: currentIndex + 1, total: sessionCards.length })}
                     {pendingCards.length > 0 && (
                         <span className="ml-2 text-xs text-red-400">+{pendingCards.length} again</span>
@@ -346,20 +346,20 @@ export default function ReviewMode({ cards, onReview, onBack, onEditCard, algori
             </div>
 
             {/* Card */}
-            <div className="relative flex flex-col bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm min-h-[44vh] sm:min-h-[58vh]">
+            <div className="relative flex flex-col bg-[#161A22] rounded-2xl border border-white/[0.06] shadow-[0_4px_24px_0_rgb(0_0_0/0.25)] min-h-[44vh] sm:min-h-[58vh]">
                 {/* 3-dots on card */}
                 <div className="absolute top-3 right-3" ref={cardMenuRef}>
                     <button
                         onClick={() => setShowCardMenu(v => !v)}
-                        className="p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                        className="p-1.5 text-slate-500 hover:text-slate-300 hover:bg-white/[0.06] rounded-lg transition-colors"
                     >
                         <MoreVertical size={16} />
                     </button>
                     {showCardMenu && (
-                        <div className="absolute right-0 top-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg py-1 z-10 min-w-32">
+                        <div className="absolute right-0 top-8 bg-[#1A1D24] border border-white/[0.08] rounded-xl shadow-2xl py-1 z-10 min-w-32">
                             <button
                                 onClick={openEditModal}
-                                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-left"
+                                className="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-300 hover:bg-white/[0.06] transition-colors text-left"
                             >
                                 <Pencil size={14} />
                                 {t('flashcards.editCard')}
@@ -370,14 +370,14 @@ export default function ReviewMode({ cards, onReview, onBack, onEditCard, algori
 
                 {/* Card content — grows to fill space */}
                 <div className="flex-1 p-7 pr-10">
-                    <p className="text-lg font-medium text-gray-800 dark:text-gray-100 leading-relaxed">
+                    <p className="text-lg font-medium text-slate-100 leading-relaxed">
                         {currentCard.front}
                     </p>
 
                     {revealed && (
                         <>
-                            <hr className="my-5 border-gray-200 dark:border-gray-700" />
-                            <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                            <hr className="my-5 border-white/[0.08]" />
+                            <p className="text-slate-300 leading-relaxed">
                                 {currentCard.back}
                             </p>
                         </>
@@ -394,12 +394,12 @@ export default function ReviewMode({ cards, onReview, onBack, onEditCard, algori
                                 onChange={(e) => setWrittenAnswer(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && setRevealed(true)}
                                 placeholder={t('flashcards.writeAnswer')}
-                                className="flex-1 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                className="flex-1 px-3 py-2 rounded-lg border border-white/[0.08] bg-white/[0.05] text-slate-100 placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
                                 autoFocus
                             />
                             <button
                                 onClick={() => setRevealed(true)}
-                                className="shrink-0 w-10 h-9 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                                className="shrink-0 w-10 h-9 flex items-center justify-center bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
                             >
                                 <Check size={16} />
                             </button>
@@ -432,8 +432,8 @@ export default function ReviewMode({ cards, onReview, onBack, onEditCard, algori
                         onClick={toggleWriteMode}
                         className={`p-3 rounded-full border-2 transition-colors shrink-0 ${
                             writeMode
-                                ? 'bg-gray-800 border-gray-800 text-white dark:bg-gray-200 dark:border-gray-200 dark:text-gray-900'
-                                : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                ? 'bg-slate-600 border-slate-600 text-white'
+                                : 'border-white/[0.10] text-slate-400 hover:bg-white/[0.06]'
                         }`}
                         title={t('flashcards.writeAnswer')}
                     >
@@ -443,7 +443,7 @@ export default function ReviewMode({ cards, onReview, onBack, onEditCard, algori
                     <div className="flex-1 flex justify-center">
                         <button
                             onClick={() => setRevealed(true)}
-                            className="px-8 py-4 bg-gray-800 dark:bg-gray-200 text-white dark:text-gray-900 rounded-xl font-medium hover:bg-gray-700 dark:hover:bg-gray-300 transition-colors text-sm"
+                            className="px-8 py-4 bg-[#252A35] text-slate-100 rounded-xl font-medium hover:bg-[#2D3344] transition-colors text-sm border border-white/[0.08]"
                         >
                             {t('flashcards.tapToReveal')}
                         </button>
@@ -452,7 +452,7 @@ export default function ReviewMode({ cards, onReview, onBack, onEditCard, algori
                     <button
                         onClick={handleUndo}
                         disabled={currentIndex === 0}
-                        className="p-3 rounded-full border-2 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
+                        className="p-3 rounded-full border-2 border-white/[0.10] text-slate-400 hover:bg-white/[0.06] transition-colors disabled:opacity-30 disabled:cursor-not-allowed shrink-0"
                         title={t('flashcards.undo')}
                     >
                         <RotateCcw size={20} />
@@ -462,15 +462,15 @@ export default function ReviewMode({ cards, onReview, onBack, onEditCard, algori
 
             {/* Edit card modal */}
             {showEditModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-                    <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 p-6 w-full max-w-md shadow-xl">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+                    <div className="bg-[#1A1D24] rounded-2xl border border-white/[0.08] p-6 w-full max-w-md shadow-2xl">
                         <div className="flex items-center justify-between mb-4">
-                            <h3 className="font-semibold text-gray-800 dark:text-gray-100">
+                            <h3 className="font-semibold text-slate-100">
                                 {t('flashcards.editCard')}
                             </h3>
                             <button
                                 onClick={() => setShowEditModal(false)}
-                                className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                                className="p-1 text-slate-500 hover:text-slate-300 transition-colors"
                             >
                                 <X size={18} />
                             </button>
@@ -480,25 +480,25 @@ export default function ReviewMode({ cards, onReview, onBack, onEditCard, algori
                             onChange={(e) => setEditFront(e.target.value)}
                             placeholder={t('flashcards.front')}
                             rows={3}
-                            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-sm"
+                            className="w-full px-3 py-2 rounded-lg border border-white/[0.08] bg-white/[0.05] text-slate-100 placeholder-slate-500 mb-3 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none text-sm"
                         />
                         <textarea
                             value={editBack}
                             onChange={(e) => setEditBack(e.target.value)}
                             placeholder={t('flashcards.back')}
                             rows={3}
-                            className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-100 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none text-sm"
+                            className="w-full px-3 py-2 rounded-lg border border-white/[0.08] bg-white/[0.05] text-slate-100 placeholder-slate-500 mb-4 focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none text-sm"
                         />
                         <div className="flex gap-2">
                             <button
                                 onClick={handleSaveEdit}
-                                className="flex-1 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-sm"
+                                className="flex-1 py-2 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors text-sm"
                             >
                                 {t('flashcards.save')}
                             </button>
                             <button
                                 onClick={() => setShowEditModal(false)}
-                                className="flex-1 py-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors text-sm"
+                                className="flex-1 py-2 bg-white/[0.06] text-slate-300 rounded-lg font-medium hover:bg-white/[0.10] transition-colors text-sm"
                             >
                                 {t('flashcards.cancel')}
                             </button>
