@@ -244,6 +244,28 @@ export default function Sidebar({ isMobileOpen, onMobileClose }) {
                                         : 'bottom-full mb-2 left-0 right-0'
                                     }`}
                             >
+                                {/* Language inline panel (mobile only) */}
+                                {langOpen && isMobile && (
+                                    <>
+                                        {languages.map(({ code, label }) => (
+                                            <button
+                                                key={code}
+                                                onClick={() => changeLanguage(code)}
+                                                className={`w-[calc(100%-8px)] flex items-center justify-between mx-1 px-3 py-2 text-xs transition-colors rounded-lg cursor-pointer ${i18n.language === code
+                                                    ? 'text-green-400 bg-green-500/10'
+                                                    : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                                                    }`}
+                                            >
+                                                {label}
+                                                {i18n.language === code && (
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 shrink-0" />
+                                                )}
+                                            </button>
+                                        ))}
+                                        <div className="mx-2 my-1 border-t border-white/[0.08]" />
+                                    </>
+                                )}
+
                                 <NavLink
                                     to="/profile"
                                     onClick={() => { setAccountOpen(false); if (isMobile) onMobileClose(); }}
@@ -288,11 +310,11 @@ export default function Sidebar({ isMobileOpen, onMobileClose }) {
                             </div>
                         )}
 
-                        {/* Language popup */}
-                        {accountOpen && langOpen && (
+                        {/* Language popup (desktop only) */}
+                        {accountOpen && langOpen && !isMobile && (
                             <div
                                 className={`absolute z-50 bg-[#1A1D24] border border-white/[0.08] rounded-xl shadow-2xl py-1 w-40
-                                    ${collapsed && !isMobile
+                                    ${collapsed
                                         ? 'left-full ml-2 bottom-0'
                                         : 'bottom-full mb-2 left-full ml-1'
                                     }`}

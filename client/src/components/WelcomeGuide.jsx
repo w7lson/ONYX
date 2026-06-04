@@ -13,7 +13,7 @@ const TASKS = [
     { key: 'visitedTechniques', i18nKey: 'welcomeGuide.taskTechniques', icon: BookOpen, link: '/learning' },
 ];
 
-export default function WelcomeGuide() {
+export default function WelcomeGuide({ isMobileSidebarOpen = false }) {
     const { getToken } = useAuth();
     const { t } = useTranslation();
     const location = useLocation();
@@ -92,7 +92,7 @@ export default function WelcomeGuide() {
         }
     }, [tasks, hidden, getToken]);
 
-    if (hidden) return null;
+    if (hidden || isMobileSidebarOpen) return null;
 
     const doneCount = Object.values(tasks).filter(Boolean).length;
     const totalCount = TASKS.length;

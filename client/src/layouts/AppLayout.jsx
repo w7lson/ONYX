@@ -75,7 +75,7 @@ export default function AppLayout() {
                     </div>
                 </main>
             </div>
-            <WelcomeGuide />
+            <WelcomeGuide isMobileSidebarOpen={mobileSidebarOpen} />
         </div>
     );
 }
