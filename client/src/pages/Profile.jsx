@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useUser, useAuth } from '@clerk/clerk-react';
-import { User, BarChart3, Eye, BookOpen, Gauge, CalendarClock, Pencil, Check, X } from 'lucide-react';
+import { User, BarChart3, Eye, BookOpen, Gauge, CalendarClock, Pencil, Check, X, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const PREFERENCE_OPTIONS = {
@@ -185,6 +185,32 @@ export default function Profile() {
                 )}
 
             </div>
+
+            {/* Redo Onboarding */}
+            {!loading && preferences?.onboardingDone && (
+                <div className="bg-[#161A22] border border-white/[0.06] rounded-2xl p-6 mb-4 shadow-[0_1px_3px_0_rgb(0_0_0/0.07)]">
+                    <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-primary-500/10 flex items-center justify-center shrink-0">
+                            <RotateCcw size={17} className="text-primary-400" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100 mb-1">
+                                {t('profile.redoOnboarding')}
+                            </h3>
+                            <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+                                {t('profile.redoOnboardingDesc')}
+                            </p>
+                            <Link
+                                to="/onboarding"
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-[10px] hover:bg-primary-700 transition-colors"
+                            >
+                                <RotateCcw size={14} />
+                                {t('profile.redoOnboardingBtn')}
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

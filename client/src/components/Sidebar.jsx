@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { useClerk } from '@clerk/clerk-react';
 import {
     LayoutDashboard, BookOpen, GraduationCap, Layers,
     Timer, FileQuestion, Target, User, Settings,
-    BarChart3, ChevronLeft, ChevronRight, Globe, X,
+    BarChart3, ChevronLeft, ChevronRight, Globe, X, LogOut,
 } from 'lucide-react';
 
 const navSections = [
@@ -17,22 +18,22 @@ const navSections = [
     {
         labelKey: 'sections.learn',
         items: [
-            { to: '/plans',    icon: BookOpen,      labelKey: 'nav.plans'      },
+            { to: '/plans', icon: BookOpen, labelKey: 'nav.plans' },
             { to: '/learning', icon: GraduationCap, labelKey: 'nav.techniques' },
         ],
     },
     {
         labelKey: 'sections.practice',
         items: [
-            { to: '/flashcards', icon: Layers,       labelKey: 'nav.flashcards' },
-            { to: '/pomodoro',   icon: Timer,        labelKey: 'nav.pomodoro'   },
-            { to: '/tests',      icon: FileQuestion, labelKey: 'nav.tests'      },
+            { to: '/flashcards', icon: Layers, labelKey: 'nav.flashcards' },
+            { to: '/pomodoro', icon: Timer, labelKey: 'nav.pomodoro' },
+            { to: '/tests', icon: FileQuestion, labelKey: 'nav.tests' },
         ],
     },
     {
         labelKey: 'sections.track',
         items: [
-            { to: '/goals',    icon: Target,   labelKey: 'nav.goals'    },
+            { to: '/goals', icon: Target, labelKey: 'nav.goals' },
             { to: '/progress', icon: BarChart3, labelKey: 'nav.progress' },
         ],
     },
@@ -52,6 +53,8 @@ export default function Sidebar({ isMobileOpen, onMobileClose }) {
         typeof window !== 'undefined' ? window.innerWidth < 768 : false
     );
     const { t, i18n } = useTranslation();
+    const { signOut } = useClerk();
+    const navigate = useNavigate();
     const accountRef = useRef(null);
 
     useEffect(() => {
@@ -104,10 +107,9 @@ export default function Sidebar({ isMobileOpen, onMobileClose }) {
             to={to}
             onClick={handleNavClick}
             className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-3 md:py-2.5 rounded-xl transition-all duration-150 whitespace-nowrap ${
-                    isActive
-                        ? 'text-white'
-                        : 'text-gray-500 hover:text-white'
+                `flex items-center gap-3 px-3 py-3 md:py-2.5 rounded-xl transition-all duration-150 whitespace-nowrap ${isActive
+                    ? 'text-white'
+                    : 'text-gray-500 hover:text-white'
                 }`
             }
         >
@@ -131,9 +133,8 @@ export default function Sidebar({ isMobileOpen, onMobileClose }) {
             {/* Mobile backdrop */}
             {isMobile && (
                 <div
-                    className={`fixed inset-0 z-40 bg-black/60 transition-opacity duration-300 ${
-                        isMobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-                    }`}
+                    className={`fixed inset-0 z-40 bg-black/60 transition-opacity duration-300 ${isMobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+                        }`}
                     onClick={onMobileClose}
                 />
             )}
@@ -211,9 +212,8 @@ export default function Sidebar({ isMobileOpen, onMobileClose }) {
                     <div ref={accountRef} className="relative">
                         <button
                             onClick={() => { setAccountOpen(v => !v); setLangOpen(false); }}
-                            className={`cursor-pointer w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border border-white/[0.12] transition-all duration-150 whitespace-nowrap ${
-                                accountOpen ? 'text-white bg-white/[0.04]' : 'text-gray-500 hover:text-white hover:bg-white/[0.03]'
-                            }`}
+                            className={`cursor-pointer w-full flex items-center gap-3 px-3 py-2.5 rounded-xl border border-white/[0.12] transition-all duration-150 whitespace-nowrap ${accountOpen ? 'text-white bg-white/[0.04]' : 'text-gray-500 hover:text-white hover:bg-white/[0.03]'
+                                }`}
                         >
                             <div className="shrink-0 w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center">
                                 <User size={12} className="text-green-400" />
@@ -225,7 +225,7 @@ export default function Sidebar({ isMobileOpen, onMobileClose }) {
                                         animate={{ opacity: 1 }}
                                         className="text-[15px] font-medium flex-1 text-left"
                                     >
-                                        My Account
+                                        {t('nav.myAccount')}
                                     </motion.span>
                                     <ChevronRight
                                         size={14}
@@ -238,7 +238,7 @@ export default function Sidebar({ isMobileOpen, onMobileClose }) {
                         {/* Account popup */}
                         {accountOpen && (
                             <div
-                                className={`absolute z-50 bg-[#1A1D24] border border-white/[0.08] rounded-xl shadow-2xl overflow-hidden
+                                className={`absolute z-50 bg-[#1A1D24] border border-white/[0.08] rounded-xl shadow-2xl py-1
                                     ${collapsed && !isMobile
                                         ? 'left-full ml-2 bottom-0 w-44'
                                         : 'bottom-full mb-2 left-0 right-0'
@@ -247,31 +247,43 @@ export default function Sidebar({ isMobileOpen, onMobileClose }) {
                                 <NavLink
                                     to="/profile"
                                     onClick={() => { setAccountOpen(false); if (isMobile) onMobileClose(); }}
-                                    className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-gray-400 hover:bg-white/5 hover:text-white transition-colors rounded-t-xl"
+                                    className="flex items-center gap-2.5 mx-1 px-3 py-2 text-xs text-gray-400 hover:bg-white/5 hover:text-white transition-colors rounded-lg"
                                 >
                                     <User size={13} />
-                                    Profile
+                                    {t('nav.profile')}
                                 </NavLink>
                                 <NavLink
                                     to="/settings"
                                     onClick={() => { setAccountOpen(false); if (isMobile) onMobileClose(); }}
-                                    className="flex items-center gap-2.5 px-4 py-2.5 text-xs text-gray-400 hover:bg-white/5 hover:text-white transition-colors"
+                                    className="flex items-center gap-2.5 mx-1 px-3 py-2 text-xs text-gray-400 hover:bg-white/5 hover:text-white transition-colors rounded-lg"
                                 >
                                     <Settings size={13} />
-                                    Settings
+                                    {t('nav.settings')}
                                 </NavLink>
 
                                 {/* Language row */}
                                 <button
                                     onClick={() => setLangOpen(v => !v)}
-                                    className="w-full flex items-center gap-2.5 px-4 py-2.5 text-xs text-gray-400 hover:bg-white/5 hover:text-white transition-colors rounded-b-xl cursor-pointer"
+                                    className="w-[calc(100%-8px)] flex items-center gap-2.5 mx-1 px-3 py-2 text-xs text-gray-400 hover:bg-white/5 hover:text-white transition-colors rounded-lg cursor-pointer"
                                 >
                                     <Globe size={13} />
-                                    <span className="flex-1 text-left">Language</span>
+                                    <span className="flex-1 text-left">{t('settings.language')}</span>
                                     <ChevronRight
                                         size={12}
                                         className={`text-gray-600 transition-transform duration-200 ${langOpen ? 'rotate-90' : ''}`}
                                     />
+                                </button>
+
+                                {/* Divider */}
+                                <div className="mx-2 my-1 border-t border-white/[0.08]" />
+
+                                {/* Sign Out */}
+                                <button
+                                    onClick={() => { setAccountOpen(false); signOut(() => navigate('/')); }}
+                                    className="w-[calc(100%-8px)] flex items-center gap-2.5 mx-1 px-3 py-2 text-xs text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-colors rounded-lg cursor-pointer"
+                                >
+                                    <LogOut size={13} />
+                                    <span>{t('profile.signOut')}</span>
                                 </button>
                             </div>
                         )}
@@ -279,7 +291,7 @@ export default function Sidebar({ isMobileOpen, onMobileClose }) {
                         {/* Language popup */}
                         {accountOpen && langOpen && (
                             <div
-                                className={`absolute z-50 bg-[#1A1D24] border border-white/[0.08] rounded-xl shadow-2xl overflow-hidden w-40
+                                className={`absolute z-50 bg-[#1A1D24] border border-white/[0.08] rounded-xl shadow-2xl py-1 w-40
                                     ${collapsed && !isMobile
                                         ? 'left-full ml-2 bottom-0'
                                         : 'bottom-full mb-2 left-full ml-1'
@@ -289,11 +301,10 @@ export default function Sidebar({ isMobileOpen, onMobileClose }) {
                                     <button
                                         key={code}
                                         onClick={() => changeLanguage(code)}
-                                        className={`w-full flex items-center justify-between px-4 py-2.5 text-xs transition-colors cursor-pointer ${
-                                            i18n.language === code
-                                                ? 'text-green-400 bg-green-500/10'
-                                                : 'text-gray-400 hover:bg-white/5 hover:text-white'
-                                        }`}
+                                        className={`w-[calc(100%-8px)] flex items-center justify-between mx-1 px-3 py-2 text-xs transition-colors rounded-lg cursor-pointer ${i18n.language === code
+                                            ? 'text-green-400 bg-green-500/10'
+                                            : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                                            }`}
                                     >
                                         {label}
                                         {i18n.language === code && (

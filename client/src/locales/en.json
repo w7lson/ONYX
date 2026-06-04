@@ -11,7 +11,8 @@
     "profile": "Profile",
     "notifications": "Notifications",
     "settings": "Settings",
-    "progress": "Progress"
+    "progress": "Progress",
+    "myAccount": "My Account"
   },
   "sections": {
     "learn": "Learn",
@@ -829,7 +830,10 @@
     "pace": "Learning Pace",
     "reviewFrequency": "Review Frequency",
     "signOut": "Sign Out",
-    "manageAccount": "Manage Account"
+    "manageAccount": "Manage Account",
+    "redoOnboarding": "Redo Onboarding",
+    "redoOnboardingDesc": "Retake the onboarding quiz to update your learning profile.",
+    "redoOnboardingBtn": "Retake Quiz"
   },
   "notifications": {
     "title": "Notifications",

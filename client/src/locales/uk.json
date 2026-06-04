@@ -11,7 +11,8 @@
     "profile": "Профіль",
     "notifications": "Сповіщення",
     "settings": "Налаштування",
-    "progress": "Прогрес"
+    "progress": "Прогрес",
+    "myAccount": "Мій акаунт"
   },
   "sections": {
     "learn": "Навчання",
@@ -829,7 +830,10 @@
     "pace": "Темп навчання",
     "reviewFrequency": "Частота повторення",
     "signOut": "Вийти",
-    "manageAccount": "Керувати обліковим записом"
+    "manageAccount": "Керувати обліковим записом",
+    "redoOnboarding": "Пройти знову",
+    "redoOnboardingDesc": "Пройдіть вступне опитування повторно, щоб оновити свій профіль.",
+    "redoOnboardingBtn": "Почати заново"
   },
   "notifications": {
     "title": "Сповіщення",

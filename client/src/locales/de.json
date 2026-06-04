@@ -11,7 +11,8 @@
     "profile": "Profil",
     "notifications": "Benachrichtigungen",
     "settings": "Einstellungen",
-    "progress": "Fortschritt"
+    "progress": "Fortschritt",
+    "myAccount": "Mein Konto"
   },
   "sections": {
     "learn": "Lernen",
@@ -829,7 +830,10 @@
     "pace": "Lerntempo",
     "reviewFrequency": "Wiederholungshäufigkeit",
     "signOut": "Abmelden",
-    "manageAccount": "Konto verwalten"
+    "manageAccount": "Konto verwalten",
+    "redoOnboarding": "Onboarding wiederholen",
+    "redoOnboardingDesc": "Nimm das Onboarding-Quiz erneut, um dein Lernprofil zu aktualisieren.",
+    "redoOnboardingBtn": "Quiz wiederholen"
   },
   "notifications": {
     "title": "Benachrichtigungen",
