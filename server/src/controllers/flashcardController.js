@@ -219,6 +219,7 @@ export const generateCards = asyncHandler(async (req, res) => {
             }
         ],
         response_format: { type: "json_object" },
+        max_tokens: 2000,
     });
 
     const parsed = JSON.parse(completion.choices[0].message.content);

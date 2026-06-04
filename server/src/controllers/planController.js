@@ -142,6 +142,7 @@ Return strictly valid JSON with this structure:
             { role: "user", content: prompt }
         ],
         response_format: { type: "json_object" },
+        max_tokens: 4000,
     });
 
     const planData = JSON.parse(completion.choices[0].message.content);
